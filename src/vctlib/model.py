@@ -3,9 +3,9 @@ from vctlib.constant import Air_properties_ro, LIGHTING_POWER_DENSITY, ELECTRIC_
     m2_per_person, gain_per_person
 
 
-class Input(object):
+class Building(object):
     """
-    Inputs for the simulation.
+    Building info, inputs for the simulation.
 
     Objects of this class should be managed immutably throughout the simulation.
 

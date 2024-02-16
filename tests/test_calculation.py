@@ -1,12 +1,12 @@
 try:
-    from vctlib.calculation import get_main_dataframe
-    from vctlib.model import Input
+    from vctlib.calculation import run_vct_simulation
+    from vctlib.model import Building
 except:
     import os
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
-    from vctlib.model import Input
-    from vctlib.calculation import get_main_dataframe
+    from vctlib.model import Building
+    from vctlib.calculation import run_vct_simulation
 
 
 import pandas as pd
@@ -20,7 +20,7 @@ __license__ = "MIT"
 
 
 def test_snapshot_get_main_dataframe(snapshot):
-    inputs = Input(
+    inputs = Building(
         bui_type = 'Apartment building',
         celing_to_floor_height = 2.7,
         envelope_area = 171.60,
@@ -38,7 +38,7 @@ def test_snapshot_get_main_dataframe(snapshot):
         time_control_on = 0,
         time_control_off = 24,
     )
-    df = get_main_dataframe(inputs)
+    df = run_vct_simulation(inputs)
     df_original = pd.read_csv("tests/data/original.csv")
 
     df = df.drop(columns=['Date', 'Time'])
@@ -62,7 +62,7 @@ def test_snapshot_get_main_dataframe(snapshot):
 
 
 def test_snapshot_building_2(snapshot):
-    inputs = Input(
+    inputs = Building(
         bui_type = 'Apartment building',
         celing_to_floor_height = 2.4,
         envelope_area = 1696,
@@ -80,7 +80,7 @@ def test_snapshot_building_2(snapshot):
         time_control_on = 0,
         time_control_off = 24,
     )
-    df = get_main_dataframe(inputs)
+    df = run_vct_simulation(inputs)
     df_original = pd.read_csv("tests/data/building_2.csv")
 
     df = df.drop(columns=['Date', 'Time'])
@@ -103,7 +103,7 @@ def test_snapshot_building_2(snapshot):
 
 
 def test_snapshot_office(snapshot):
-    inputs = Input(
+    inputs = Building(
         bui_type = 'Office',
         celing_to_floor_height = 2.7,
         envelope_area = 171.60,
@@ -121,7 +121,7 @@ def test_snapshot_office(snapshot):
         time_control_on = 8,
         time_control_off = 18,
     )
-    df = get_main_dataframe(inputs)
+    df = run_vct_simulation(inputs)
     df_original = pd.read_csv("tests/data/office.csv")
 
     df = df.drop(columns=['Date', 'Time'])

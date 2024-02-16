@@ -1,4 +1,4 @@
-from vctlib.model import Input
+from vctlib.model import Building
 from vctlib.constant import VENT_RATES_MU
 
 __author__ = "OlgaSomova"
@@ -7,7 +7,7 @@ __license__ = "MIT"
 
 
 def test_inputs_model(snapshot):
-    inputs = Input(
+    inputs = Building(
         bui_type = 'Apartment building',
         celing_to_floor_height = 2.7,
         envelope_area = 171.60,

@@ -17,21 +17,22 @@ except:
     from vctlib.model import Building
 
 
-# Total hours of simulation: December + 1 year
-TOT_HOURS = 9504 # (31+365)*24
+TOT_HOURS = 9504 # Total hours in simulation = December + 1 year -> (31+365)*24
 HOURS_IN_YEAR = 8760 # 365*24
 TOT_DAYS = 396 # 31 + 365
 DAYS_IN_YEAR = 365
 
 
 
-def get_simulation_year():
-    """ Return dataframe with additional December month + standard year 
-        Dataframe columns: 
-        - Date
-        - Month
-        - Day
-        - Time: integer [1, 2, ..., 24]
+def get_simulation_year() -> pd.DataFrame:
+    """ Create a DataFrame for a sumulation of lenght equal to December month + 1 standard year
+        
+        Returns: 
+            pd.DataFrame with: 
+            - Date
+            - Month
+            - Day
+            - Time: integer (1, 2, ..., 24)
     """
     df = pd.DataFrame(index = range(TOT_HOURS))
     dates = pd.concat([
@@ -48,7 +49,19 @@ def get_simulation_year():
 
 
 
-def get_outdoor_climate_data():
+def get_outdoor_climate_data() -> pd.DataFrame:
+    """ Retrieve outdoor climate data.
+
+    Parameters:
+    ...
+
+    Returns:
+        pd.DataFrame: A DataFrame with hourly values of:
+        - Outdoor dry-bulb temperature.  θe;a [°C]
+        - Relative humidity of outdoor air.  ΦHU;e;a;t [%]
+        - Daily mean outdoor temperature.  θe;a;mean [°C]
+    """
+
     df = pd.DataFrame(index=range(TOT_HOURS))
 
     df['Outdoor dry-bulb temperature'] = pd.read_csv(os.path.join(os.getcwd(),'src/vctlib/temp_data/outdor_dry_bulb_temperature.csv'))
@@ -66,7 +79,21 @@ def get_outdoor_climate_data():
 
     
 
-def calc_thermal_comfort_data(building: Building, daily_mean_outdoor_temp):
+def calc_thermal_comfort_data(
+    building: Building, daily_mean_outdoor_temp
+) -> pd.DataFrame:
+    """ Calculate Thermal comfort data.
+    
+    Parameters:
+        - building obj
+
+    Returns:
+        pd.DataFrame: A DataFrame with hourly values of: 
+        - Outdoor runnin mean temperature.  Θrm [°C]
+        - Comfort temperature.  Θc [°C]
+        - Lower comfort zone limit.  Θint;set;H;t [°C]
+        - Upper comfort zone limit.  Θint;set;C;t [°C]
+    """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
     outdoor_runnin_mean_temperature = []
@@ -109,7 +136,17 @@ def calc_thermal_comfort_data(building: Building, daily_mean_outdoor_temp):
 
 
 
-def get_gains(building: Building):
+def get_gains(building: Building) -> pd.DataFrame:
+    """ Calculate solar and internal gains.
+
+    Patameters: 
+        - building obj
+
+    Returns:
+        pd.DataFrame: A DataFrame with hourly values of:
+        - Solar gains.  Φsol [W/m²]
+        - Internal gains.  Φint [W/m²]
+    """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
     isol_tot = pd.read_csv(os.path.join(os.getcwd(),'src/vctlib/temp_data/isol_tot.csv'))
@@ -124,11 +161,28 @@ def get_gains(building: Building):
     internal_gains = [200/building.floor_area] * TOT_HOURS #TODO 200 is const?
     df['Internal gains'] = internal_gains
 
+    return df
+
+
+
+def get_ventilation_rate(building:Building) -> pd.DataFrame:
+    """ Calculate Ventilation rates.
+
+    Parameters: 
+        - building obj
+
+    Returns:
+        pd.DataFrame: A DataFrame with hourly values of:
+        - Ventilation rate.  qV;t [m3/s]
+    """
+    df = pd.DataFrame(index=range(TOT_HOURS))
+
     vent_rate_m3_s = building.min_req_vent_rates[0] * building.floor_area / 1000
     ventilation_rate = [vent_rate_m3_s] * TOT_HOURS
     df['Ventilation rate'] = ventilation_rate
 
     return df
+
 
 
 def calc_free_float_mode(
@@ -137,7 +191,24 @@ def calc_free_float_mode(
     solar_gains, 
     internal_gains,
     outdoor_dry_bulb_temp
-):
+) -> pd.DataFrame:
+    """ Performs the first set of calculations (Free Float Mode).
+
+    Parameters: 
+        - building obj
+        - vent_rate_m3_s: ventilation rate [m³/s]
+        - solar_gains: A list with hourly values of solar gains
+        - internal_gains: A list with hourly values of internal gains
+        - outdoor_dry_bulb_temp: A list with hourly values of Outdoor dry bulb temperature 
+        All parameters (except building) are the outputs of the previous steps.
+
+    Returns: 
+        pd.DataFrame: A DataFrame with hourly values of: 
+        - At [W/K]
+        - Bt [W]
+        - Internal temperature free float.  ϴint;0;t [°C]
+        - Internal temperature calculated.  ϴint;t [°C]
+    """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
     # TODO thermostatical_properties -> formula?
@@ -182,7 +253,29 @@ def calc_heating_and_cooling_needs_no_vcs(
     At,
     lower_comfort_zone_limit,
     upper_comfort_zone_limit,
-):
+) -> pd.DataFrame:
+    """ Performs the second set of calculations (Heating and Cooling needs, no VCS).
+
+    Parameters: 
+        - building obj
+        - vent_rate_m3_s: ventilation rate [m³/s]
+        - solar_gains: A list with hourly values of solar gains
+        - internal_gains: A list with hourly values of internal gains
+        - outdoor_dry_bulb_temp: A list with hourly values of Outdoor dry bulb temperature 
+        - At: value of At
+        - lower_comfort_zone_limit: A list with hourly values of Lower comfort zone limit
+        - upper_comfort_zone_limit: A list with hourly values of Upper comfort zone limit
+        All parameters (except building) are the outputs of the previous steps.
+
+    Returns: 
+        pd.DataFrame: A DataFrame with hourly values of: 
+            - Ventilation rate.  qV;t [m3/s]
+            - At  [W/K]
+            - Bt  [W]
+            - Internal temperature free float.  ϴint;0;t [°C]
+            - Heating or cooling load.  ΦHC;t [W]
+            - Internal temperature calculated.  ϴint;t [°C]
+    """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
     Bt_no_vcs = [None]*TOT_HOURS
@@ -242,7 +335,46 @@ def calc_heating_and_cooling_needs_with_vcs(
     relative_humidity_of_outdoor_air,
     heating_cooling_load,
     time
-):
+) -> pd.DataFrame:
+    """ Performs the third set of calculations (Heating and Cooling needs, with VCS).
+
+    Parameters: 
+        - building obj
+        - vent_rate_m3_s: ventilation rate [m³/s]
+        - solar_gains: A list with hourly values of solar gains
+        - internal_gains: A list with hourly values of internal gains
+        - outdoor_dry_bulb_temp: A list with hourly values of Outdoor dry bulb temperature 
+        - At: value of At
+        - lower_comfort_zone_limit: A list with hourly values of Lower comfort zone limit
+        - upper_comfort_zone_limit: A list with hourly values of Upper comfort zone limit
+        - relative_humidity_of_outdoor_air: A list with hourly values of Relative humidity of outdoor air
+        - heating_cooling_load: A list with hourly values of Heating or cooling load
+        - time: A list with hourly values. A set of (1, 2, .., 24) for each day of simulation
+        All parameters (except building) are the outputs of the previous steps.
+
+    Returns: 
+        pd.DataFrame: A DataFrame with hourly values of: 
+            - Ventilation rate without VCS.  qV;t [m3/s]
+            - At  [W/K]
+            - Bt  [W]
+            step 1:
+                - Internal temperature free float.  ϴint;0;t [°C]
+            step 2:
+                - Heating or cooling load "step 2".  ΦHC;step2;t [W]
+                - Internal temperature calculated "Step2".  ϴint;step2;t [°C]
+            step 3:
+                - VC mode
+                - Required cooling ventilation rate (VC mode 1 or 2).  ΔqV;vcs;req;t [m3/s]
+            step 4: 
+                - Actual ventilation rate.  qV;vcs;t [m3/s]
+                - Avcs;t  [W/K]
+                - Bvcs;t  [W]
+                - Internal temperature free float.  ϴint;0;t [°C]
+                - Heating or cooling load.  ΦHC;vcs;t [W]
+                - Internal temperature calculated.  ϴint;vcs;t [°C]
+                - HC load difference.  ΔΦHC;vcs;t [W]
+                - Target indoor temperature for VCS.  ϴint;set;vcs;t [°C]
+    """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
     internal_temperature_free_float_with_vcs = [None] * TOT_HOURS
@@ -372,7 +504,7 @@ def calc_heating_and_cooling_needs_with_vcs(
 
 
 
-def run_vct_simulation(inputs: Building):
+def run_vct_simulation(inputs: Building) -> pd.DataFrame:
 
     df = get_simulation_year()
 
@@ -394,6 +526,8 @@ def run_vct_simulation(inputs: Building):
     df_temp = get_gains(inputs)
     df = pd.concat([df, df_temp], axis=1)
 
+    df_temp = get_ventilation_rate(inputs)
+    df = pd.concat([df, df_temp], axis=1)
 
     ###############################################################
     #           FREE FLOAT MODE (1st SET OF CALCULATIONS)
@@ -458,7 +592,7 @@ def run_vct_simulation(inputs: Building):
 
 
 
-def get_vent_mode_over_year(df):
+def get_vent_mode_over_year(df: pd.DataFrame):
     df_vent = pd.DataFrame()
     df = df[744:] # remove additional month
     for i in range(1,13):

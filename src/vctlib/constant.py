@@ -1,4 +1,4 @@
-
+"""Constants used throughout the simulation."""
 
 BUILDING_TYPE = [
     'Apartment building',
@@ -13,7 +13,7 @@ BUILDING_TYPE = [
 
 COMFORT_REQUIREMENTS = [
     'category I',
-    'category II', 
+    'category II',
     'category III'
 ]
 
@@ -39,28 +39,29 @@ LIGHTING_POWER_DENSITY = dict(zip(BUILDING_TYPE, [8, 15, 8, 9, 8, 12, 20, 15]))
 ELECTRIC_EQUIPMENT_POWER_DENSITY = dict(zip(BUILDING_TYPE, [3, 4, 2.4, 4, 3, 12, 4, 8]))
 
 
-
-def get_TminK(comf_req):
+def get_t_min_k(comf_req):
+    """Return TminK value given the building comfort requirements category."""
     index = COMFORT_REQUIREMENTS.index(comf_req)
-    if index == 0: 
+    if index == 0:
         return Tmin_K1
-    elif index == 1: 
+    elif index == 1:
         return Tmin_K2
-    elif index == 2: 
+    elif index == 2:
         return Tmin_K3
-    
 
-def get_TmaxK(comf_req):
+
+def get_t_max_k(comf_req):
+    """Return TmaxK value given the building comfort requirements category."""
     index = COMFORT_REQUIREMENTS.index(comf_req)
-    if index == 0: 
+    if index == 0:
         return Tmax_K1
-    elif index == 1: 
+    elif index == 1:
         return Tmax_K2
-    elif index == 2: 
+    elif index == 2:
         return Tmax_K3
-    
 
-Ti_csp = 27 # TODO: value is const?
+
+Ti_csp = 27  # TODO: value is const?
 
 Air_properties_Cp = 1006
 Air_properties_ro = 1.204

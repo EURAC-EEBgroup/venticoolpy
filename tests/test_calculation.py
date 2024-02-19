@@ -1,13 +1,15 @@
 """Test calculation functions."""
 
 try:
-    from vctlib.calculation import run_vct_simulation
+    from vctlib.calculation import run_vct_simulation, get_climate_data_from_epw, \
+        get_climate_data_from_csv
     from vctlib.model import Building, ThermostaticalProperties
 except ModuleNotFoundError:
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
     from vctlib.model import Building, ThermostaticalProperties
-    from vctlib.calculation import run_vct_simulation
+    from vctlib.calculation import run_vct_simulation, get_climate_data_from_epw, \
+        get_climate_data_from_csv
 
 
 import pandas as pd
@@ -171,3 +173,19 @@ def test_snapshot_office(snapshot):
 
     result = df.to_json().encode()
     snapshot.assert_match(result, 'office.yml')
+
+
+def test_get_climate_data_from_epw(snapshot):
+    filename = 'src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw'
+    df = get_climate_data_from_epw(filename)
+    
+    result = df.to_json()
+    snapshot.assert_match(result, "climate_data_epw.json")
+
+
+def test_get_climate_data_from_csv(snapshot):
+    filename = 'src/vctlib/temp_data/tmy_46.501_11.362_2005_2020.csv'
+    df = get_climate_data_from_csv(filename)
+    
+    result = df.to_json()
+    snapshot.assert_match(result, "climate_data_csv.json")

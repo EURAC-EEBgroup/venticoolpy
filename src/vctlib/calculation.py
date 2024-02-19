@@ -8,13 +8,13 @@ import datetime
 try:
     from vctlib.constant import get_t_min_k
     from vctlib.constant import Ti_csp, Air_properties_Cp, Air_properties_ro
-    from vctlib.model import Building
+    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
 except ModuleNotFoundError:
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
     from vctlib.constant import get_t_min_k
     from vctlib.constant import Ti_csp, Air_properties_Cp, Air_properties_ro
-    from vctlib.model import Building
+    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
 
 
 TOT_HOURS = 9504  # Total hours in simulation = December + 1 year -> (31+365)*24
@@ -123,15 +123,17 @@ def calc_thermal_comfort_data(
     ti_hsp_night = 10  # Ti_hsp_day AF25
     ti_hsp_day = t_min_k[building.bui_type]  # Ti_hsp_night AF26
 
-    # TODO Ti_hsp_night, Ti_hsp_day move to Building class
-    # es from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
-
-    temp = [ti_hsp_night]*7 + [ti_hsp_day]*17
+    temp = [ti_hsp_night]*(building.ti_hsp_day_start) + \
+        [ti_hsp_day]*(building.ti_hsp_night_start-building.ti_hsp_day_start) + \
+        [ti_hsp_night]*(24-building.ti_hsp_night_start)
     lower_comfort_zone_limit = temp * TOT_DAYS
 
     upper_comfort_zone_limit = [Ti_csp] * TOT_HOURS
 
-    temp = [mean([ti_hsp_night, Ti_csp])]*7 + [mean([ti_hsp_day, Ti_csp])]*17
+    temp = [mean([ti_hsp_night, Ti_csp])]*building.ti_hsp_day_start + \
+        [mean([ti_hsp_day, Ti_csp])]*(building.ti_hsp_night_start-building.ti_hsp_day_start) + \
+        [mean([ti_hsp_night, Ti_csp])]*(24-building.ti_hsp_night_start)
+    
     comfort_temperature = temp * TOT_DAYS
 
     df['Comfort temperature'] = comfort_temperature
@@ -191,6 +193,7 @@ def get_ventilation_rate(building: Building) -> pd.DataFrame:
 
 def calc_free_float_mode(
     building: Building,
+    c_tot, # TODO: change name
     vent_rate_m3_s,
     solar_gains,
     internal_gains,
@@ -200,6 +203,7 @@ def calc_free_float_mode(
 
     Parameters:
         - building obj
+        - c_tot: # TODO: add description
         - vent_rate_m3_s: ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
@@ -216,9 +220,7 @@ def calc_free_float_mode(
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
-    # TODO thermostatical_properties -> formula?
-    thermostatical_properties_p7 = 15479951.7120
-    c_int = thermostatical_properties_p7 + 10000 * building.floor_area  # C36
+    c_int = c_tot + 10000 * building.floor_area  # C36
 
     a_t = c_int/3600 + (Air_properties_Cp*Air_properties_ro*vent_rate_m3_s) + \
         building.average_u_value*building.envelope_area
@@ -255,6 +257,7 @@ def calc_free_float_mode(
 
 def calc_heating_and_cooling_needs_no_vcs(
     building: Building,
+    c_tot,
     vent_rate_m3_s,
     solar_gains,
     internal_gains,
@@ -267,6 +270,7 @@ def calc_heating_and_cooling_needs_no_vcs(
 
     Parameters:
         - building obj
+        - c_tot: # TODO: add description
         - vent_rate_m3_s: ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
@@ -295,8 +299,7 @@ def calc_heating_and_cooling_needs_no_vcs(
     heating_cooling_load = [None]*TOT_HOURS
     internal_temperature_calc = [None]*TOT_HOURS
 
-    thermostatical_properties_p7 = 15479951.7120
-    c_int = thermostatical_properties_p7 + 10000 * building.floor_area
+    c_int = c_tot + 10000 * building.floor_area
 
     for i in range(TOT_HOURS):
         if i == 0:
@@ -476,6 +479,8 @@ def calc_heating_and_cooling_needs_with_vcs(
                  (Ti_csp - outdoor_dry_bulb_temp[i]))
         else:
             required_cooling_vent_rate[i] = 0
+            # TODO: in the description : 'Required cooling ventilation rate (VC mode 1 or 2)',
+            # but mode 1 is never considered. Error?
 
     actual_ventilation_rate = [None] * TOT_HOURS
     for i in range(TOT_HOURS):
@@ -542,7 +547,10 @@ def calc_heating_and_cooling_needs_with_vcs(
     return df
 
 
-def run_vct_simulation(inputs: Building) -> pd.DataFrame:
+def run_vct_simulation(
+    inputs: Building,
+    thermophysical_props: ThermostaticalProperties
+) -> pd.DataFrame:
     """Perform main VCT simulation.
 
     Returns:
@@ -582,6 +590,7 @@ def run_vct_simulation(inputs: Building) -> pd.DataFrame:
 
     df_temp = calc_free_float_mode(
         building=inputs,
+        c_tot=thermophys_prop.c_tot,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,
@@ -598,6 +607,7 @@ def run_vct_simulation(inputs: Building) -> pd.DataFrame:
 
     df_temp = calc_heating_and_cooling_needs_no_vcs(
         building=inputs,
+        c_tot=thermophys_prop.c_tot,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,
@@ -651,7 +661,7 @@ def get_vent_mode_over_year(df: pd.DataFrame):
     return df_vent
 
 
-# TODO: chidere a GDM come calcolare la radiazione incidente diretta indiretta sulle facciare dell'edificio # noqa :E501
+# TODO: chidere a GDM come calcolare la radiazione incidente diretta indiretta sulle facciate dell'edificio # noqa :E501
 # input: radiazione tot orizzontale
 # output desiderato: radiazione per 8 orientamenti
 
@@ -674,4 +684,13 @@ inputsobj = Building(
     time_control_off=24,
 )
 
-# run_vct_simulation(inputsobj)
+thermophys_prop = ThermostaticalProperties(
+    external_wall_area=9.6+16.2+16.2+21.6,
+    floor_area=6*8,
+    roof_area=6*8,
+    external_wall_r=1.797,
+    floor_r=25.246,
+    roof_r=2.992
+)
+
+# run_vct_simulation(inputsobj, thermophys_prop)

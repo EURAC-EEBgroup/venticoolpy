@@ -1,7 +1,18 @@
 """Test models."""
 
-from vctlib.model import Building
-from vctlib.constant import VENT_RATES_MU
+import pytest
+
+try:
+    from vctlib.model import Building, ThermostaticalProperties, \
+        BuildingCreateException
+    from vctlib.constant import VENT_RATES_MU
+
+except ModuleNotFoundError:
+    import sys
+    sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
+    from vctlib.model import Building, ThermostaticalProperties, \
+        BuildingCreateException
+    from vctlib.constant import VENT_RATES_MU
 
 __author__ = "OlgaSomova"
 __copyright__ = "OlgaSomova"
@@ -53,3 +64,44 @@ def test_inputs_model(snapshot):
     properties['min_req_vent_rates_3'] = inputs.min_req_vent_rates
 
     snapshot.assert_match(str(properties), "properties_inputs.yml")
+
+
+def test_thermophysical_properties(snapshot):
+    thermophys_prop = ThermostaticalProperties(
+        external_wall_area=9.6+16.2+16.2+21.6,
+        floor_area=6*8,
+        roof_area=6*8,
+        external_wall_r=1.797,
+        floor_r=25.246,
+        roof_r=2.992
+    )
+
+    thermophys_dict = thermophys_prop.__dict__
+    thermophys_dict['u_value_tot']= thermophys_prop.u_value_tot
+    thermophys_dict['c_tot'] = thermophys_prop.c_tot
+
+    snapshot.assert_match(str(thermophys_dict), "thermophys_prop.yml")
+
+
+def test_building_exception(snapshot):
+    """Test Exception on create Building model."""
+    with pytest.raises(BuildingCreateException) as exc:
+        inputs = Building(
+            bui_type='type does not exist',
+            celing_to_floor_height=2.7,
+            envelope_area=171.60,
+            floor_area=48.00,
+            fenestration_area=12.00,
+            comfort_requirements="category does not exist",
+            max_outdoor_rel_hum_accepted=85,
+            u_value_opaque=0.315822914673981,
+            u_value_fen=2.984,
+            construction_mass="medium",
+            g_value_glazing_sys=0.71,
+            shading_control_setpoint=120,
+            shading_factor=0,
+            vent_rates_mu='1/h',
+            time_control_on=0,
+            time_control_off=24,
+        )
+    assert exc.typename == 'BuildingCreateException'

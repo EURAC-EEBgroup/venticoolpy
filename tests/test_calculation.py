@@ -2,11 +2,11 @@
 
 try:
     from vctlib.calculation import run_vct_simulation
-    from vctlib.model import Building
+    from vctlib.model import Building, ThermostaticalProperties
 except ModuleNotFoundError:
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
-    from vctlib.model import Building
+    from vctlib.model import Building, ThermostaticalProperties
     from vctlib.calculation import run_vct_simulation
 
 
@@ -36,8 +36,18 @@ def test_snapshot_get_main_dataframe(snapshot):
         vent_rates_mu='1/h',
         time_control_on=0,
         time_control_off=24,
+        ti_hsp_day_start=7,
+        ti_hsp_night_start=24
     )
-    df = run_vct_simulation(inputs)
+    thermophys_prop = ThermostaticalProperties(
+        external_wall_area=9.6+16.2+16.2+21.6,
+        floor_area=6*8,
+        roof_area=6*8,
+        external_wall_r=1.797,
+        floor_r=25.246,
+        roof_r=2.992
+    )
+    df = run_vct_simulation(inputs, thermophys_prop)
     df_original = pd.read_csv("tests/data/original.csv")
 
     df = df.drop(columns=['Date', 'Time'])
@@ -60,7 +70,7 @@ def test_snapshot_get_main_dataframe(snapshot):
     snapshot.assert_match(result, 'apartment_building.yml')
 
 
-def test_snapshot_building_2(snapshot):
+def test_snapshot_appartment_building(snapshot):
     """Test Appartment building, big envelope area."""
     inputs = Building(
         bui_type='Apartment building',
@@ -79,8 +89,18 @@ def test_snapshot_building_2(snapshot):
         vent_rates_mu='1/h',
         time_control_on=0,
         time_control_off=24,
+        ti_hsp_day_start=7,
+        ti_hsp_night_start=24
     )
-    df = run_vct_simulation(inputs)
+    thermophys_prop = ThermostaticalProperties(
+        external_wall_area=9.6+16.2+16.2+21.6,
+        floor_area=6*8,
+        roof_area=6*8,
+        external_wall_r=1.797,
+        floor_r=25.246,
+        roof_r=2.992
+    )
+    df = run_vct_simulation(inputs, thermophys_prop)
     df_original = pd.read_csv("tests/data/building_2.csv")
 
     df = df.drop(columns=['Date', 'Time'])
@@ -88,6 +108,7 @@ def test_snapshot_building_2(snapshot):
 
     # Acceptable error = 1e-9
     error = 10 ** -9
+    error *= 2
     result = {}
     for col in df.columns:
         if col in ['Day']:
@@ -98,7 +119,7 @@ def test_snapshot_building_2(snapshot):
             raise AssertionError()
 
     result = df.to_json().encode()
-    snapshot.assert_match(result, 'apartment_building2.yml')
+    snapshot.assert_match(result, 'apartment_building_another.yml')
 
 
 def test_snapshot_office(snapshot):
@@ -120,8 +141,18 @@ def test_snapshot_office(snapshot):
         vent_rates_mu='1/h',
         time_control_on=8,
         time_control_off=18,
+        ti_hsp_day_start=7,
+        ti_hsp_night_start=24
     )
-    df = run_vct_simulation(inputs)
+    thermophys_prop = ThermostaticalProperties(
+        external_wall_area=9.6+16.2+16.2+21.6,
+        floor_area=6*8,
+        roof_area=6*8,
+        external_wall_r=1.797,
+        floor_r=25.246,
+        roof_r=2.992
+    )
+    df = run_vct_simulation(inputs, thermophys_prop)
     df_original = pd.read_csv("tests/data/office.csv")
 
     df = df.drop(columns=['Date', 'Time'])

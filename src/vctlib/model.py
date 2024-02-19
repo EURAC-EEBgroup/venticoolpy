@@ -2,12 +2,21 @@
 
 from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
 from vctlib.constant import Air_properties_ro, LIGHTING_POWER_DENSITY, \
-    ELECTRIC_EQUIPMENT_POWER_DENSITY, m2_per_person, gain_per_person
+    ELECTRIC_EQUIPMENT_POWER_DENSITY, m2_per_person, gain_per_person, \
+    VENTILATION_STRATEGY, WINDOW_OPENING_TYPE
+
+
+class BuildingCreateException(Exception):
+    pass
+
+
+class WindowDesignCreateException(Exception):
+    pass
 
 
 class Building(object):
     """
-    Building info, inputs for the simulation.
+    Building info, inputs for the main vct simulation.
 
     Objects of this class should be managed immutably throughout the simulation.
 
@@ -85,6 +94,16 @@ class Building(object):
     - time_control_off (integer; required):
     Time control off; toff; min 0, max 24.
 
+    # es from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
+    - ti_hsp_day_start (integer; optional):
+        default 7:00
+        # TODO: add description
+
+    - ti_hsp_night_start (integer; optional):
+        default 23:00
+        # TODO: add description
+        # NB! error in excel formula: ti_hsp_night_start = 24
+
     """
 
     def __init__(
@@ -105,15 +124,10 @@ class Building(object):
         vent_rates_mu,
         time_control_on,
         time_control_off,
+        ti_hsp_day_start = 7,
+        ti_hsp_night_start = 23,
     ):
         """Collect all data needed for the simulation."""
-        if (
-            bui_type not in BUILDING_TYPE or
-            comfort_requirements not in COMFORT_REQUIREMENTS or
-            vent_rates_mu not in VENT_RATES_MU
-        ):
-            raise Exception
-
         self.bui_type = bui_type
         self.celing_to_floor_height = celing_to_floor_height
         self.envelope_area = envelope_area
@@ -130,6 +144,16 @@ class Building(object):
         self.vent_rates_mu = vent_rates_mu
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
+        self.ti_hsp_day_start = ti_hsp_day_start
+        self.ti_hsp_night_start = ti_hsp_night_start
+
+
+        if (
+            bui_type not in BUILDING_TYPE or
+            comfort_requirements not in COMFORT_REQUIREMENTS or
+            vent_rates_mu not in VENT_RATES_MU
+        ):
+            raise BuildingCreateException
 
     @property
     def room_volume(self):
@@ -216,3 +240,111 @@ class Building(object):
         """Cint; (J/K)."""
         # TODO: first value is const?
         return 15479951.712 + 10000 * self.floor_area
+    
+
+class ThermostaticalProperties(object):
+    """
+        # TODO: Add desctiption.
+        Area (m²)	
+        R (m²K/W)
+    """
+
+    def __init__(
+        self,
+        external_wall_area,
+        floor_area,
+        roof_area,
+        external_wall_r,
+        floor_r,
+        roof_r
+    ):  
+        self.external_wall_area = external_wall_area
+        self.floor_area = floor_area
+        self.roof_area = roof_area
+        self.external_wall_r = external_wall_r
+        self.floor_r = floor_r
+        self.roof_r = roof_r
+
+    @property
+    def u_value_tot(self): # TODO: U == u value?
+        """U (W/m²K)."""
+        u_wall = 1/(self.external_wall_r + 1/(2.5+5.13))
+        u_floor = 1/(self.floor_r + 1/(0.7+5.13))
+        u_roof = 1/(self.roof_r + 1/(5+5.13))
+
+        tot_area = self.external_wall_area + self.floor_area + self.roof_area
+        tot_u_value = (u_wall*self.external_wall_area +
+                       u_floor*self.floor_area +
+                        u_roof*self.roof_area)/tot_area
+        
+        return tot_u_value
+    
+    @property
+    def c_tot(self):
+        """C [J/K]."""
+        # TODO: other values are const?
+        c_wall = 0.1*1400*1000*self.external_wall_area + \
+            0.0615*10*1400*self.external_wall_area + \
+                0.009*530*900*self.external_wall_area
+        
+        c_floor = 0.08*1400*1000*self.floor_area
+
+        c_roof = 0.01*950*840*self.roof_area + \
+            0.1118*12*840*self.roof_area + \
+                0.019*530*900*self.roof_area
+        
+        return c_wall + c_floor + c_roof
+
+
+
+class WindowDesign(object):
+    """Class for Window design input data.
+
+    Room depth
+    Ventilation strategy
+    Select window opening type
+    Window maximum opening angle
+    Window opening discharge coefficient
+    Indoor temperature
+    Indoor-outdoor temperature difference
+    Wind speed
+    Insect screen?
+    Stack height - vertical distance between 2 openings
+    Wind pressure coefficient - window 1
+    Wind pressure coefficient - window 2
+    """
+
+    def __init__(
+        self,
+        room_depth,
+        ventilation_strategy,
+        window_opening_type,# add const for window opending type
+        window_maximum_opening_angle,
+        window_opening_discharge_coeff,
+        indoor_temperature,
+        indoor_outdoor_temperature_diff,
+        wind_speed,
+        has_insect_screen,
+        stack_height,
+        wind_pressure_coeff_window_1,
+        wind_pressure_coefficient_window_2
+    ):
+        """Collect all data needed for Windows Design simulation."""        
+        self.room_depth = room_depth
+        self.ventilation_strategy = ventilation_strategy
+        self.window_opening_type = window_opening_type
+        self.window_maximum_opening_angle = window_maximum_opening_angle
+        self.window_opening_discharge_coeff = window_opening_discharge_coeff
+        self.indoor_temperature = indoor_temperature
+        self.indoor_outdoor_temperature_diff = indoor_outdoor_temperature_diff
+        self.wind_speed = wind_speed
+        self.has_insect_screen = has_insect_screen
+        self.stack_height = stack_height
+        self.wind_pressure_coeff_window_1 = wind_pressure_coeff_window_1
+        self.wind_pressure_coefficient_window_2 = wind_pressure_coefficient_window_2
+
+        if (
+            ventilation_strategy not in VENTILATION_STRATEGY or
+            window_opening_type not in WINDOW_OPENING_TYPE            
+        ):
+            raise WindowDesignCreateException

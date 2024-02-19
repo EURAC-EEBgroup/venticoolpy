@@ -65,3 +65,17 @@ Ti_csp = 27  # TODO: value is const?
 
 Air_properties_Cp = 1006
 Air_properties_ro = 1.204
+
+
+VENTILATION_STRATEGY = [
+    'Single-sided: buoyancy only',
+    'Single-sided: buoyancy+wind',
+    'Stack ventilation',
+    'Cross ventilation',
+]
+
+WINDOW_OPENING_TYPE = [
+    'side hung',
+    'bottom hung',
+    'top hung',
+]

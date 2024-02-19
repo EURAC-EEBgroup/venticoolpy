@@ -3,18 +3,20 @@
 import pandas as pd
 from statistics import mean
 import datetime
+from epw.weather import Weather
+import csv
 
 
 try:
     from vctlib.constant import get_t_min_k
     from vctlib.constant import Ti_csp, Air_properties_Cp, Air_properties_ro
-    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
+    from vctlib.model import Building, ThermostaticalProperties
 except ModuleNotFoundError:
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
     from vctlib.constant import get_t_min_k
     from vctlib.constant import Ti_csp, Air_properties_Cp, Air_properties_ro
-    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
+    from vctlib.model import Building, ThermostaticalProperties
 
 
 TOT_HOURS = 9504  # Total hours in simulation = December + 1 year -> (31+365)*24
@@ -694,3 +696,52 @@ thermophys_prop = ThermostaticalProperties(
 )
 
 # run_vct_simulation(inputsobj, thermophys_prop)
+
+
+
+def get_climate_data_from_epw(filename):
+    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
+
+    weather_data = Weather()
+    weather_data.read(filename)
+
+    # TODO: add some validation 
+    if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
+        raise Exception('The data is invalid')
+
+    df['Outdoor dry-bulb temperature'] = weather_data.dataframe['Dry Bulb Temperature']
+    df['Relative humidity of outdoor air'] = weather_data.dataframe['Relative Humidity']
+    df['Global Horizontal Radiation'] = weather_data.dataframe['Global Horizontal Radiation']
+
+    return df
+
+    
+def get_climate_data_from_csv(filename):
+    skiprows=None
+    with open(filename, 'r') as file:
+        csvreader = csv.reader(file)
+        index = 0
+        for row in csvreader:
+            if row[0] == 'time(UTC)':
+                skiprows = index
+                break
+            index += 1
+
+    weather_data = pd.read_csv(filename, skiprows=skiprows, nrows=HOURS_IN_YEAR)
+
+    if weather_data.shape[0] != HOURS_IN_YEAR:
+        raise Exception('The data is invalid')
+    
+    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
+    df['Outdoor dry-bulb temperature'] = weather_data['T2m']
+    df['Relative humidity of outdoor air'] = weather_data['RH']
+    df['?'] = weather_data['G(h)'] # TODO: check this col
+    
+    return df
+
+
+# filename = 'src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw'
+# get_climate_data_from_epw(filename)
+
+# filename = 'src/vctlib/temp_data/tmy_46.501_11.362_2005_2020.csv'
+# get_climate_data_from_csv(filename)

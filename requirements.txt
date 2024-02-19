@@ -22,3 +22,4 @@ tox==4.12.1
 typing_extensions==4.9.0
 tzdata==2023.4
 virtualenv==20.25.0
+epw

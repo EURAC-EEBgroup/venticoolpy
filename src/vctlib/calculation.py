@@ -5,6 +5,7 @@ from statistics import mean
 import datetime
 from epw.weather import Weather
 import csv
+import sys
 
 
 try:
@@ -52,6 +53,47 @@ def get_simulation_year() -> pd.DataFrame:
     df['Day'] = [d.day for d in dates]
     df['Time'] = [d.hour+1 for d in dates]
 
+    return df
+
+
+def get_climate_data_from_epw(filename):
+    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
+
+    weather_data = Weather()
+    weather_data.read(filename)
+
+    # TODO: add some validation 
+    if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
+        raise Exception('The data is invalid')
+
+    df['Outdoor dry-bulb temperature'] = weather_data.dataframe['Dry Bulb Temperature']
+    df['Relative humidity of outdoor air'] = weather_data.dataframe['Relative Humidity']
+    df['Global Horizontal Radiation'] = weather_data.dataframe['Global Horizontal Radiation']
+
+    return df
+
+    
+def get_climate_data_from_csv(filename):
+    skiprows=None
+    with open(filename, 'r') as file:
+        csvreader = csv.reader(file)
+        index = 0
+        for row in csvreader:
+            if row[0] == 'time(UTC)':
+                skiprows = index
+                break
+            index += 1
+
+    weather_data = pd.read_csv(filename, skiprows=skiprows, nrows=HOURS_IN_YEAR)
+
+    if weather_data.shape[0] != HOURS_IN_YEAR:
+        raise Exception('The data is invalid')
+    
+    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
+    df['Outdoor dry-bulb temperature'] = weather_data['T2m']
+    df['Relative humidity of outdoor air'] = weather_data['RH']
+    df['?'] = weather_data['G(h)'] # TODO: check this col
+    
     return df
 
 
@@ -641,31 +683,89 @@ def run_vct_simulation(
         time=time
     )
     df = pd.concat([df, df_temp], axis=1)
+    return df
+
+
+def get_vent_mode_over_year(df_sim: pd.DataFrame):
+    """Calculate Ventilative mode over year given results of VCT simulation."""
+    df = pd.DataFrame()
+    for i in range(1, 13):
+        values = []
+        for j in range(4):
+            values.append(df_sim.loc[(df_sim['Month'] == i) & (df_sim['VC mode'] == j)].shape[0])
+
+        df[datetime.date(1900, i, 1).strftime('%B')] = values
+
+    df = df.T
+    for col in df.columns:
+        df.loc["Year", col] = df[col].sum()
 
     return df
 
 
-def get_vent_mode_over_year(df: pd.DataFrame):
-    """Calculate Ventilative mode over year given results of VCT simulation."""
-    df_vent = pd.DataFrame()
-    df = df[744:]  # remove additional month
-    for i in range(1, 13):
-        values = []
-        for j in range(4):
-            values.append(df.loc[(df['Month'] == i) & (df['VC mode'] == j)].shape[0])
 
-        df_vent[datetime.date(1900, i, 1).strftime('%B')] = values
+def get_requirend_frequency_air_change_rate(df_sim: pd.DataFrame, building: Building):
+    """ Frequency of air change rate required to provide potential comfort."""
 
-    df_vent = df_vent.T
-    for col in df_vent.columns:
-        df_vent.loc["Year", col] = df_vent[col].sum()
+    df = pd.DataFrame()
+    df.index = ['2', '4', '6', '8', '10', '12', '14', '16', '18', '>18']
 
-    return df_vent
+    df_sim = df_sim.loc[df_sim['VC mode'] == 2]
+
+    values = [x*3600/building.room_volume for x in df_sim['Required cooling ventilation rate (VC mode 1 or 2)'].values]
+    df_sim['Required cooling ventilation rate'] = values
+
+    frequency = []
+    for index, row in df.iterrows():
+        if index == '>18':
+            frequency.append(df_sim.loc[df_sim['Required cooling ventilation rate'].between(18,sys.maxsize, 'neither'), 'Required cooling ventilation rate'].count())
+        else:
+            i = int(index)
+            frequency.append(df_sim.loc[df_sim['Required cooling ventilation rate'].between(i-2,i, 'right'), 'Required cooling ventilation rate'].count())
+    
+    df['frequency'] = frequency
+    tot_frequency = sum(frequency)
+    df['frequency_percentage'] = [x/tot_frequency for x in frequency]
+
+    cumulative_percentage = []
+    for i in range(len(frequency)):
+        cumulative_percentage.append(sum(frequency[:i+1])/tot_frequency) 
+    df['cumulative_percentage'] = cumulative_percentage
+
+    return df
 
 
-# TODO: chidere a GDM come calcolare la radiazione incidente diretta indiretta sulle facciate dell'edificio # noqa :E501
-# input: radiazione tot orizzontale
-# output desiderato: radiazione per 8 orientamenti
+def get_annual_data(df_sim: pd.DataFrame):
+    """
+    Heating no VCP [kWh]
+    Cooling no VCP [kWh]
+    Heating VCP [kWh]
+    Cooling VCP [kWh]
+    Top,actual temperature [°C]
+    """
+
+    df = pd.DataFrame(index=range(1,13))
+    cols = ['Heating no VCP', 'Cooling no VCP', 'Heating VCP', 'Cooling VCP', 'Top,actual temperature']
+    df[cols] = pd.DataFrame([[None]*len(cols)], index=df.index)
+
+    for i, row in df.iterrows():
+        value = df_sim.loc[(df_sim['Month'] == i) & (df_sim['Heating or cooling load'] >0)]['Heating or cooling load'].sum()/1000
+        df.loc[i, 'Heating no VCP'] = value
+
+        value = df_sim.loc[(df_sim['Month'] == i) & (df_sim['Heating or cooling load'] <0)]['Heating or cooling load'].sum()/1000
+        df.loc[i, 'Cooling no VCP'] = abs(value)
+
+        value = df_sim.loc[(df_sim['Month'] == i) & (df_sim['Heating or cooling load.1'] >0)]['Heating or cooling load.1'].sum()/1000
+        df.loc[i, 'Heating VCP'] = value
+
+        value = df_sim.loc[(df_sim['Month'] == i) & (df_sim['Heating or cooling load.1'] <0)]['Heating or cooling load.1'].sum()/1000
+        df.loc[i, 'Cooling VCP'] = abs(value)
+
+        value = df_sim.loc[df_sim['Month'] == i]['Internal temperature calculated.1'].mean()
+        df.loc[i, 'Top,actual temperature'] = value
+
+    return df
+
 
 inputsobj = Building(
     bui_type='Apartment building',
@@ -695,51 +795,12 @@ thermophys_prop = ThermostaticalProperties(
     roof_r=2.992
 )
 
-# run_vct_simulation(inputsobj, thermophys_prop)
+# res_df = run_vct_simulation(inputsobj, thermophys_prop)
+# res_df = res_df[744:] # remove calibration month
 
-
-
-def get_climate_data_from_epw(filename):
-    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
-
-    weather_data = Weather()
-    weather_data.read(filename)
-
-    # TODO: add some validation 
-    if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
-        raise Exception('The data is invalid')
-
-    df['Outdoor dry-bulb temperature'] = weather_data.dataframe['Dry Bulb Temperature']
-    df['Relative humidity of outdoor air'] = weather_data.dataframe['Relative Humidity']
-    df['Global Horizontal Radiation'] = weather_data.dataframe['Global Horizontal Radiation']
-
-    return df
-
-    
-def get_climate_data_from_csv(filename):
-    skiprows=None
-    with open(filename, 'r') as file:
-        csvreader = csv.reader(file)
-        index = 0
-        for row in csvreader:
-            if row[0] == 'time(UTC)':
-                skiprows = index
-                break
-            index += 1
-
-    weather_data = pd.read_csv(filename, skiprows=skiprows, nrows=HOURS_IN_YEAR)
-
-    if weather_data.shape[0] != HOURS_IN_YEAR:
-        raise Exception('The data is invalid')
-    
-    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
-    df['Outdoor dry-bulb temperature'] = weather_data['T2m']
-    df['Relative humidity of outdoor air'] = weather_data['RH']
-    df['?'] = weather_data['G(h)'] # TODO: check this col
-    
-    return df
-
-
+# get_vent_mode_over_year(res_df)
+# get_requirend_frequency_air_change_rate(res_df, inputsobj)
+# get_annual_data(res_df)
 # filename = 'src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw'
 # get_climate_data_from_epw(filename)
 

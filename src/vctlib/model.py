@@ -3,7 +3,7 @@
 from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
 from vctlib.constant import Air_properties_ro, LIGHTING_POWER_DENSITY, \
     ELECTRIC_EQUIPMENT_POWER_DENSITY, m2_per_person, gain_per_person, \
-    VENTILATION_STRATEGY, WINDOW_OPENING_TYPE
+    VENTILATION_STRATEGY, WINDOW_OPENING_TYPE, Qp_comfort_category, Qa_comfort_category
 
 
 class BuildingCreateException(Exception):
@@ -144,8 +144,8 @@ class Building(object):
         self.vent_rates_mu = vent_rates_mu
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
-        self.ti_hsp_day_start = ti_hsp_day_start
-        self.ti_hsp_night_start = ti_hsp_night_start
+        self.ti_hsp_day_start = ti_hsp_day_start # TODO: non serve più? 
+        self.ti_hsp_night_start = ti_hsp_night_start # TODO: non serve più?
 
 
         if (
@@ -179,9 +179,11 @@ class Building(object):
         (EN 16798:1-2019) or design requirements to determine the ventilation losses
         within the energy balance of the reference room.
         """
-        vent_rate_1 = 0.41*2.7/3.6  # TODO: const value or not?
+        vent_rate_1 = (
+            Qp_comfort_category[self.comfort_requirements]*self.floor_area / m2_per_person[self.bui_type] + \
+            Qa_comfort_category[self.comfort_requirements]*self.floor_area
+            )/self.floor_area
 
-        # TODO: remove? never used in calculations
         if self.vent_rates_mu == VENT_RATES_MU[0]:  # 1/h:
             vent_rate_2 = (vent_rate_1 * 3.6 * self.floor_area) / self.room_volume
         elif self.vent_rates_mu == VENT_RATES_MU[1]:
@@ -213,7 +215,7 @@ class Building(object):
         return ELECTRIC_EQUIPMENT_POWER_DENSITY[self.bui_type]
 
     @property
-    def occupancy_density(self):
+    def occupancy_gains_density(self):
         """Occupancy density; Qpeople (W/m²).
 
         The maximum floor area per person.
@@ -348,3 +350,8 @@ class WindowDesign(object):
             window_opening_type not in WINDOW_OPENING_TYPE            
         ):
             raise WindowDesignCreateException
+    
+    @property
+    def indoor_temperature_K(self):
+        """Convert Indoor temperature from C to K"""
+        return self.indoor_temperature + 273.15

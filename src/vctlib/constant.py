@@ -61,8 +61,6 @@ def get_t_max_k(comf_req):
         return Tmax_K3
 
 
-Ti_csp = 27  # TODO: value is const?
-
 Air_properties_Cp = 1006
 Air_properties_ro = 1.204
 
@@ -79,3 +77,18 @@ WINDOW_OPENING_TYPE = [
     'bottom hung',
     'top hung',
 ]
+
+WINDOW_DESIGN_CV = [
+    [0.33,	0.33,	0.26,	0.26,	0.18,	0.18,	0.11],
+    [0.54,	0.54,	0.42,	0.42,	0.33,	0.33,	0.24],
+    [0.62,	0.62,	0.52,	0.52,	0.46,	0.46,	0.33],
+    [0.67,	0.67,	0.61,	0.61,	0.56,	0.56,	0.52],
+    [0.68,	0.68,	0.65,	0.65,	0.63,	0.63,	0.59],
+    [0.69,	0.69,	0.68,	0.68,	0.67,	0.67,	0.64],
+]
+
+comfort_categories_AK = dict(zip(COMFORT_REQUIREMENTS, [ 2, 3, 4])) # TODO: change name
+comfort_categories_AL = dict(zip(COMFORT_REQUIREMENTS, [-3, -4, -5])) # TODO: change name
+
+Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
+Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))

@@ -48,7 +48,7 @@ def test_inputs_model(snapshot):
         'min_req_vent_rates': inputs.min_req_vent_rates,
         'lighting_power_density': inputs.lighting_power_density,
         'el_equipment_power_density': inputs.el_equipment_power_density,
-        'occupancy_density': inputs.occupancy_density,
+        'occupancy_gains_density': inputs.occupancy_gains_density,
         'average_tot_int_gains': inputs.average_tot_int_gains,
         'nr_of_occupied_hrs': inputs.nr_of_occupied_hrs,
         'cint': inputs.cint,

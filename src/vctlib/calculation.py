@@ -6,18 +6,23 @@ import datetime
 from epw.weather import Weather
 import csv
 import sys
+import bisect
 
 
 try:
-    from vctlib.constant import get_t_min_k
-    from vctlib.constant import Ti_csp, Air_properties_Cp, Air_properties_ro
-    from vctlib.model import Building, ThermostaticalProperties
+    from vctlib.constant import get_t_min_k, get_t_max_k
+    from vctlib.constant import COMFORT_REQUIREMENTS, comfort_categories_AK, comfort_categories_AL
+    from vctlib.constant import Air_properties_Cp, Air_properties_ro
+    from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
+    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
 except ModuleNotFoundError:
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
-    from vctlib.constant import get_t_min_k
-    from vctlib.constant import Ti_csp, Air_properties_Cp, Air_properties_ro
-    from vctlib.model import Building, ThermostaticalProperties
+    from vctlib.constant import get_t_min_k, get_t_max_k
+    from vctlib.constant import Air_properties_Cp, Air_properties_ro
+    from vctlib.constant import COMFORT_REQUIREMENTS, comfort_categories_AK, comfort_categories_AL
+    from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
+    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
 
 
 TOT_HOURS = 9504  # Total hours in simulation = December + 1 year -> (31+365)*24
@@ -56,7 +61,7 @@ def get_simulation_year() -> pd.DataFrame:
     return df
 
 
-def get_climate_data_from_epw(filename):
+def get_climate_data_from_epw(filename) -> pd.DataFrame:
     df = pd.DataFrame(index=range(HOURS_IN_YEAR))
 
     weather_data = Weather()
@@ -73,7 +78,7 @@ def get_climate_data_from_epw(filename):
     return df
 
     
-def get_climate_data_from_csv(filename):
+def get_climate_data_from_csv(filename) -> pd.DataFrame:
     skiprows=None
     with open(filename, 'r') as file:
         csvreader = csv.reader(file)
@@ -164,21 +169,27 @@ def calc_thermal_comfort_data(
     df['Outdoor runnin mean temperature'] = full_year
 
     t_min_k = get_t_min_k(building.comfort_requirements)
-    ti_hsp_night = 10  # Ti_hsp_day AF25
-    ti_hsp_day = t_min_k[building.bui_type]  # Ti_hsp_night AF26
+    Ti_hsp = t_min_k[building.bui_type]
 
-    temp = [ti_hsp_night]*(building.ti_hsp_day_start) + \
-        [ti_hsp_day]*(building.ti_hsp_night_start-building.ti_hsp_day_start) + \
-        [ti_hsp_night]*(24-building.ti_hsp_night_start)
-    lower_comfort_zone_limit = temp * TOT_DAYS
+    t_max_k = get_t_max_k(building.comfort_requirements)
+    Ti_csp = t_max_k[building.bui_type]
 
-    upper_comfort_zone_limit = [Ti_csp] * TOT_HOURS
+    AL10 = comfort_categories_AL[building.comfort_requirements]
+    AK10 = comfort_categories_AK[building.comfort_requirements]
+    lower_comfort_zone_limit = [None]*TOT_HOURS
+    upper_comfort_zone_limit = [None]*TOT_HOURS
+    comfort_temperature = [None]*TOT_HOURS
 
-    temp = [mean([ti_hsp_night, Ti_csp])]*building.ti_hsp_day_start + \
-        [mean([ti_hsp_day, Ti_csp])]*(building.ti_hsp_night_start-building.ti_hsp_day_start) + \
-        [mean([ti_hsp_night, Ti_csp])]*(24-building.ti_hsp_night_start)
-    
-    comfort_temperature = temp * TOT_DAYS
+    i = 0
+    for i in range(TOT_HOURS):
+        if full_year[i] > 10:
+            lower_comfort_zone_limit[i] = 0.33*full_year[i] + 18.8 + AL10
+            upper_comfort_zone_limit[i] = 0.33*full_year[i] + 18.8 + AK10
+            comfort_temperature[i] = 0.33*full_year[i] + 18.8
+        else: 
+            lower_comfort_zone_limit[i] = Ti_hsp
+            upper_comfort_zone_limit[i] = Ti_csp
+            comfort_temperature[i] = (Ti_hsp + Ti_csp)/2
 
     df['Comfort temperature'] = comfort_temperature
     df['Lower comfort zone limit'] = lower_comfort_zone_limit
@@ -515,6 +526,9 @@ def calc_heating_and_cooling_needs_with_vcs(
 
     df['VC mode'] = vc_mode
 
+    t_max_k = get_t_max_k(building.comfort_requirements)
+    Ti_csp = t_max_k[building.bui_type]
+
     required_cooling_vent_rate = [None] * TOT_HOURS
     for i in range(TOT_HOURS):
         if vc_mode[i] == 2:
@@ -634,7 +648,7 @@ def run_vct_simulation(
 
     df_temp = calc_free_float_mode(
         building=inputs,
-        c_tot=thermophys_prop.c_tot,
+        c_tot=thermophysical_props.c_tot,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,
@@ -651,7 +665,7 @@ def run_vct_simulation(
 
     df_temp = calc_heating_and_cooling_needs_no_vcs(
         building=inputs,
-        c_tot=thermophys_prop.c_tot,
+        c_tot=thermophysical_props.c_tot,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,
@@ -767,42 +781,112 @@ def get_annual_data(df_sim: pd.DataFrame):
     return df
 
 
-inputsobj = Building(
-    bui_type='Apartment building',
-    celing_to_floor_height=2.7,
-    envelope_area=171.60,
-    floor_area=48.00,
-    fenestration_area=12.00,
-    comfort_requirements="category II",
-    max_outdoor_rel_hum_accepted=85,
-    u_value_opaque=0.315822914673981,
-    u_value_fen=2.984,
-    construction_mass="medium",
-    g_value_glazing_sys=0.71,
-    shading_control_setpoint=120,
-    shading_factor=0,
-    vent_rates_mu='1/h',
-    time_control_on=0,
-    time_control_off=24,
-)
+def run_window_design_simulation(win_des: WindowDesign, building: Building, df_air_change: pd.DataFrame) -> pd.DataFrame:
+    # TODO: se index ">18", in Excel c'è errore, come si dovrebbe calcolare in questo caso?
+    # l17 = df_air_change.index[df_air_change['cumulative_percentage'] > 0.95].tolist()[0] # TODO: restore 0.95
+    l17 = int(df_air_change.index[df_air_change['cumulative_percentage'] > 0.65].tolist()[0])
 
-thermophys_prop = ThermostaticalProperties(
-    external_wall_area=9.6+16.2+16.2+21.6,
-    floor_area=6*8,
-    roof_area=6*8,
-    external_wall_r=1.797,
-    floor_r=25.246,
-    roof_r=2.992
-)
+    max_required_airflow_rate_for_ventilative_cooling = l17 * building.room_volume
+    required_airflow_rate_for_iaq = building.min_req_vent_rates[1]*building.room_volume
+    room_height = building.celing_to_floor_height
 
-# res_df = run_vct_simulation(inputsobj, thermophys_prop)
-# res_df = res_df[744:] # remove calibration month
+    index_df = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4]
+    df = pd.DataFrame(index = index_df)
 
-# get_vent_mode_over_year(res_df)
-# get_requirend_frequency_air_change_rate(res_df, inputsobj)
-# get_annual_data(res_df)
-# filename = 'src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw'
-# get_climate_data_from_epw(filename)
+    # TODO: change variable names
 
-# filename = 'src/vctlib/temp_data/tmy_46.501_11.362_2005_2020.csv'
-# get_climate_data_from_csv(filename)
+    col_F = df.index
+
+    col_I = []
+    for item in col_F:
+        if win_des.ventilation_strategy == VENTILATION_STRATEGY[0]:
+            val = (3 * required_airflow_rate_for_iaq/3600) /(win_des.window_opening_discharge_coeff *((9.81*win_des.indoor_outdoor_temperature_diff*item)/win_des.indoor_temperature_K)**0.5)
+        elif win_des.ventilation_strategy == VENTILATION_STRATEGY[1]:
+            val = (2 * required_airflow_rate_for_iaq/3600) / (win_des.window_opening_discharge_coeff *(0.001* win_des.wind_speed**2 + 0.0035*item*win_des.indoor_outdoor_temperature_diff +0.01)**0.5)
+        elif win_des.ventilation_strategy == VENTILATION_STRATEGY[2]:
+            val = (required_airflow_rate_for_iaq/3600) * (2**0.5) /(win_des.window_opening_discharge_coeff * ((2*9.81*win_des.stack_height*win_des.indoor_outdoor_temperature_diff)/win_des.indoor_temperature_K)**0.5)
+        elif win_des.ventilation_strategy == VENTILATION_STRATEGY[3]:
+            temp = win_des.wind_pressure_coeff_window_1 * Air_properties_ro * (win_des.wind_speed)**2 - 2*(0.5 * Air_properties_ro*(win_des.wind_speed)**2 *(win_des.wind_pressure_coeff_window_1+win_des.wind_pressure_coefficient_window_2)/2)
+            val = (required_airflow_rate_for_iaq/3600) / (win_des.window_opening_discharge_coeff * (abs(temp)/Air_properties_ro)**0.5)
+        col_I.append(val)
+
+    #J
+    col_J = []
+    for item in col_F:
+        if win_des.ventilation_strategy == VENTILATION_STRATEGY[0]:
+            val = (3 * max_required_airflow_rate_for_ventilative_cooling/3600)/(win_des.window_opening_discharge_coeff * ((9.81*win_des.indoor_outdoor_temperature_diff*item)/win_des.indoor_temperature_K)**0.5)
+        elif win_des.ventilation_strategy == VENTILATION_STRATEGY[1]:
+            val = (2 * max_required_airflow_rate_for_ventilative_cooling/3600) / (win_des.window_opening_discharge_coeff *(0.001* win_des.wind_speed**2 + 0.0035*item*win_des.indoor_outdoor_temperature_diff +0.01)**0.5)
+        elif win_des.ventilation_strategy == VENTILATION_STRATEGY[2]:
+            val = (max_required_airflow_rate_for_ventilative_cooling/3600) * (2**0.5) /(win_des.window_opening_discharge_coeff * ((2*9.81*win_des.stack_height*win_des.indoor_outdoor_temperature_diff)/win_des.indoor_temperature_K)**0.5)
+        elif win_des.ventilation_strategy == VENTILATION_STRATEGY[3]:
+            temp = win_des.wind_pressure_coeff_window_1 * Air_properties_ro * (win_des.wind_speed)**2 - 2*(0.5 * Air_properties_ro*(win_des.wind_speed)**2 *(win_des.wind_pressure_coeff_window_1+win_des.wind_pressure_coefficient_window_2)/2)
+            val = (max_required_airflow_rate_for_ventilative_cooling/3600) / (win_des.window_opening_discharge_coeff * (abs(temp)/Air_properties_ro)**0.5)
+        col_J.append(val)
+
+    #K
+    col_H = []
+    for index, val_j in zip(df.index, col_J):
+        col_H.append((val_j/index)/index)
+
+    col_G = []
+    for index, val_i in zip(df.index, col_I):
+        col_G.append((val_i/index)/index)
+
+    const_index_window_opening = [10, 20, 30, 45, 60, 90]
+    const_index_whmax = [0.0, 0.4, 0.5, 0.9, 1.0, 2.0, 2.1]
+
+    temp = 1
+    if win_des.has_insect_screen:
+        temp = 0.9
+
+    col_K = []
+    row_index = bisect.bisect_left(const_index_window_opening, win_des.window_maximum_opening_angle)
+    row_index = -1 if row_index == len(const_index_window_opening) else row_index
+    for h in col_H:
+        col_index = bisect.bisect_left(const_index_whmax, h)
+        col_index = -1 if col_index == len(const_index_whmax) else col_index
+        k = WINDOW_DESIGN_CV[row_index][col_index] * temp
+        col_K.append(k)
+    
+    col_L = []
+    for g in col_G:
+        col_index = bisect.bisect_left(const_index_whmax, g)
+        col_index = -1 if col_index == len(const_index_whmax) else col_index
+        l = WINDOW_DESIGN_CV[row_index][col_index] * temp
+        col_L.append(l)
+
+    col_M = []
+    for j, k in zip(col_J, col_K):
+        col_M.append(j/k)
+    
+    col_N = []
+    for i, l in zip(col_I, col_L):
+        col_N.append(i/l)
+
+    col_O = []
+    for m in col_M:
+        col_O.append(m/building.floor_area)
+
+    col_P = []
+    for m, f in zip(col_M, col_F):
+        col_P.append(m/f)
+
+    col_Q = []
+    for n, f in zip(col_N, col_F):
+        col_Q.append(n/f)
+
+    # TODO: change column names
+    df['col_G'] = col_G
+    df['col_H'] = col_H
+    df['col_I'] = col_I
+    df['col_J'] = col_J
+    df['col_K'] = col_K
+    df['col_L'] = col_L
+    df['col_M'] = col_M
+    df['col_N'] = col_N
+    df['col_O'] = col_O
+    df['col_P'] = col_P
+    df['col_Q'] = col_Q
+
+    return df

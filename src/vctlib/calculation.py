@@ -8,14 +8,13 @@ import csv
 import sys
 import bisect
 
-
 try:
     from vctlib.constant import get_t_min_k, get_t_max_k
     from vctlib.constant import COMFORT_REQUIREMENTS, comfort_categories_AK, comfort_categories_AL
     from vctlib.constant import Air_properties_Cp, Air_properties_ro
     from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
     from vctlib.model import Building, ThermostaticalProperties, WindowDesign
-except ModuleNotFoundError:
+except ModuleNotFoundError: # TODO: remove try-except
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
     from vctlib.constant import get_t_min_k, get_t_max_k
@@ -526,15 +525,12 @@ def calc_heating_and_cooling_needs_with_vcs(
 
     df['VC mode'] = vc_mode
 
-    t_max_k = get_t_max_k(building.comfort_requirements)
-    Ti_csp = t_max_k[building.bui_type]
-
     required_cooling_vent_rate = [None] * TOT_HOURS
     for i in range(TOT_HOURS):
         if vc_mode[i] == 2:
-            required_cooling_vent_rate[i] = (bt_with_vcs[i] - a_t*Ti_csp) / \
+            required_cooling_vent_rate[i] = (bt_with_vcs[i] - a_t*upper_comfort_zone_limit[i]) / \
                 (Air_properties_Cp*Air_properties_ro *
-                 (Ti_csp - outdoor_dry_bulb_temp[i]))
+                 (upper_comfort_zone_limit[i] - outdoor_dry_bulb_temp[i]))
         else:
             required_cooling_vent_rate[i] = 0
             # TODO: in the description : 'Required cooling ventilation rate (VC mode 1 or 2)',
@@ -600,7 +596,7 @@ def calc_heating_and_cooling_needs_with_vcs(
     df['Heating or cooling load.1'] = heating_cooling_load_s4
     df['Internal temperature calculated.2'] = internal_temperature_calc_s4
     df['HC load difference'] = hc_load_difference
-    df['Target indoor temperature for VCS'] = [Ti_csp] * TOT_HOURS
+    df['Target indoor temperature for VCS'] = upper_comfort_zone_limit
 
     return df
 

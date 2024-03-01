@@ -1,28 +1,19 @@
 """Constants used throughout the simulation."""
 
 BUILDING_TYPE = [
-    'Apartment building',
-    'Daycare center',
-    'Detached house',
-    'Hospital',
-    'Hotel',
-    'Office',
-    'Restaurant',
-    'School'
+    "Apartment building",
+    "Daycare center",
+    "Detached house",
+    "Hospital",
+    "Hotel",
+    "Office",
+    "Restaurant",
+    "School",
 ]
 
-COMFORT_REQUIREMENTS = [
-    'category I',
-    'category II',
-    'category III'
-]
+COMFORT_REQUIREMENTS = ["category I", "category II", "category III"]
 
-VENT_RATES_MU = [
-    '1/h',
-    'kg/s-m²',
-    'm³/h',
-    'm³/s'
-]
+VENT_RATES_MU = ["1/h", "kg/s-m²", "m³/h", "m³/s"]
 
 
 Tmax_K1 = dict(zip(BUILDING_TYPE, [25.5, 25.5, 25.5, 25.5, 25.5, 25.5, 25.5, 25]))
@@ -66,29 +57,31 @@ Air_properties_ro = 1.204
 
 
 VENTILATION_STRATEGY = [
-    'Single-sided: buoyancy only',
-    'Single-sided: buoyancy+wind',
-    'Stack ventilation',
-    'Cross ventilation',
+    "Single-sided: buoyancy only",
+    "Single-sided: buoyancy+wind",
+    "Stack ventilation",
+    "Cross ventilation",
 ]
 
 WINDOW_OPENING_TYPE = [
-    'side hung',
-    'bottom hung',
-    'top hung',
+    "side hung",
+    "bottom hung",
+    "top hung",
 ]
 
 WINDOW_DESIGN_CV = [
-    [0.33,	0.33,	0.26,	0.26,	0.18,	0.18,	0.11],
-    [0.54,	0.54,	0.42,	0.42,	0.33,	0.33,	0.24],
-    [0.62,	0.62,	0.52,	0.52,	0.46,	0.46,	0.33],
-    [0.67,	0.67,	0.61,	0.61,	0.56,	0.56,	0.52],
-    [0.68,	0.68,	0.65,	0.65,	0.63,	0.63,	0.59],
-    [0.69,	0.69,	0.68,	0.68,	0.67,	0.67,	0.64],
+    [0.33, 0.33, 0.26, 0.26, 0.18, 0.18, 0.11],
+    [0.54, 0.54, 0.42, 0.42, 0.33, 0.33, 0.24],
+    [0.62, 0.62, 0.52, 0.52, 0.46, 0.46, 0.33],
+    [0.67, 0.67, 0.61, 0.61, 0.56, 0.56, 0.52],
+    [0.68, 0.68, 0.65, 0.65, 0.63, 0.63, 0.59],
+    [0.69, 0.69, 0.68, 0.68, 0.67, 0.67, 0.64],
 ]
 
-comfort_categories_AK = dict(zip(COMFORT_REQUIREMENTS, [ 2, 3, 4])) # TODO: change name
-comfort_categories_AL = dict(zip(COMFORT_REQUIREMENTS, [-3, -4, -5])) # TODO: change name
+comfort_categories_AK = dict(zip(COMFORT_REQUIREMENTS, [2, 3, 4]))  # TODO: change name
+comfort_categories_AL = dict(
+    zip(COMFORT_REQUIREMENTS, [-3, -4, -5])
+)  # TODO: change name
 
 Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
 Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))

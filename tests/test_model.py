@@ -3,15 +3,14 @@
 import pytest
 
 try:
-    from vctlib.model import Building, ThermostaticalProperties, \
-        BuildingCreateException
+    from vctlib.model import Building, ThermostaticalProperties, BuildingCreateException
     from vctlib.constant import VENT_RATES_MU
 
-except ModuleNotFoundError: # TODO: remove try-except
+except ModuleNotFoundError:  # TODO: remove try-except
     import sys
-    sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
-    from vctlib.model import Building, ThermostaticalProperties, \
-        BuildingCreateException
+
+    sys.path.insert(1, "/home/osomova/Projects/vct/vctlib/src")
+    from vctlib.model import Building, ThermostaticalProperties, BuildingCreateException
     from vctlib.constant import VENT_RATES_MU
 
 __author__ = "OlgaSomova"
@@ -22,7 +21,7 @@ __license__ = "MIT"
 def test_inputs_model(snapshot):
     """Test Building model."""
     inputs = Building(
-        bui_type='Apartment building',
+        bui_type="Apartment building",
         celing_to_floor_height=2.7,
         envelope_area=171.60,
         floor_area=48.00,
@@ -35,7 +34,7 @@ def test_inputs_model(snapshot):
         g_value_glazing_sys=0.71,
         shading_control_setpoint=120,
         shading_factor=0,
-        vent_rates_mu='1/h',
+        vent_rates_mu="1/h",
         time_control_on=0,
         time_control_off=24,
     )
@@ -43,42 +42,42 @@ def test_inputs_model(snapshot):
     snapshot.assert_match(str(inputs.__dict__), "inputs.yml")
 
     properties = {
-        'room_volume': inputs.room_volume,
-        'average_u_value': inputs.average_u_value,
-        'min_req_vent_rates': inputs.min_req_vent_rates,
-        'lighting_power_density': inputs.lighting_power_density,
-        'el_equipment_power_density': inputs.el_equipment_power_density,
-        'occupancy_gains_density': inputs.occupancy_gains_density,
-        'average_tot_int_gains': inputs.average_tot_int_gains,
-        'nr_of_occupied_hrs': inputs.nr_of_occupied_hrs,
-        'cint': inputs.cint,
+        "room_volume": inputs.room_volume,
+        "average_u_value": inputs.average_u_value,
+        "min_req_vent_rates": inputs.min_req_vent_rates,
+        "lighting_power_density": inputs.lighting_power_density,
+        "el_equipment_power_density": inputs.el_equipment_power_density,
+        "occupancy_gains_density": inputs.occupancy_gains_density,
+        "average_tot_int_gains": inputs.average_tot_int_gains,
+        "nr_of_occupied_hrs": inputs.nr_of_occupied_hrs,
+        "cint": inputs.cint,
     }
 
     inputs.vent_rates_mu = VENT_RATES_MU[1]
-    properties['min_req_vent_rates_1'] = inputs.min_req_vent_rates
+    properties["min_req_vent_rates_1"] = inputs.min_req_vent_rates
 
     inputs.vent_rates_mu = VENT_RATES_MU[2]
-    properties['min_req_vent_rates_2'] = inputs.min_req_vent_rates
+    properties["min_req_vent_rates_2"] = inputs.min_req_vent_rates
 
     inputs.vent_rates_mu = VENT_RATES_MU[3]
-    properties['min_req_vent_rates_3'] = inputs.min_req_vent_rates
+    properties["min_req_vent_rates_3"] = inputs.min_req_vent_rates
 
     snapshot.assert_match(str(properties), "properties_inputs.yml")
 
 
 def test_thermophysical_properties(snapshot):
     thermophys_prop = ThermostaticalProperties(
-        external_wall_area=9.6+16.2+16.2+21.6,
-        floor_area=6*8,
-        roof_area=6*8,
+        external_wall_area=9.6 + 16.2 + 16.2 + 21.6,
+        floor_area=6 * 8,
+        roof_area=6 * 8,
         external_wall_r=1.797,
         floor_r=25.246,
-        roof_r=2.992
+        roof_r=2.992,
     )
 
     thermophys_dict = thermophys_prop.__dict__
-    thermophys_dict['u_value_tot']= thermophys_prop.u_value_tot
-    thermophys_dict['c_tot'] = thermophys_prop.c_tot
+    thermophys_dict["u_value_tot"] = thermophys_prop.u_value_tot
+    thermophys_dict["c_tot"] = thermophys_prop.c_tot
 
     snapshot.assert_match(str(thermophys_dict), "thermophys_prop.yml")
 
@@ -86,8 +85,8 @@ def test_thermophysical_properties(snapshot):
 def test_building_exception(snapshot):
     """Test Exception on create Building model."""
     with pytest.raises(BuildingCreateException) as exc:
-        inputs = Building(
-            bui_type='type does not exist',
+        _ = Building(
+            bui_type="type does not exist",
             celing_to_floor_height=2.7,
             envelope_area=171.60,
             floor_area=48.00,
@@ -100,8 +99,8 @@ def test_building_exception(snapshot):
             g_value_glazing_sys=0.71,
             shading_control_setpoint=120,
             shading_factor=0,
-            vent_rates_mu='1/h',
+            vent_rates_mu="1/h",
             time_control_on=0,
             time_control_off=24,
         )
-    assert exc.typename == 'BuildingCreateException'
+    assert exc.typename == "BuildingCreateException"

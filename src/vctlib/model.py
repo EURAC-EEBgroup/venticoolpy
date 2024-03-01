@@ -135,7 +135,7 @@ class Building(object):
         self.fenestration_area = fenestration_area
         self.comfort_requirements = comfort_requirements
         self.max_outdoor_rel_hum_accepted = max_outdoor_rel_hum_accepted
-        self.u_value_opaque = u_value_opaque
+        self.u_value_opaque = u_value_opaque  # TODO: remove. Take it from ThermostaticalProperties
         self.u_value_fen = u_value_fen
         self.construction_mass = construction_mass
         self.g_value_glazing_sys = g_value_glazing_sys

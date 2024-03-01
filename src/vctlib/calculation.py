@@ -265,7 +265,7 @@ def get_ventilation_rate(building: Building) -> pd.DataFrame:
 
 def calc_free_float_mode(
     building: Building,
-    c_tot,  # TODO: change name
+    c_int,  # TODO: change name
     vent_rate_m3_s,
     solar_gains,
     internal_gains,
@@ -275,7 +275,7 @@ def calc_free_float_mode(
 
     Parameters:
         - building obj
-        - c_tot: # TODO: add description
+        - c_int: # TODO: add description
         - vent_rate_m3_s: ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
@@ -291,8 +291,6 @@ def calc_free_float_mode(
         - Internal temperature calculated.  ϴint;t [°C]
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
-
-    c_int = c_tot + 10000 * building.floor_area  # C36
 
     a_t = (
         c_int / 3600
@@ -340,7 +338,7 @@ def calc_free_float_mode(
 
 def calc_heating_and_cooling_needs_no_vcs(
     building: Building,
-    c_tot,
+    c_int,
     vent_rate_m3_s,
     solar_gains,
     internal_gains,
@@ -353,7 +351,7 @@ def calc_heating_and_cooling_needs_no_vcs(
 
     Parameters:
         - building obj
-        - c_tot: # TODO: add description
+        - c_int: # TODO: add description
         - vent_rate_m3_s: ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
@@ -381,8 +379,6 @@ def calc_heating_and_cooling_needs_no_vcs(
     internal_temperature_free_float_no_vcs = [None] * TOT_HOURS
     heating_cooling_load = [None] * TOT_HOURS
     internal_temperature_calc = [None] * TOT_HOURS
-
-    c_int = c_tot + 10000 * building.floor_area
 
     for i in range(TOT_HOURS):
         if i == 0:
@@ -678,7 +674,7 @@ def calc_heating_and_cooling_needs_with_vcs(
 
 
 def run_vct_simulation(
-    inputs: Building, thermophysical_props: ThermostaticalProperties
+    inputs: Building, thermophysical_props: ThermostaticalProperties | None = None
 ) -> pd.DataFrame:
     """Perform main VCT simulation.
 
@@ -717,10 +713,13 @@ def run_vct_simulation(
     solar_gains = df["Solar gains"].values
     internal_gains = df["Internal gains"].values
     outdoor_dry_bulb_temp = df["Outdoor dry-bulb temperature"].values
+    c_int = inputs.c_int
+    if thermophysical_props is not None:
+        c_int = thermophysical_props.c_int
 
     df_temp = calc_free_float_mode(
         building=inputs,
-        c_tot=thermophysical_props.c_tot,
+        c_int=c_int,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,
@@ -737,7 +736,7 @@ def run_vct_simulation(
 
     df_temp = calc_heating_and_cooling_needs_no_vcs(
         building=inputs,
-        c_tot=thermophysical_props.c_tot,
+        c_int=c_int,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,

@@ -50,7 +50,7 @@ def test_inputs_model(snapshot):
         "occupancy_gains_density": inputs.occupancy_gains_density,
         "average_tot_int_gains": inputs.average_tot_int_gains,
         "nr_of_occupied_hrs": inputs.nr_of_occupied_hrs,
-        "cint": inputs.cint,
+        "c_int": inputs.c_int,
     }
 
     inputs.vent_rates_mu = VENT_RATES_MU[1]

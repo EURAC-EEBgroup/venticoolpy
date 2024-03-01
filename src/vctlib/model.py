@@ -11,6 +11,7 @@ from vctlib.constant import (
     WINDOW_OPENING_TYPE,
     Qp_comfort_category,
     Qa_comfort_category,
+    heat_cap_construction_type,
 )
 
 
@@ -251,16 +252,22 @@ class Building(object):
         return self.time_control_off - self.time_control_on
 
     @property
-    def cint(self):
+    def c_int(self):
         """Cint; (J/K)."""
-        # TODO: first value is const?
-        return 15479951.712 + 10000 * self.floor_area
+        value = (
+            1.2 * self.room_volume
+            + heat_cap_construction_type[self.construction_mass]
+            * 1000
+            * (self.envelope_area + self.floor_area * 2)
+            * 0.3
+        ) * 1000
+        return value
 
 
 class ThermostaticalProperties(object):
     """
     # TODO: Add desctiption.
-    
+
     Area (m²)
     R (m²K/W)
     """
@@ -316,6 +323,10 @@ class ThermostaticalProperties(object):
         )
 
         return c_wall + c_floor + c_roof
+
+    @property
+    def c_int(self):
+        return self.c_tot + 10000 * self.floor_area
 
 
 class WindowDesign(object):

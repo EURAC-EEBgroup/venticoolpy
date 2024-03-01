@@ -13,6 +13,8 @@ BUILDING_TYPE = [
 
 COMFORT_REQUIREMENTS = ["category I", "category II", "category III"]
 
+CONSTRUCTION_MASS = ["heavy", "light", "medium"]
+
 VENT_RATES_MU = ["1/h", "kg/s-m²", "m³/h", "m³/s"]
 
 
@@ -85,3 +87,6 @@ comfort_categories_AL = dict(
 
 Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
 Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))
+
+# MJ/m3K
+heat_cap_construction_type = dict(zip(CONSTRUCTION_MASS, [1.4, 0.9, 1.15]))

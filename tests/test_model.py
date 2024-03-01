@@ -7,7 +7,7 @@ try:
         BuildingCreateException
     from vctlib.constant import VENT_RATES_MU
 
-except ModuleNotFoundError:
+except ModuleNotFoundError: # TODO: remove try-except
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
     from vctlib.model import Building, ThermostaticalProperties, \

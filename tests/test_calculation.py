@@ -5,7 +5,7 @@ try:
         get_climate_data_from_csv, get_vent_mode_over_year, \
         get_requirend_frequency_air_change_rate, get_annual_data
     from vctlib.model import Building, ThermostaticalProperties
-except ModuleNotFoundError:
+except ModuleNotFoundError: # TODO: remove try-except
     import sys
     sys.path.insert(1, '/home/osomova/Projects/vct/vctlib/src')
     from vctlib.model import Building, ThermostaticalProperties

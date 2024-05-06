@@ -1,4 +1,5 @@
 """Models."""
+import pandas as pd
 
 from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
 from vctlib.constant import (
@@ -21,6 +22,34 @@ class BuildingCreateException(Exception):
 
 class WindowDesignCreateException(Exception):
     pass
+
+
+class ClimateData():
+    """ TODO: Add desctription """
+
+    def __init__(
+        self,
+        outdoor_dry_bulb_temperature: pd.DataFrame,
+        relative_humidity_outdoor_air: pd.DataFrame,
+        isol_tot: pd.DataFrame,
+        internal_gains: pd.DataFrame | None = None
+    ):
+        self.outdoor_dry_bulb_temperature=outdoor_dry_bulb_temperature
+        self.relative_humidity_outdoor_air=relative_humidity_outdoor_air
+        self.isol_tot=isol_tot
+        self.internal_gains=internal_gains
+
+
+class Gains():
+    """ TODO: Add desctription """
+
+    def __init__(
+        self,
+        isol_tot: pd.DataFrame,
+        internal_gains: pd.DataFrame | None = None
+    ):
+        self.isol_tot=isol_tot
+        self.internal_gains=internal_gains
 
 
 class Building(object):
@@ -207,7 +236,9 @@ class Building(object):
         else:
             vent_rate_2 = vent_rate_1 * self.floor_area / 1000
 
-        return vent_rate_1, vent_rate_2
+        return vent_rate_1, vent_rate_2 
+        # TODO: da vent_rate_2 dipende il calcolo Window Design. Però se cambio l'unità di misura, cambiano i risultati del calcolo, il che non va bene.
+        #  Da capire quale unità di misura serve per il calcolo Window Design. Sembrerebbe 1/h.
 
     @property
     def lighting_power_density(self):
@@ -253,7 +284,7 @@ class Building(object):
 
     @property
     def c_int(self):
-        """Cint; (J/K)."""
+        """Cint. is the (lumped) internal thermal capacity (J/K)."""
         value = (
             1.2 * self.room_volume
             + heat_cap_construction_type[self.construction_mass]

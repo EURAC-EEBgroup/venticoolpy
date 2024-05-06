@@ -9,12 +9,12 @@ try:
         get_requirend_frequency_air_change_rate,
         get_annual_data,
     )
-    from vctlib.model import Building, ThermostaticalProperties
+    from vctlib.model import Building, ClimateData, ThermostaticalProperties
 except ModuleNotFoundError:  # TODO: remove try-except
     import sys
 
     sys.path.insert(1, "/home/osomova/Projects/vct/vctlib/src")
-    from vctlib.model import Building, ThermostaticalProperties
+    from vctlib.model import Building, ClimateData, ThermostaticalProperties
     from vctlib.calculation import (
         run_vct_simulation,
         get_climate_data_from_epw,
@@ -31,6 +31,19 @@ __author__ = "OlgaSomova"
 __copyright__ = "OlgaSomova"
 __license__ = "MIT"
 
+
+def get_original_test_climate_data():
+    outdoor_dry_bulb_temperature = pd.read_csv("tests/data/outdor_dry_bulb_temperature.csv")
+    relative_humidity_outdoor_air = pd.read_csv("tests/data/outdor_climate_data.csv")
+    isol_tot = pd.read_csv("tests/data/isol_tot.csv")
+    isol_tot = isol_tot.iloc[:, 0].values
+
+    climate_data = ClimateData(
+        outdoor_dry_bulb_temperature=outdoor_dry_bulb_temperature,
+        relative_humidity_outdoor_air=relative_humidity_outdoor_air,
+        isol_tot=isol_tot
+    )
+    return climate_data
 
 def test_get_climate_data_from_epw(snapshot):
     filename = "src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw"
@@ -78,8 +91,9 @@ def test_snapshot_building_simulation(snapshot):
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
     )
+    climate_data = get_original_test_climate_data()
 
-    df = run_vct_simulation(inputs, thermophys_prop)
+    df = run_vct_simulation(inputs, climate_data, thermophys_prop)
 
     df_original = pd.read_csv("tests/data/apartment_building.csv")
     df = df.drop(columns=["Date", "Time", "Day"])
@@ -139,8 +153,9 @@ def test_sanapshot_Apartment_building_Vent_mode_over_year(snapshot):
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
     )
+    climate_data = get_original_test_climate_data()
 
-    df_sim = run_vct_simulation(inputs, thermophys_prop)
+    df_sim = run_vct_simulation(inputs, climate_data, thermophys_prop)
     df_sim = df_sim[744:]
     df = get_vent_mode_over_year(df_sim)
 
@@ -184,8 +199,9 @@ def test_snapshot_Apartment_building_Freq_air_change_rate(snapshot):
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
     )
+    climate_data = get_original_test_climate_data()
 
-    df_sim = run_vct_simulation(inputs, thermophys_prop)
+    df_sim = run_vct_simulation(inputs, climate_data, thermophys_prop)
     df_sim = df_sim[744:]
     df = get_requirend_frequency_air_change_rate(df_sim, inputs)
 
@@ -230,8 +246,9 @@ def test_snapshot_Apartment_building_Annual_data(snapshot):
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
     )
+    climate_data = get_original_test_climate_data()
 
-    df_sim = run_vct_simulation(inputs, thermophys_prop)
+    df_sim = run_vct_simulation(inputs, climate_data, thermophys_prop)
     df_sim = df_sim[744:]
     df = get_annual_data(df_sim)
 
@@ -246,3 +263,7 @@ def test_snapshot_Apartment_building_Annual_data(snapshot):
 
 
 ####################################################################################
+
+
+# =$file.Y874*(1-$C$22)*$VCP.$C$20*$VCP.$C$10/$VCP.$C$9
+# =$'FILE'.K129*(1-$C$22)*$VCP.$C$20*$VCP.$C$10/$VCP.$C$9

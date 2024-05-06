@@ -17,7 +17,7 @@ try:
     )
     from vctlib.constant import Air_properties_Cp, Air_properties_ro
     from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
-    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
+    from vctlib.model import Building, ThermostaticalProperties, ClimateData, WindowDesign
 except ModuleNotFoundError:  # TODO: remove try-except
     import sys
 
@@ -30,7 +30,7 @@ except ModuleNotFoundError:  # TODO: remove try-except
         comfort_categories_AL,
     )
     from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
-    from vctlib.model import Building, ThermostaticalProperties, WindowDesign
+    from vctlib.model import Building, ThermostaticalProperties, ClimateData, WindowDesign
 
 
 TOT_HOURS = 9504  # Total hours in simulation = December + 1 year -> (31+365)*24
@@ -114,11 +114,11 @@ def get_climate_data_from_csv(filename) -> pd.DataFrame:
     return df
 
 
-def get_outdoor_climate_data() -> pd.DataFrame:
+def get_outdoor_climate_data(claimate_data: ClimateData) -> pd.DataFrame:
     """Retrieve outdoor climate data.
 
     Parameters:
-    ...
+        # TODO: update
 
     Returns:
         pd.DataFrame: A DataFrame with hourly values of:
@@ -128,14 +128,10 @@ def get_outdoor_climate_data() -> pd.DataFrame:
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
-    df["Outdoor dry-bulb temperature"] = pd.read_csv(
-        "src/vctlib/temp_data/outdor_dry_bulb_temperature.csv"
-    )
+    df["Outdoor dry-bulb temperature"] = claimate_data.outdoor_dry_bulb_temperature
     outdoor_dry_bulb_temp = df["Outdoor dry-bulb temperature"].values
 
-    df["Relative humidity of outdoor air"] = pd.read_csv(
-        "src/vctlib/temp_data/outdor_climate_data.csv"
-    )
+    df["Relative humidity of outdoor air"] = claimate_data.relative_humidity_outdoor_air
 
     daily_mean_outdoor_temp = []
     for i in range(0, TOT_HOURS, 24):
@@ -212,7 +208,7 @@ def calc_thermal_comfort_data(
     return df
 
 
-def get_gains(building: Building) -> pd.DataFrame:
+def get_gains(building: Building, climate_data: ClimateData) -> pd.DataFrame:
     """Calculate solar and internal gains.
 
     Patameters:
@@ -225,8 +221,7 @@ def get_gains(building: Building) -> pd.DataFrame:
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
-    isol_tot = pd.read_csv("src/vctlib/temp_data/isol_tot.csv")
-    isol_tot = isol_tot.iloc[:, 0].values
+    isol_tot = climate_data.isol_tot
 
     solar_gains = [
         x
@@ -239,7 +234,10 @@ def get_gains(building: Building) -> pd.DataFrame:
     df["Solar gains"] = solar_gains
 
     internal_gains = [200 / building.floor_area] * TOT_HOURS  # TODO 200 is const?
-    df["Internal gains"] = internal_gains
+    if climate_data.internal_gains is not None:
+        internal_gains = climate_data.internal_gains
+
+    df["Internal gains"] = internal_gains # TODO: add to inputs
 
     return df
 
@@ -674,7 +672,9 @@ def calc_heating_and_cooling_needs_with_vcs(
 
 
 def run_vct_simulation(
-    inputs: Building, thermophysical_props: ThermostaticalProperties | None = None
+    inputs: Building, 
+    climate_data: ClimateData,
+    thermophysical_props: ThermostaticalProperties | None = None
 ) -> pd.DataFrame:
     """Perform main VCT simulation.
 
@@ -686,7 +686,7 @@ def run_vct_simulation(
     ###############################################################
     #                 OUTDOOR CLIMATE DATA
     ###############################################################
-    df_temp = get_outdoor_climate_data()
+    df_temp = get_outdoor_climate_data(climate_data)
     df = pd.concat([df, df_temp], axis=1)
 
     ###############################################################
@@ -700,7 +700,7 @@ def run_vct_simulation(
     ###############################################################
     #                         GAINS
     ###############################################################
-    df_temp = get_gains(inputs)
+    df_temp = get_gains(inputs, climate_data)
     df = pd.concat([df, df_temp], axis=1)
 
     df_temp = get_ventilation_rate(inputs)

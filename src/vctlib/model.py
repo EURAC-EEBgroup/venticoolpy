@@ -1,5 +1,6 @@
 """Models."""
 import pandas as pd
+import numpy as np
 
 from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
 from vctlib.constant import (
@@ -29,15 +30,38 @@ class ClimateData():
 
     def __init__(
         self,
-        outdoor_dry_bulb_temperature: pd.DataFrame,
-        relative_humidity_outdoor_air: pd.DataFrame,
-        isol_tot: pd.DataFrame,
-        internal_gains: pd.DataFrame | None = None
+        df_outdoor_dry_bulb_temperature,
+        df_relative_humidity_outdoor_air,
+        df_isol_tot,
+        df_internal_gains = None
     ):
-        self.outdoor_dry_bulb_temperature=outdoor_dry_bulb_temperature
-        self.relative_humidity_outdoor_air=relative_humidity_outdoor_air
-        self.isol_tot=isol_tot
-        self.internal_gains=internal_gains
+        self.df_outdoor_dry_bulb_temperature=df_outdoor_dry_bulb_temperature
+        self.df_relative_humidity_outdoor_air=df_relative_humidity_outdoor_air
+        self.df_isol_tot=df_isol_tot
+        self.df_internal_gains=df_internal_gains
+
+    @property
+    def outdoor_dry_bulb_temperature(self):
+        # add extra Decembre month
+        df = self.df_outdoor_dry_bulb_temperature
+        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
+    
+    @property
+    def relative_humidity_outdoor_air(self):
+        df = self.df_relative_humidity_outdoor_air
+        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
+    
+    @property
+    def isol_tot(self):
+        df = self.df_isol_tot
+        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
+    
+    @property
+    def internal_gains(self):
+        if self.df_internal_gains is None: 
+            return None
+        df = self.df_internal_gains
+        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
 
 
 class Gains():

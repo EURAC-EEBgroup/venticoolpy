@@ -428,6 +428,7 @@ def calc_heating_and_cooling_needs_no_vcs(
 
 def calc_heating_and_cooling_needs_with_vcs(
     building: Building,
+    c_int,
     vent_rate_m3_s,
     solar_gains,
     internal_gains,
@@ -490,9 +491,6 @@ def calc_heating_and_cooling_needs_with_vcs(
     bt_with_vcs = [None] * TOT_HOURS
     heating_cooling_load_with_vcs = [None] * TOT_HOURS
     internal_temperature_calc_with_vcs = [None] * TOT_HOURS
-
-    thermostatical_properties_p7 = 15479951.7120
-    c_int = thermostatical_properties_p7 + 10000 * building.floor_area
 
     for i in range(TOT_HOURS):
         if i == 0:
@@ -756,6 +754,7 @@ def run_vct_simulation(
 
     df_temp = calc_heating_and_cooling_needs_with_vcs(
         building=inputs,
+        c_int=c_int,
         vent_rate_m3_s=vent_rate_m3_s,
         solar_gains=solar_gains,
         internal_gains=internal_gains,

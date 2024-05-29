@@ -7,13 +7,16 @@ from epw.weather import Weather
 import csv
 import sys
 import bisect
+import os
+import numpy as np
 
 try:
     from vctlib.constant import get_t_min_k, get_t_max_k
     from vctlib.constant import (
-        COMFORT_REQUIREMENTS,
+        COMFORT_REQUIREMENTS, 
         comfort_categories_AK,
         comfort_categories_AL,
+        SELECT_INTERNAL_GAINS,
     )
     from vctlib.constant import Air_properties_Cp, Air_properties_ro
     from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
@@ -30,6 +33,7 @@ except ModuleNotFoundError:  # TODO: remove try-except
         comfort_categories_AL,
     )
     from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
+    from vctlib.constant import SELECT_INTERNAL_GAINS
     from vctlib.model import Building, ThermostaticalProperties, ClimateData, WindowDesign
 
 
@@ -71,9 +75,7 @@ def get_simulation_year() -> pd.DataFrame:
     return df
 
 
-def get_climate_data_from_epw(filename) -> pd.DataFrame:
-    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
-
+def get_climate_data_from_epw(filename) -> ClimateData:
     weather_data = Weather()
     weather_data.read(filename)
 
@@ -81,16 +83,16 @@ def get_climate_data_from_epw(filename) -> pd.DataFrame:
     if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
         raise Exception("The data is invalid")
 
-    df["Outdoor dry-bulb temperature"] = weather_data.dataframe["Dry Bulb Temperature"]
-    df["Relative humidity of outdoor air"] = weather_data.dataframe["Relative Humidity"]
-    df["Global Horizontal Radiation"] = weather_data.dataframe[
-        "Global Horizontal Radiation"
-    ]
+    climate_data = ClimateData(
+        df_outdoor_dry_bulb_temperature=weather_data.dataframe["Dry Bulb Temperature"], 
+        df_relative_humidity_outdoor_air=weather_data.dataframe["Relative Humidity"],
+        df_isol_tot=weather_data.dataframe["Global Horizontal Radiation"]
+    )
 
-    return df
+    return climate_data
 
 
-def get_climate_data_from_csv(filename) -> pd.DataFrame:
+def get_climate_data_from_csv(filename) -> ClimateData:
     skiprows = None
     with open(filename, "r") as file:
         csvreader = csv.reader(file)
@@ -106,12 +108,26 @@ def get_climate_data_from_csv(filename) -> pd.DataFrame:
     if weather_data.shape[0] != HOURS_IN_YEAR:
         raise Exception("The data is invalid")
 
-    df = pd.DataFrame(index=range(HOURS_IN_YEAR))
-    df["Outdoor dry-bulb temperature"] = weather_data["T2m"]
-    df["Relative humidity of outdoor air"] = weather_data["RH"]
-    df["?"] = weather_data["G(h)"]  # TODO: check this col
+    climate_data = ClimateData(
+        df_outdoor_dry_bulb_temperature=weather_data["T2m"], 
+        df_relative_humidity_outdoor_air=weather_data["RH"],
+        df_isol_tot=weather_data["G(h)"]
+    )
 
-    return df
+    return climate_data
+
+
+def get_internal_gains(building: Building):
+    """Retrieve internal gains according to building type"""
+    
+    if building.select_internal_gains == SELECT_INTERNAL_GAINS[0]: # basecase
+        internal_gains = [200 / building.floor_area] * TOT_HOURS
+    else: 
+        all_internal_gains = pd.read_csv(f"{os.getcwd()}/src/vctlib/internal_gains.csv")
+        internal_gains = all_internal_gains[building.bui_type]
+        internal_gains = np.append(internal_gains[8016:8760].values, internal_gains[0:8760].values)
+
+    return internal_gains
 
 
 def get_outdoor_climate_data(claimate_data: ClimateData) -> pd.DataFrame:
@@ -233,9 +249,7 @@ def get_gains(building: Building, climate_data: ClimateData) -> pd.DataFrame:
     ]
     df["Solar gains"] = solar_gains
 
-    internal_gains = [200 / building.floor_area] * TOT_HOURS  # TODO 200 is const?
-    if climate_data.internal_gains is not None:
-        internal_gains = climate_data.internal_gains
+    internal_gains = get_internal_gains(building)
 
     df["Internal gains"] = internal_gains # TODO: add to inputs
 
@@ -586,8 +600,6 @@ def calc_heating_and_cooling_needs_with_vcs(
             )
         else:
             required_cooling_vent_rate[i] = 0
-            # TODO: in the description : 'Required cooling ventilation rate (VC mode 1 or 2)',
-            # but mode 1 is never considered. Error?
 
     actual_ventilation_rate = [None] * TOT_HOURS
     for i in range(TOT_HOURS):
@@ -902,9 +914,11 @@ def run_window_design_simulation(
 ) -> pd.DataFrame:
     # TODO: se index ">18", in Excel c'è errore, come si dovrebbe calcolare in questo caso?
     # l17 = df_air_change.index[df_air_change['cumulative_percentage'] > 0.95].tolist()[0] # TODO: restore 0.95
-    l17 = int(
-        df_air_change.index[df_air_change["cumulative_percentage"] > 0.65].tolist()[0]
-    )
+    l17 = df_air_change.index[df_air_change["cumulative_percentage"] > 0.65].tolist()[0]
+    if l17 == '>18':
+        l17 = 20 # TODO: value if ">18"?
+    else: 
+        l17 = int(l17)
 
     max_required_airflow_rate_for_ventilative_cooling = l17 * building.room_volume
     required_airflow_rate_for_iaq = (

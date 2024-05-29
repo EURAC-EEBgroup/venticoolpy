@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
+from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, SELECT_INTERNAL_GAINS
 from vctlib.constant import (
     Air_properties_ro,
     LIGHTING_POWER_DENSITY,
@@ -27,53 +27,45 @@ class WindowDesignCreateException(Exception):
 
 class ClimateData():
     """ TODO: Add desctription """
+    # TODO: add ClimateData create exception
 
     def __init__(
         self,
         df_outdoor_dry_bulb_temperature,
         df_relative_humidity_outdoor_air,
         df_isol_tot,
-        df_internal_gains = None
     ):
         self.df_outdoor_dry_bulb_temperature=df_outdoor_dry_bulb_temperature
         self.df_relative_humidity_outdoor_air=df_relative_humidity_outdoor_air
         self.df_isol_tot=df_isol_tot
-        self.df_internal_gains=df_internal_gains
 
     @property
     def outdoor_dry_bulb_temperature(self):
         # add extra Decembre month
         df = self.df_outdoor_dry_bulb_temperature
-        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
+        return np.append(df[8016:8760].values, df[0:8760].values)
     
     @property
     def relative_humidity_outdoor_air(self):
         df = self.df_relative_humidity_outdoor_air
-        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
+        return np.append(df[8016:8760].values, df[0:8760].values)
     
     @property
     def isol_tot(self):
         df = self.df_isol_tot
-        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
+        return np.append(df[8016:8760].values, df[0:8760].values)
     
-    @property
-    def internal_gains(self):
-        if self.df_internal_gains is None: 
-            return None
-        df = self.df_internal_gains
-        return np.append(df.iloc[-744:,0].values, df.iloc[:,0].values)
 
+# class Gains():
+#     """ TODO: Add desctription """
 
-class Gains():
-    """ TODO: Add desctription """
-
-    def __init__(
-        self,
-        isol_tot: pd.DataFrame,
-        internal_gains: pd.DataFrame | None = None
-    ):
-        self.isol_tot=isol_tot
-        self.internal_gains=internal_gains
+#     def __init__(
+#         self,
+#         isol_tot: pd.DataFrame,
+#         internal_gains: pd.DataFrame | None = None
+#     ):
+#         self.isol_tot=isol_tot
+#         self.internal_gains=internal_gains
 
 
 class Building(object):
@@ -166,6 +158,50 @@ class Building(object):
         # TODO: add description
         # NB! error in excel formula: ti_hsp_night_start = 24
 
+    - my_min_req_vent_rates(float; optional):
+    default None
+    Custom min required ventilation rates (otherwise it is obtained from other inputs). 
+    Minimum required air change rates (l/s-m²) calculated according to IEQ standard
+    (EN 16798:1-2019) or design requirements to determine the ventilation losses
+    within the energy balance of the reference room.
+
+    - my_lighting_power_density (float; optional): 
+    default None
+    Custom lighting power density (otherwise it is calculated from other inputs).
+    The maximum lighting level per floor area. Internal gains due to lighting are
+    calculated by multiplying the lighting power by the pre-defined load profiles.
+        
+    - my_el_equipment_power_density(float; optional):
+    Custom electric equipment power density (otherwise it is obtained from other inputs); Qel_equip (W/m²).
+    The maximum elecric eqipment level per floor area.
+    Internal gains due to electric equipment are calculated
+    by multiplying the lighting power by the pre-defined load profiles.
+
+    - my_occupancy_gains_density(float; optional):
+    default None
+    Custom occupancy density (otherwise it is obtained from other inputs); Qpeople (W/m²).
+    The maximum floor area per person.
+    Internal gains due to people are calculated by
+    multiplying the maximum number of person by the pre-defined occupancy profiles.
+
+    - my_c_tot (float; optional)
+    default None
+    C thermal cap. totale (C [J/K]).
+    If any, c_int is calculated as follows, otherwise it is obtained from construction_mass. 
+        c_int = c_tot + 10000 * floor_area
+
+    - my_c_int (float; optional)
+    default None
+    Cint. is the (lumped) internal thermal capacity (J/K).
+    Otherwise it is obtained from other inputs.
+
+    - select_internal_gains (a value equal to: 'basecase', 'of_bui_type'; optional):
+    default bui_type. 
+    if basecase:  
+        internal_gains = 200/ floor area
+    if of_bui_type: 
+        internal_gains obtained from building type
+
     """
 
     def __init__(
@@ -188,6 +224,13 @@ class Building(object):
         time_control_off,
         ti_hsp_day_start=7,
         ti_hsp_night_start=23,
+        my_min_req_vent_rates=None, 
+        my_lighting_power_density=None,
+        my_el_equipment_power_density=None,
+        my_occupancy_gains_density=None,
+        my_c_tot=None,
+        my_c_int=None,
+        select_internal_gains=SELECT_INTERNAL_GAINS[1]
     ):
         """Collect all data needed for the simulation."""
         self.bui_type = bui_type
@@ -208,13 +251,22 @@ class Building(object):
         self.vent_rates_mu = vent_rates_mu
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
+
         self.ti_hsp_day_start = ti_hsp_day_start  # TODO: non serve più?
         self.ti_hsp_night_start = ti_hsp_night_start  # TODO: non serve più?
+        self.my_min_req_vent_rates=my_min_req_vent_rates
+        self.my_lighting_power_density=my_lighting_power_density
+        self.my_el_equipment_power_density=my_el_equipment_power_density
+        self.my_occupancy_gains_density=my_occupancy_gains_density
+        self.my_c_tot=my_c_tot
+        self.my_c_int=my_c_int
+        self.select_internal_gains = select_internal_gains
 
         if (
             bui_type not in BUILDING_TYPE
             or comfort_requirements not in COMFORT_REQUIREMENTS
             or vent_rates_mu not in VENT_RATES_MU
+            or select_internal_gains not in SELECT_INTERNAL_GAINS
         ):
             raise BuildingCreateException
 
@@ -251,18 +303,22 @@ class Building(object):
             + Qa_comfort_category[self.comfort_requirements] * self.floor_area
         ) / self.floor_area
 
-        if self.vent_rates_mu == VENT_RATES_MU[0]:  # 1/h:
-            vent_rate_2 = (vent_rate_1 * 3.6 * self.floor_area) / self.room_volume
-        elif self.vent_rates_mu == VENT_RATES_MU[1]:
-            vent_rate_2 = vent_rate_1 * 0.001 * Air_properties_ro
-        elif self.vent_rates_mu == VENT_RATES_MU[2]:
-            vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area
-        else:
-            vent_rate_2 = vent_rate_1 * self.floor_area / 1000
+        if self.my_min_req_vent_rates is not None:
+            vent_rate_1 = self.my_min_req_vent_rates
+        
+        # if self.vent_rates_mu == VENT_RATES_MU[0]:  # 1/h:
+        #     vent_rate_2 = (vent_rate_1 * 3.6 * self.floor_area) / self.room_volume
+        # elif self.vent_rates_mu == VENT_RATES_MU[1]:
+        #     vent_rate_2 = vent_rate_1 * 0.001 * Air_properties_ro
+        # elif self.vent_rates_mu == VENT_RATES_MU[2]:
+        #     vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area
+        # else:
+        #     vent_rate_2 = vent_rate_1 * self.floor_area / 1000
+
+        vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area # m3/h 
 
         return vent_rate_1, vent_rate_2 
-        # TODO: da vent_rate_2 dipende il calcolo Window Design. Però se cambio l'unità di misura, cambiano i risultati del calcolo, il che non va bene.
-        #  Da capire quale unità di misura serve per il calcolo Window Design. Sembrerebbe 1/h.
+        
 
     @property
     def lighting_power_density(self):
@@ -271,6 +327,8 @@ class Building(object):
         The maximum lighting level per floor area. Internal gains due to lighting are
         calculated by multiplying the lighting power by the pre-defined load profiles.
         """
+        if self.my_lighting_power_density is not None:
+            return self.my_lighting_power_density
         return LIGHTING_POWER_DENSITY[self.bui_type]
 
     @property
@@ -281,6 +339,8 @@ class Building(object):
         Internal gains due to electric equipment are calculated
         by multiplying the lighting power by the pre-defined load profiles.
         """
+        if self.my_el_equipment_power_density is not None:
+            return self.my_el_equipment_power_density
         return ELECTRIC_EQUIPMENT_POWER_DENSITY[self.bui_type]
 
     @property
@@ -293,6 +353,8 @@ class Building(object):
         """
         # TODO: Need to multiply and divide by the same value?
         # return (self.floor_area / m2_per_person[self.bui_type] * gain_per_person[self.bui_type]) / self.floor_area # noqa: E501
+        if self.my_occupancy_gains_density is not None:
+            return self.my_occupancy_gains_density
         return gain_per_person[self.bui_type] / m2_per_person[self.bui_type]
 
     @property
@@ -309,6 +371,12 @@ class Building(object):
     @property
     def c_int(self):
         """Cint. is the (lumped) internal thermal capacity (J/K)."""
+        if self.my_c_int is not None:
+            return self.my_c_int
+        
+        if self.my_c_tot is not None: 
+            return self.my_c_tot + 10000 * self.floor_area
+        
         value = (
             1.2 * self.room_volume
             + heat_cap_construction_type[self.construction_mass]
@@ -321,7 +389,7 @@ class Building(object):
 
 class ThermostaticalProperties(object):
     """
-    # TODO: Add desctiption.
+    # TODO: Remove this obj
 
     Area (m²)
     R (m²K/W)
@@ -344,7 +412,7 @@ class ThermostaticalProperties(object):
         self.roof_r = roof_r
 
     @property
-    def u_value_tot(self):  # TODO: U == u value?
+    def u_value_tot(self):
         """U (W/m²K)."""
         u_wall = 1 / (self.external_wall_r + 1 / (2.5 + 5.13))
         u_floor = 1 / (self.floor_r + 1 / (0.7 + 5.13))
@@ -362,7 +430,6 @@ class ThermostaticalProperties(object):
     @property
     def c_tot(self):
         """C [J/K]."""
-        # TODO: other values are const?
         c_wall = (
             0.1 * 1400 * 1000 * self.external_wall_area
             + 0.0615 * 10 * 1400 * self.external_wall_area

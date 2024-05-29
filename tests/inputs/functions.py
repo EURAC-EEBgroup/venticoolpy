@@ -55,6 +55,7 @@ def get_appartment_building(thermophys_prop: ThermostaticalProperties) -> Buildi
         time_control_off=24,
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
+        select_internal_gains='basecase'
     )
     return building
 
@@ -78,16 +79,13 @@ def load_data_from_VCdesign(filename):
     relative_humidity_outdoor_air = load_workbook_range('F20:F8779', sh)
     isol_tot = load_workbook_range('K20:K8779', sh)
 
-    sh = wb["VCP"]
-    internal_gains = load_workbook_range('Q41:Q9544', sh)
-    internal_gains = internal_gains[744:]
-
     climate_data = ClimateData(
         df_outdoor_dry_bulb_temperature=outdoor_dry_bulb_temperature,
         df_relative_humidity_outdoor_air=relative_humidity_outdoor_air,
         df_isol_tot=isol_tot,
-        df_internal_gains=internal_gains
     )
+
+    sh = wb["VCP"]
     inputs = Building(
         bui_type=sh["C6"].value,
         celing_to_floor_height=sh["C7"].value,

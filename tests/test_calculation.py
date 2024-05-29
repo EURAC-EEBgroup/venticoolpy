@@ -38,17 +38,17 @@ def compare_dataframes(df1: pd.DataFrame, df2: pd.DataFrame):
 
 def test_get_climate_data_from_epw(snapshot):
     filename = "src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw"
-    df = get_climate_data_from_epw(filename)
+    climate_data = get_climate_data_from_epw(filename)
 
-    result = df.to_json()
+    result = str(climate_data.__dict__)
     snapshot.assert_match(result, "climate_data_epw.json")
 
 
 def test_get_climate_data_from_csv(snapshot):
     filename = "src/vctlib/temp_data/tmy_46.501_11.362_2005_2020.csv"
-    df = get_climate_data_from_csv(filename)
+    climate_data = get_climate_data_from_csv(filename)
 
-    result = df.to_json()
+    result = str(climate_data.__dict__)
     snapshot.assert_match(result, "climate_data_csv.json")
 
 
@@ -181,4 +181,24 @@ def run_test_building_example(filename):
 
 # def test_Simulation_VCdesign_Example31():
 #     filename = "tests/inputs/data/VCdesign_Example31.xlsm"
+#     run_test_building_example(filename)
+
+
+# def test_Simulation_VCdesign_Example41():
+#     filename = "tests/inputs/data/VCdesign_Example41.xlsm"
+#     run_test_building_example(filename)
+
+
+# def test_Simulation_VCdesign_Example51():
+#     filename = "tests/inputs/data/VCdesign_Example51.xlsm"
+#     run_test_building_example(filename)
+
+
+# def test_Simulation_VCdesign_Example61():
+#     filename = "tests/inputs/data/VCdesign_Example61.xlsm"
+#     run_test_building_example(filename)
+
+
+# def test_Simulation_VCdesign_Example62():
+#     filename = "tests/inputs/data/VCdesign_Example62.xlsm"
 #     run_test_building_example(filename)

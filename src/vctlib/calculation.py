@@ -7,8 +7,9 @@ from epw.weather import Weather
 import csv
 import sys
 import bisect
-import os
 import numpy as np
+import importlib.resources
+import json
 
 try:
     from vctlib.constant import get_t_min_k, get_t_max_k
@@ -123,7 +124,10 @@ def get_internal_gains(building: Building):
     if building.select_internal_gains == SELECT_INTERNAL_GAINS[0]: # basecase
         internal_gains = [200 / building.floor_area] * TOT_HOURS
     else: 
-        all_internal_gains = pd.read_csv(f"{os.getcwd()}/src/vctlib/internal_gains.csv")
+        with importlib.resources.open_text("vctlib", 'internal_gains.json') as f:
+            data = json.load(f)
+            all_internal_gains = pd.DataFrame(data)
+
         internal_gains = all_internal_gains[building.bui_type]
         internal_gains = np.append(internal_gains[8016:8760].values, internal_gains[0:8760].values)
 

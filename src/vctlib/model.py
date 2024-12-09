@@ -158,6 +158,8 @@ class Building(object):
         TODO: add description
         NB! error in excel formula: ti_hsp_night_start = 24
 
+    - TODO: add orientation (N, NE, E, SE, S, SW, W, NW)
+
     - my_min_req_vent_rates(float; optional):  
     default None
     Custom min required ventilation rates (otherwise it is obtained from other inputs). 

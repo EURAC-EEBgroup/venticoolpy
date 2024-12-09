@@ -87,7 +87,7 @@ def get_climate_data_from_epw(filename) -> ClimateData:
     climate_data = ClimateData(
         df_outdoor_dry_bulb_temperature=weather_data.dataframe["Dry Bulb Temperature"], 
         df_relative_humidity_outdoor_air=weather_data.dataframe["Relative Humidity"],
-        df_isol_tot=weather_data.dataframe["Global Horizontal Radiation"]
+        df_isol_tot=weather_data.dataframe["Global Horizontal Radiation"] # TODO: elaborated with function from pvlib
     )
 
     return climate_data
@@ -112,7 +112,7 @@ def get_climate_data_from_csv(filename) -> ClimateData:
     climate_data = ClimateData(
         df_outdoor_dry_bulb_temperature=weather_data["T2m"], 
         df_relative_humidity_outdoor_air=weather_data["RH"],
-        df_isol_tot=weather_data["G(h)"]
+        df_isol_tot=weather_data["G(h)"] # TODO: elaborated with function from pvlib
     )
 
     return climate_data

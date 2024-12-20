@@ -174,31 +174,31 @@ def run_test_building_example(filename):
         raise AssertionError()
     
 
-# def test_Simulation_VCdesign_Example21():
-#     filename = "tests/inputs/data/VCdesign_Example21.xlsm"
-#     run_test_building_example(filename)
+def test_Simulation_VCdesign_Example21():
+    filename = "tests/inputs/data/VCdesign_Example21.xlsm"
+    run_test_building_example(filename)
 
 
-# def test_Simulation_VCdesign_Example31():
-#     filename = "tests/inputs/data/VCdesign_Example31.xlsm"
-#     run_test_building_example(filename)
+def test_Simulation_VCdesign_Example31():
+    filename = "tests/inputs/data/VCdesign_Example31.xlsm"
+    run_test_building_example(filename)
 
 
-# def test_Simulation_VCdesign_Example41():
-#     filename = "tests/inputs/data/VCdesign_Example41.xlsm"
-#     run_test_building_example(filename)
+def test_Simulation_VCdesign_Example41():
+    filename = "tests/inputs/data/VCdesign_Example41.xlsm"
+    run_test_building_example(filename)
 
 
-# def test_Simulation_VCdesign_Example51():
-#     filename = "tests/inputs/data/VCdesign_Example51.xlsm"
-#     run_test_building_example(filename)
+def test_Simulation_VCdesign_Example51():
+    filename = "tests/inputs/data/VCdesign_Example51.xlsm"
+    run_test_building_example(filename)
 
 
-# def test_Simulation_VCdesign_Example61():
-#     filename = "tests/inputs/data/VCdesign_Example61.xlsm"
-#     run_test_building_example(filename)
+def test_Simulation_VCdesign_Example61():
+    filename = "tests/inputs/data/VCdesign_Example61.xlsm"
+    run_test_building_example(filename)
 
 
-# def test_Simulation_VCdesign_Example62():
-#     filename = "tests/inputs/data/VCdesign_Example62.xlsm"
-#     run_test_building_example(filename)
+def test_Simulation_VCdesign_Example62():
+    filename = "tests/inputs/data/VCdesign_Example62.xlsm"
+    run_test_building_example(filename)

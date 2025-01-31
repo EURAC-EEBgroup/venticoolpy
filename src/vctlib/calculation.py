@@ -124,11 +124,13 @@ def get_internal_gains(building: Building):
     if building.select_internal_gains == SELECT_INTERNAL_GAINS[0]: # basecase
         internal_gains = [200 / building.floor_area] * TOT_HOURS
     else: 
-        with importlib.resources.open_text("vctlib", 'internal_gains.json') as f:
-            data = json.load(f)
-            all_internal_gains = pd.DataFrame(data)
+        df_occ_lgt_apl = pd.read_csv('src/vctlib/occ_lgt_apl.csv', header=0)
+        internal_gains = (
+            (building.occupancy_gains_density) * df_occ_lgt_apl['OCC.'+building.bui_type] +
+            building.lighting_power_density * df_occ_lgt_apl['LGT.'+building.bui_type] +
+            building.el_equipment_power_density * df_occ_lgt_apl['APL.'+building.bui_type]
+        )
 
-        internal_gains = all_internal_gains[building.bui_type]
         internal_gains = np.append(internal_gains[8016:8760].values, internal_gains[0:8760].values)
 
     return internal_gains
@@ -255,7 +257,7 @@ def get_gains(building: Building, climate_data: ClimateData) -> pd.DataFrame:
 
     internal_gains = get_internal_gains(building)
 
-    df["Internal gains"] = internal_gains # TODO: add to inputs
+    df["Internal gains"] = internal_gains
 
     return df
 

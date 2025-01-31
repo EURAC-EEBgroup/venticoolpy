@@ -124,7 +124,10 @@ def get_internal_gains(building: Building):
     if building.select_internal_gains == SELECT_INTERNAL_GAINS[0]: # basecase
         internal_gains = [200 / building.floor_area] * TOT_HOURS
     else: 
-        df_occ_lgt_apl = pd.read_csv('src/vctlib/occ_lgt_apl.csv', header=0)
+        with importlib.resources.open_text("vctlib", 'occ_lgt_apl.json') as f:
+            data = json.load(f)
+            df_occ_lgt_apl = pd.DataFrame(data)
+
         internal_gains = (
             (building.occupancy_gains_density) * df_occ_lgt_apl['OCC.'+building.bui_type] +
             building.lighting_power_density * df_occ_lgt_apl['LGT.'+building.bui_type] +

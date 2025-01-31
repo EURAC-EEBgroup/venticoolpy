@@ -15,7 +15,7 @@ COMFORT_REQUIREMENTS = ["category I", "category II", "category III"]
 
 CONSTRUCTION_MASS = ["heavy", "light", "medium"]
 
-VENT_RATES_MU = ["1/h", "kg/s-m²", "m³/h", "m³/s"]
+VENT_RATES_MU = ["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"]
 
 SELECT_INTERNAL_GAINS = ["basecase", "of_bui_type"]
 

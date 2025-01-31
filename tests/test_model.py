@@ -34,7 +34,6 @@ def test_inputs_model(snapshot):
         g_value_glazing_sys=0.71,
         shading_control_setpoint=120,
         shading_factor=0,
-        vent_rates_mu="1/h",
         time_control_on=0,
         time_control_off=24,
     )
@@ -44,7 +43,7 @@ def test_inputs_model(snapshot):
     properties = {
         "room_volume": inputs.room_volume,
         "average_u_value": inputs.average_u_value,
-        "min_req_vent_rates": inputs.min_req_vent_rates,
+        "min_req_vent_rate": inputs.min_req_vent_rate,
         "lighting_power_density": inputs.lighting_power_density,
         "el_equipment_power_density": inputs.el_equipment_power_density,
         "occupancy_gains_density": inputs.occupancy_gains_density,
@@ -52,15 +51,6 @@ def test_inputs_model(snapshot):
         "nr_of_occupied_hrs": inputs.nr_of_occupied_hrs,
         "c_int": inputs.c_int,
     }
-
-    inputs.vent_rates_mu = VENT_RATES_MU[1]
-    properties["min_req_vent_rates_1"] = inputs.min_req_vent_rates
-
-    inputs.vent_rates_mu = VENT_RATES_MU[2]
-    properties["min_req_vent_rates_2"] = inputs.min_req_vent_rates
-
-    inputs.vent_rates_mu = VENT_RATES_MU[3]
-    properties["min_req_vent_rates_3"] = inputs.min_req_vent_rates
 
     snapshot.assert_match(str(properties), "properties_inputs.yml")
 
@@ -99,7 +89,6 @@ def test_building_exception(snapshot):
             g_value_glazing_sys=0.71,
             shading_control_setpoint=120,
             shading_factor=0,
-            vent_rates_mu="1/h",
             time_control_on=0,
             time_control_off=24,
         )

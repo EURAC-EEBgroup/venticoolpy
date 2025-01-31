@@ -56,17 +56,6 @@ class ClimateData():
         return np.append(df[8016:8760].values, df[0:8760].values)
     
 
-# class Gains():
-#     """ TODO: Add desctription """
-
-#     def __init__(
-#         self,
-#         isol_tot: pd.DataFrame,
-#         internal_gains: pd.DataFrame | None = None
-#     ):
-#         self.isol_tot=isol_tot
-#         self.internal_gains=internal_gains
-
 
 class Building(object):
     """
@@ -138,10 +127,6 @@ class Building(object):
     Shading factor due to exterior shading element (i.e. shutter, venetian blinds,
     roll up blinds..).
 
-    - vent_rates_mu (a value equal to '1/h', 'kg/s-m²', 'm³/h', 'm³/s'; required):  
-    Unit of measurement according to which is defined the value of property
-    min_req_vent_rates.
-
     - time_control_on (integer; required):  
     Time control on; ton; min 0, max 24.
 
@@ -160,12 +145,17 @@ class Building(object):
 
     - TODO: add orientation (N, NE, E, SE, S, SW, W, NW)
 
-    - my_min_req_vent_rates(float; optional):  
+    - my_min_req_vent_rate (float; optional):  
     default None
     Custom min required ventilation rates (otherwise it is obtained from other inputs). 
     Minimum required air change rates (l/s-m²) calculated according to IEQ standard
     (EN 16798:1-2019) or design requirements to determine the ventilation losses
     within the energy balance of the reference room.
+
+    - my_vent_rates_mu (a value equal to '1/h', 'kg/s-m²', 'm³/h', 'm³/s', 'l/s-m²'; optional):  
+    default "l/s-m²". 
+    Unit of measurement for my_min_req_vent_rate, according to which is defined the value of property
+    min_req_vent_rate.
 
     - my_lighting_power_density (float; optional):    
     default None.
@@ -221,12 +211,12 @@ class Building(object):
         g_value_glazing_sys,
         shading_control_setpoint,
         shading_factor,
-        vent_rates_mu,
         time_control_on,
         time_control_off,
         ti_hsp_day_start=7,
         ti_hsp_night_start=23,
-        my_min_req_vent_rates=None, 
+        my_min_req_vent_rate=None, 
+        my_vent_rates_mu=VENT_RATES_MU[0],
         my_lighting_power_density=None,
         my_el_equipment_power_density=None,
         my_occupancy_gains_density=None,
@@ -250,13 +240,13 @@ class Building(object):
         self.g_value_glazing_sys = g_value_glazing_sys
         self.shading_control_setpoint = shading_control_setpoint
         self.shading_factor = shading_factor
-        self.vent_rates_mu = vent_rates_mu
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
 
         self.ti_hsp_day_start = ti_hsp_day_start  # TODO: non serve più?
         self.ti_hsp_night_start = ti_hsp_night_start  # TODO: non serve più?
-        self.my_min_req_vent_rates=my_min_req_vent_rates
+        self.my_min_req_vent_rate=my_min_req_vent_rate
+        self.my_vent_rates_mu = my_vent_rates_mu 
         self.my_lighting_power_density=my_lighting_power_density
         self.my_el_equipment_power_density=my_el_equipment_power_density
         self.my_occupancy_gains_density=my_occupancy_gains_density
@@ -267,8 +257,8 @@ class Building(object):
         if (
             bui_type not in BUILDING_TYPE
             or comfort_requirements not in COMFORT_REQUIREMENTS
-            or vent_rates_mu not in VENT_RATES_MU
             or select_internal_gains not in SELECT_INTERNAL_GAINS
+            or (my_vent_rates_mu is not None and my_vent_rates_mu not in VENT_RATES_MU)
         ):
             raise BuildingCreateException
 
@@ -287,7 +277,7 @@ class Building(object):
         return value
 
     @property
-    def min_req_vent_rates(self):
+    def min_req_vent_rate(self):
         """
         Min. required ventilation rates.
 
@@ -298,28 +288,42 @@ class Building(object):
         (EN 16798:1-2019) or design requirements to determine the ventilation losses
         within the energy balance of the reference room.
         """
-        vent_rate_1 = (
+        vent_rate = (
             Qp_comfort_category[self.comfort_requirements]
             * self.floor_area
             / m2_per_person[self.bui_type]
             + Qa_comfort_category[self.comfort_requirements] * self.floor_area
         ) / self.floor_area
 
-        if self.my_min_req_vent_rates is not None:
-            vent_rate_1 = self.my_min_req_vent_rates
+        if self.my_min_req_vent_rate is not None:
         
-        # if self.vent_rates_mu == VENT_RATES_MU[0]:  # 1/h:
-        #     vent_rate_2 = (vent_rate_1 * 3.6 * self.floor_area) / self.room_volume
-        # elif self.vent_rates_mu == VENT_RATES_MU[1]:
-        #     vent_rate_2 = vent_rate_1 * 0.001 * Air_properties_ro
-        # elif self.vent_rates_mu == VENT_RATES_MU[2]:
-        #     vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area
-        # else:
-        #     vent_rate_2 = vent_rate_1 * self.floor_area / 1000
+            # if self.my_vent_rates_mu == VENT_RATES_MU[1]:  # 1/h:
+            #     vent_rate_2 = vent_rate_1 * 3.6 / self.celing_to_floor_height
+            # elif self.my_vent_rates_mu == VENT_RATES_MU[2]: # kg/s-m²
+            #     vent_rate_2 = vent_rate_1 * 0.001 * Air_properties_ro
+            # elif self.my_vent_rates_mu == VENT_RATES_MU[3]: # m³/h
+            #     vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area
+            # elif self.my_vent_rates_mu == VENT_RATES_MU[4]: # m³/s
+            #     vent_rate_2 = vent_rate_1 * self.floor_area / 1000
+            # else: #l/s-m²
+            #     vent_rate_2 = self.my_min_req_vent_rate
 
-        vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area # m3/h 
+            if self.my_vent_rates_mu == VENT_RATES_MU[0]: #l/s-m²
+                vent_rate = self.my_min_req_vent_rate
 
-        return vent_rate_1, vent_rate_2 
+            elif self.my_vent_rates_mu == VENT_RATES_MU[1]:  # 1/h:
+                vent_rate = self.my_min_req_vent_rate * self.celing_to_floor_height / 3.6
+
+            elif self.my_vent_rates_mu == VENT_RATES_MU[2]: # kg/s-m²
+                vent_rate = self.my_min_req_vent_rate / (0.001 * Air_properties_ro)
+
+            elif self.my_vent_rates_mu == VENT_RATES_MU[3]: # m³/h
+                vent_rate = self.my_min_req_vent_rate / (3.6 * self.floor_area)
+
+            elif self.my_vent_rates_mu == VENT_RATES_MU[4]: # m³/s
+                vent_rate = self.my_min_req_vent_rate * 1000 / self.floor_area
+
+        return vent_rate 
         
 
     @property

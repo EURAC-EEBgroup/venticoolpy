@@ -97,7 +97,6 @@ building = Building(
     g_value_glazing_sys=0.71,
     shading_control_setpoint=120,
     shading_factor=0,
-    vent_rates_mu="1/h",
     time_control_on=0,
     time_control_off=24,
     ti_hsp_day_start=7,

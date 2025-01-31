@@ -274,7 +274,7 @@ def get_ventilation_rate(building: Building) -> pd.DataFrame:
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
-    vent_rate_m3_s = building.min_req_vent_rates[0] * building.floor_area / 1000
+    vent_rate_m3_s = building.min_req_vent_rate * building.floor_area / 1000
     ventilation_rate = [vent_rate_m3_s] * TOT_HOURS
     df["Ventilation rate"] = ventilation_rate
 
@@ -928,7 +928,7 @@ def run_window_design_simulation(
 
     max_required_airflow_rate_for_ventilative_cooling = l17 * building.room_volume
     required_airflow_rate_for_iaq = (
-        building.min_req_vent_rates[1] * building.room_volume
+        building.min_req_vent_rate * building.room_volume
     )
     room_height = building.celing_to_floor_height
 

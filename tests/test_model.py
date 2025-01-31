@@ -93,3 +93,34 @@ def test_building_exception(snapshot):
             time_control_off=24,
         )
     assert exc.typename == "BuildingCreateException"
+
+
+def test_custom_min_req_vent_rate(snapshot):
+    """Test Custom Min Required Ventilation Rate."""
+
+    inputs = Building(
+        bui_type="Apartment building",
+        celing_to_floor_height=2.7,
+        envelope_area=171.60,
+        floor_area=48.00,
+        fenestration_area=12.00,
+        comfort_requirements="category II",
+        max_outdoor_rel_hum_accepted=85,
+        u_value_opaque=0.315822914673981,
+        u_value_fen=2.984,
+        construction_mass="medium",
+        g_value_glazing_sys=0.71,
+        shading_control_setpoint=120,
+        shading_factor=0,
+        time_control_on=0,
+        time_control_off=24,
+        my_min_req_vent_rate=0.31, 
+        my_vent_rates_mu=VENT_RATES_MU[0]
+    )
+
+    data = {}
+    for mu in VENT_RATES_MU:
+        inputs.my_vent_rates_mu = mu
+        data[inputs.my_vent_rates_mu] = inputs.min_req_vent_rate
+
+    snapshot.assert_match(str(data), "min_req_vent_rate.yml")

@@ -24,3 +24,4 @@ tzdata==2023.4
 virtualenv==20.25.0
 epw
 openpyxl==3.1.2
+pvlib==0.11.1

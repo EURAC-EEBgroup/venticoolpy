@@ -1,8 +1,9 @@
 from epw.weather import Weather
 import pandas as pd
+import csv
 import pvlib
 from vctlib.model import ClimateData
-
+from datetime import timezone
 
 HOURS_IN_YEAR = 8760  # 365*24
 
@@ -98,3 +99,85 @@ def get_climate_data_w_vert_irrad_from_epw(filename, orientation='S'):
     )
 
     return climate_data     
+
+
+
+def get_climate_data_w_vert_irrad_from_csv(filename, orientation='S'):
+    skiprows = None
+    with open(filename, "r") as file:
+        csvreader = csv.reader(file)
+        latitude = float(next(csvreader)[0].strip('Latitude (decimal degrees): '))
+        longitude = float(next(csvreader)[0].strip('Longitude (decimal degrees): '))
+        altitude = float(next(csvreader)[0].strip('Elevation (m): '))
+    
+    skiprows = 16
+    weather_data = pd.read_csv(filename, skiprows=skiprows, nrows=HOURS_IN_YEAR)
+
+    if weather_data.shape[0] != HOURS_IN_YEAR:
+        raise Exception("The data is invalid")
+
+    # weather data for calculation with pvlib
+    df_dni = weather_data["Gb(n)"] #W/m2
+    df_ghi = weather_data["G(h)"] #W/m2
+    df_dhi = weather_data["Gd(h)"] #W/m2
+
+     # Hourly timestamp for the year 
+    times = pd.date_range('2005-01-01 00:00:00',periods=HOURS_IN_YEAR, freq='h',tz=timezone.utc)
+
+    # Shift timestamps to the centre of intervals
+    times_centered = times + pd.Timedelta(minutes=30)
+    
+    # Calculation of solar position for getting irradiance values on a vertical surface
+    df_solar_position = pvlib.solarposition.get_solarposition(
+        time=times_centered,
+        latitude=latitude,
+        longitude=longitude,
+        altitude=altitude
+    )
+
+    # Surface azimuth for the vertical surface (based on orientation)
+    surface_azimuth = ORIENTATION_AZIMUTH[orientation]
+
+    # Surface tilt for vertical surface is 90 degrees
+    surface_tilt = 90
+
+    # Reset timestamps to the actual intervals
+    times_ended = times
+
+    df_solar_position.index = times_ended
+    # Ensure weather dataframe uses datetime index
+
+    # weather_data.dataframe.index = times  # Assign the correct timestamps
+    df_dni.index = times_ended
+    df_ghi.index = times_ended
+    df_dhi.index = times_ended
+    df_solar_position.index = times_ended
+
+
+    # Use get_total_irradiance to calculate irradiance on vertical surface    
+    total_irradiance = pvlib.irradiance.get_total_irradiance(
+        surface_tilt = surface_tilt,
+        surface_azimuth = surface_azimuth,
+        solar_zenith = df_solar_position['zenith'], #152.42730152243752
+        solar_azimuth = df_solar_position['azimuth'],#37.84210665047942
+        dni = df_dni,
+        ghi = df_ghi,
+        dhi = df_dhi,
+        dni_extra=None,
+        # model='perez'
+    )
+
+    vertical_irradiance = (
+        total_irradiance['poa_direct'] + 
+        total_irradiance['poa_sky_diffuse']  
+    )
+
+    climate_data = ClimateData(
+        df_outdoor_dry_bulb_temperature=weather_data["T2m"], 
+        df_relative_humidity_outdoor_air=weather_data["RH"],
+        df_isol_tot=vertical_irradiance
+    )
+
+    return climate_data     
+
+

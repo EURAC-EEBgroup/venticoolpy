@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, SELECT_INTERNAL_GAINS
+from vctlib.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, SELECT_INTERNAL_GAINS, SELECT_VENT_RATES_CALC
 from vctlib.constant import (
     Air_properties_ro,
     LIGHTING_POWER_DENSITY,
@@ -222,7 +222,8 @@ class Building(object):
         my_occupancy_gains_density=None,
         my_c_tot=None,
         my_c_int=None,
-        select_internal_gains=SELECT_INTERNAL_GAINS[1]
+        select_internal_gains=SELECT_INTERNAL_GAINS[1],
+        select_vent_rates_calc=SELECT_VENT_RATES_CALC[1]
     ):
         """Collect all data needed for the simulation."""
         self.bui_type = bui_type
@@ -232,9 +233,7 @@ class Building(object):
         self.fenestration_area = fenestration_area
         self.comfort_requirements = comfort_requirements
         self.max_outdoor_rel_hum_accepted = max_outdoor_rel_hum_accepted
-        self.u_value_opaque = (
-            u_value_opaque  # TODO: remove. Take it from ThermostaticalProperties
-        )
+        self.u_value_opaque = u_value_opaque
         self.u_value_fen = u_value_fen
         self.construction_mass = construction_mass
         self.g_value_glazing_sys = g_value_glazing_sys
@@ -243,8 +242,8 @@ class Building(object):
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
 
-        self.ti_hsp_day_start = ti_hsp_day_start  # TODO: non serve più?
-        self.ti_hsp_night_start = ti_hsp_night_start  # TODO: non serve più?
+        self.ti_hsp_day_start = ti_hsp_day_start  # TODO: remove
+        self.ti_hsp_night_start = ti_hsp_night_start  # TODO: remove
         self.my_min_req_vent_rate=my_min_req_vent_rate
         self.my_vent_rates_mu = my_vent_rates_mu 
         self.my_lighting_power_density=my_lighting_power_density
@@ -253,11 +252,13 @@ class Building(object):
         self.my_c_tot=my_c_tot
         self.my_c_int=my_c_int
         self.select_internal_gains = select_internal_gains
+        self.select_vent_rates_calc = select_vent_rates_calc
 
         if (
             bui_type not in BUILDING_TYPE
             or comfort_requirements not in COMFORT_REQUIREMENTS
             or select_internal_gains not in SELECT_INTERNAL_GAINS
+            or select_vent_rates_calc not in SELECT_VENT_RATES_CALC
             or (my_vent_rates_mu is not None and my_vent_rates_mu not in VENT_RATES_MU)
         ):
             raise BuildingCreateException

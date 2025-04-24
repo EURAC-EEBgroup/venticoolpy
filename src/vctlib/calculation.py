@@ -18,6 +18,10 @@ try:
         comfort_categories_AK,
         comfort_categories_AL,
         SELECT_INTERNAL_GAINS,
+        SELECT_VENT_RATES_CALC,
+        Qa_comfort_category, 
+        Qp_comfort_category, 
+        m2_per_person
     )
     from vctlib.constant import Air_properties_Cp, Air_properties_ro
     from vctlib.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
@@ -277,8 +281,24 @@ def get_ventilation_rate(building: Building) -> pd.DataFrame:
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
-    vent_rate_m3_s = building.min_req_vent_rate * building.floor_area / 1000
-    ventilation_rate = [vent_rate_m3_s] * TOT_HOURS
+    if building.select_vent_rates_calc == SELECT_VENT_RATES_CALC[0] or building.my_min_req_vent_rate is not None: # basecase or custom, constant
+        vent_rate_m3_s = building.min_req_vent_rate * building.floor_area / 1000
+        ventilation_rate = [vent_rate_m3_s] * TOT_HOURS
+    else: #hourly
+        with importlib.resources.open_text("vctlib", 'occ_lgt_apl.json') as f:
+            data = json.load(f)
+            df_occ_lgt_apl = pd.DataFrame(data)
+
+        min_req_vent_rate = (
+            (Qp_comfort_category[building.comfort_requirements]
+            * building.floor_area
+            / m2_per_person[building.bui_type]) * df_occ_lgt_apl['OCC.'+building.bui_type]
+            + Qa_comfort_category[building.comfort_requirements] * building.floor_area
+        ) / building.floor_area
+
+        vent_rate_m3_s = min_req_vent_rate * building.floor_area / 1000
+        ventilation_rate = np.append(vent_rate_m3_s[8016:8760].values, vent_rate_m3_s[0:8760].values)
+
     df["Ventilation rate"] = ventilation_rate
 
     return df
@@ -297,7 +317,7 @@ def calc_free_float_mode(
     Parameters:
         - building obj
         - c_int: # TODO: add description
-        - vent_rate_m3_s: ventilation rate [m³/s]
+        - vent_rate_m3_s: A list with hourly values of ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
         - outdoor_dry_bulb_temp: A list with hourly values of Outdoor dry bulb
@@ -330,7 +350,7 @@ def calc_free_float_mode(
             b_t[0] = (
                 c_int / 3600 * internal_temperature_free_float[0]
                 + (
-                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s
+                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s[0]
                     + building.average_u_value * building.envelope_area
                 )
                 * outdoor_dry_bulb_temp[0]
@@ -340,16 +360,16 @@ def calc_free_float_mode(
             b_t[i] = (
                 c_int / 3600 * internal_temperature_free_float[i - 1]
                 + (
-                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s
+                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s[i]
                     + building.average_u_value * building.envelope_area
                 )
                 * outdoor_dry_bulb_temp[i]
                 + (solar_gains[i] + internal_gains[i]) * building.floor_area
             )
 
-            internal_temperature_free_float[i] = b_t[i] / a_t
+            internal_temperature_free_float[i] = b_t[i] / a_t[i]
 
-    df["At"] = [a_t] * TOT_HOURS
+    df["At"] = a_t
     df["Bt"] = b_t
     df["Internal temperature free float"] = internal_temperature_free_float
     df["Internal temperature calculated"] = internal_temperature_free_float
@@ -373,12 +393,12 @@ def calc_heating_and_cooling_needs_no_vcs(
     Parameters:
         - building obj
         - c_int: # TODO: add description
-        - vent_rate_m3_s: ventilation rate [m³/s]
+        - vent_rate_m3_s: A list with hourly values of ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
         - outdoor_dry_bulb_temp: A list with hourly values of Outdoor dry bulb
             temperature
-        - a_t: value of At
+        - a_t: A list with hourly values of At
         - lower_comfort_zone_limit: A list with hourly values of Lower comfort zone
             limit
         - upper_comfort_zone_limit: A list with hourly values of Upper comfort zone
@@ -407,7 +427,7 @@ def calc_heating_and_cooling_needs_no_vcs(
             bt_no_vcs[0] = (
                 c_int / 3600 * internal_temperature_free_float_no_vcs[0]
                 + (
-                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s
+                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s[0]
                     + building.average_u_value * building.envelope_area
                 )
                 * outdoor_dry_bulb_temp[0]
@@ -418,29 +438,29 @@ def calc_heating_and_cooling_needs_no_vcs(
             bt_no_vcs[i] = (
                 c_int / 3600 * internal_temperature_calc[i - 1]
                 + (
-                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s
+                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s[i]
                     + building.average_u_value * building.envelope_area
                 )
                 * outdoor_dry_bulb_temp[i]
                 + (solar_gains[i] + internal_gains[i]) * building.floor_area
             )
 
-            internal_temperature_free_float_no_vcs[i] = bt_no_vcs[i] / a_t
+            internal_temperature_free_float_no_vcs[i] = bt_no_vcs[i] / a_t[i]
 
         if internal_temperature_free_float_no_vcs[i] < lower_comfort_zone_limit[i]:
-            heating_cooling_load[i] = a_t * lower_comfort_zone_limit[i] - bt_no_vcs[i]
+            heating_cooling_load[i] = a_t[i] * lower_comfort_zone_limit[i] - bt_no_vcs[i]
         elif (
             internal_temperature_free_float_no_vcs[i] >= lower_comfort_zone_limit[i]
             and internal_temperature_free_float_no_vcs[i] <= upper_comfort_zone_limit[i]
         ):
             heating_cooling_load[i] = 0
         elif internal_temperature_free_float_no_vcs[i] > upper_comfort_zone_limit[i]:
-            heating_cooling_load[i] = a_t * upper_comfort_zone_limit[i] - bt_no_vcs[i]
+            heating_cooling_load[i] = a_t[i] * upper_comfort_zone_limit[i] - bt_no_vcs[i]
 
-        internal_temperature_calc[i] = (bt_no_vcs[i] + heating_cooling_load[i]) / a_t
+        internal_temperature_calc[i] = (bt_no_vcs[i] + heating_cooling_load[i]) / a_t[i]
 
-    df["Ventilation rate.1"] = [vent_rate_m3_s] * TOT_HOURS
-    df["At.1"] = [a_t] * TOT_HOURS
+    df["Ventilation rate.1"] = vent_rate_m3_s
+    df["At.1"] = a_t
     df["Bt.1"] = bt_no_vcs
     df["Internal temperature free float.1"] = internal_temperature_free_float_no_vcs
     df["Heating or cooling load"] = heating_cooling_load
@@ -467,12 +487,12 @@ def calc_heating_and_cooling_needs_with_vcs(
 
     Parameters:
         - building obj
-        - vent_rate_m3_s: ventilation rate [m³/s]
+        - vent_rate_m3_s: A list with hourly values of ventilation rate [m³/s]
         - solar_gains: A list with hourly values of solar gains
         - internal_gains: A list with hourly values of internal gains
         - outdoor_dry_bulb_temp: A list with hourly values of Outdoor dry bulb
           temperature
-        - a_t: value of At
+        - a_t: A list with hourly values of At
         - lower_comfort_zone_limit: A list with hourly values of Lower comfort zone
           limit
         - upper_comfort_zone_limit: A list with hourly values of Upper comfort zone
@@ -522,7 +542,7 @@ def calc_heating_and_cooling_needs_with_vcs(
             bt_with_vcs[0] = (
                 c_int / 3600 * int_temp_free_float_with_vcs[0]
                 + (
-                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s
+                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s[0]
                     + building.average_u_value * building.envelope_area
                 )
                 * outdoor_dry_bulb_temp[0]
@@ -533,18 +553,18 @@ def calc_heating_and_cooling_needs_with_vcs(
             bt_with_vcs[i] = (
                 c_int / 3600 * internal_temperature_calc_with_vcs[i - 1]
                 + (
-                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s
+                    Air_properties_Cp * Air_properties_ro * vent_rate_m3_s[i]
                     + building.average_u_value * building.envelope_area
                 )
                 * outdoor_dry_bulb_temp[i]
                 + (solar_gains[i] + internal_gains[i]) * building.floor_area
             )
 
-            int_temp_free_float_with_vcs[i] = bt_with_vcs[i] / a_t
+            int_temp_free_float_with_vcs[i] = bt_with_vcs[i] / a_t[i]
 
         if int_temp_free_float_with_vcs[i] < lower_comfort_zone_limit[i]:
             heating_cooling_load_with_vcs[i] = (
-                a_t * lower_comfort_zone_limit[i] - bt_with_vcs[i]
+                a_t[i] * lower_comfort_zone_limit[i] - bt_with_vcs[i]
             )
         elif (int_temp_free_float_with_vcs[i] >= lower_comfort_zone_limit[i]) and (
             int_temp_free_float_with_vcs[i] < upper_comfort_zone_limit[i]
@@ -552,15 +572,15 @@ def calc_heating_and_cooling_needs_with_vcs(
             heating_cooling_load_with_vcs[i] = 0
         elif int_temp_free_float_with_vcs[i] > upper_comfort_zone_limit[i]:
             heating_cooling_load_with_vcs[i] = (
-                a_t * upper_comfort_zone_limit[i] - bt_with_vcs[i]
+                a_t[i] * upper_comfort_zone_limit[i] - bt_with_vcs[i]
             )
 
         internal_temperature_calc_with_vcs[i] = (
             bt_with_vcs[i] + heating_cooling_load_with_vcs[i]
-        ) / a_t
+        ) / a_t[i]
 
-    df["Ventilation rate without VCS"] = [vent_rate_m3_s] * TOT_HOURS
-    df["At.2"] = [a_t] * TOT_HOURS
+    df["Ventilation rate without VCS"] = vent_rate_m3_s
+    df["At.2"] = a_t
     df["Bt.2"] = bt_with_vcs
     df["Internal temperature free float.2"] = int_temp_free_float_with_vcs
     df['Heating or cooling load "step 2"'] = heating_cooling_load_with_vcs
@@ -601,7 +621,7 @@ def calc_heating_and_cooling_needs_with_vcs(
     for i in range(TOT_HOURS):
         if vc_mode[i] == 2:
             required_cooling_vent_rate[i] = (
-                bt_with_vcs[i] - a_t * upper_comfort_zone_limit[i]
+                bt_with_vcs[i] - a_t[i] * upper_comfort_zone_limit[i]
             ) / (
                 Air_properties_Cp
                 * Air_properties_ro
@@ -613,9 +633,9 @@ def calc_heating_and_cooling_needs_with_vcs(
     actual_ventilation_rate = [None] * TOT_HOURS
     for i in range(TOT_HOURS):
         if vc_mode[i] == 2:
-            actual_ventilation_rate[i] = required_cooling_vent_rate[i] + vent_rate_m3_s
+            actual_ventilation_rate[i] = required_cooling_vent_rate[i] + vent_rate_m3_s[i]
         else:
-            actual_ventilation_rate[i] = vent_rate_m3_s
+            actual_ventilation_rate[i] = vent_rate_m3_s[i]
 
     a_vcs_t = [None] * TOT_HOURS
     for i in range(TOT_HOURS):
@@ -728,7 +748,7 @@ def run_vct_simulation(
     ###############################################################
     #           FREE FLOAT MODE (1st SET OF CALCULATIONS)
     ###############################################################
-    vent_rate_m3_s = df["Ventilation rate"][0]
+    vent_rate_m3_s = df["Ventilation rate"].values
     solar_gains = df["Solar gains"].values
     internal_gains = df["Internal gains"].values
     outdoor_dry_bulb_temp = df["Outdoor dry-bulb temperature"].values
@@ -749,7 +769,7 @@ def run_vct_simulation(
     ###############################################################
     #  HEATING AND COOLING NEEDS, NO VCS (2nd SET OF CALCULATIONS)
     ###############################################################
-    a_t = df["At"][0]
+    a_t = df["At"].values
     lower_comfort_zone_limit = df["Lower comfort zone limit"].values
     upper_comfort_zone_limit = df["Upper comfort zone limit"].values
 

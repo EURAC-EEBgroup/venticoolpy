@@ -18,6 +18,7 @@ CONSTRUCTION_MASS = ["heavy", "light", "medium"]
 VENT_RATES_MU = ["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"]
 
 SELECT_INTERNAL_GAINS = ["basecase", "of_bui_type"]
+SELECT_VENT_RATES_CALC = ["constant", "hourly"]
 
 
 Tmax_K1 = dict(zip(BUILDING_TYPE, [25.5, 25.5, 25.5, 25.5, 25.5, 25.5, 25.5, 25]))

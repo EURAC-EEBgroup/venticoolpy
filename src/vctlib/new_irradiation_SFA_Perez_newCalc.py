@@ -82,7 +82,8 @@ def get_climate_data_w_vert_irrad_from_epw(filename, orientation='S'):
         dni = df_dni,
         ghi = df_ghi,
         dhi = df_dhi,
-        dni_extra = df_extra_dni
+        dni_extra = df_extra_dni,
+        model='perez'
     )
 
     vertical_irradiance = (

@@ -7,7 +7,7 @@ import re
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_interval
 
-from vctlib.model import Building, ClimateData, ThermostaticalProperties
+from vctlib.model import Building, ClimateData, ThermostaticalProperties, SELECT_VENT_RATES_CALC
 
 
 def get_appartment_bld_climate_data() -> ClimateData:
@@ -54,7 +54,8 @@ def get_appartment_building(thermophys_prop: ThermostaticalProperties) -> Buildi
         time_control_off=24,
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
-        select_internal_gains='basecase'
+        select_internal_gains='basecase',
+        select_vent_rates_calc=SELECT_VENT_RATES_CALC[0]
     )
     return building
 
@@ -104,6 +105,7 @@ def load_data_from_VCdesign(filename):
         time_control_off=sh["C33"].value,
         ti_hsp_day_start=7,
         ti_hsp_night_start=24,
+        select_vent_rates_calc=SELECT_VENT_RATES_CALC[0]
     )
 
     # load Results

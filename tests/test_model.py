@@ -4,14 +4,14 @@ import pytest
 
 try:
     from vctlib.model import Building, ThermostaticalProperties, BuildingCreateException
-    from vctlib.constant import VENT_RATES_MU
+    from vctlib.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
 
 except ModuleNotFoundError:  # TODO: remove try-except
     import sys
 
     sys.path.insert(1, "/home/osomova/Projects/vct/vctlib/src")
     from vctlib.model import Building, ThermostaticalProperties, BuildingCreateException
-    from vctlib.constant import VENT_RATES_MU
+    from vctlib.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
 
 __author__ = "OlgaSomova"
 __copyright__ = "OlgaSomova"
@@ -36,6 +36,7 @@ def test_inputs_model(snapshot):
         shading_factor=0,
         time_control_on=0,
         time_control_off=24,
+        select_vent_rates_calc=SELECT_VENT_RATES_CALC[0]
     )
 
     snapshot.assert_match(str(inputs.__dict__), "inputs.yml")

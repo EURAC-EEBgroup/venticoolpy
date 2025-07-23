@@ -87,6 +87,7 @@ def get_climate_data_w_vert_irrad_from_epw(filename, orientation='S'):
         model='perez'
     )
 
+    total_irradiance = total_irradiance.fillna(0)
     vertical_irradiance = (
         total_irradiance['poa_direct'] + 
         total_irradiance['poa_sky_diffuse']  
@@ -167,6 +168,7 @@ def get_climate_data_w_vert_irrad_from_csv(filename, orientation='S'):
         # model='perez'
     )
 
+    total_irradiance = total_irradiance.fillna(0)
     vertical_irradiance = (
         total_irradiance['poa_direct'] + 
         total_irradiance['poa_sky_diffuse']  

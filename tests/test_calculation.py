@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from vctlib.calculation import (
+from venticoolpy.calculation import (
     run_vct_simulation,
     get_climate_data_from_epw,
     get_climate_data_from_csv,
@@ -11,6 +11,9 @@ from vctlib.calculation import (
     get_requirend_frequency_air_change_rate,
     get_annual_data,
 )
+from venticoolpy.model import Building, ClimateData
+from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_vert_irrad_from_epw, get_climate_data_w_vert_irrad_from_csv
+
 from inputs.functions import (
     get_appartment_bld_climate_data, 
     get_appartment_bld_thermophys_props, 
@@ -19,6 +22,7 @@ from inputs.functions import (
 )
 
 
+    
 __author__ = "OlgaSomova"
 __copyright__ = "OlgaSomova"
 __license__ = "MIT"
@@ -37,7 +41,7 @@ def compare_dataframes(df1: pd.DataFrame, df2: pd.DataFrame):
 
 
 def test_get_climate_data_from_epw(snapshot):
-    filename = "src/vctlib/temp_data/ITA_Bolzano.160200_IGDG.epw"
+    filename = "tests/inputs/data/ITA_Bolzano.160200_IGDG.epw"
     climate_data = get_climate_data_from_epw(filename)
 
     result = str(climate_data.__dict__)
@@ -45,7 +49,7 @@ def test_get_climate_data_from_epw(snapshot):
 
 
 def test_get_climate_data_from_csv(snapshot):
-    filename = "src/vctlib/temp_data/tmy_46.501_11.362_2005_2020.csv"
+    filename = "tests/inputs/data/tmy_46.501_11.362_2005_2020.csv"
     climate_data = get_climate_data_from_csv(filename)
 
     result = str(climate_data.__dict__)
@@ -202,3 +206,40 @@ def test_Simulation_VCdesign_Example61():
 def test_Simulation_VCdesign_Example62():
     filename = "tests/inputs/data/VCdesign_Example62.xlsm"
     run_test_building_example(filename)
+
+
+
+# new irradiation calculation:
+
+# TODO: add new unit tests
+
+def test_simulation_dummy(snapshot):
+    building = Building(
+        bui_type="Apartment building",
+        celing_to_floor_height=2.7,
+        envelope_area=171.60,
+        floor_area=48.00,
+        fenestration_area=12.00,
+        comfort_requirements="category II",
+        max_outdoor_rel_hum_accepted=85,
+        u_value_opaque=0.315822914673981,
+        u_value_fen=2.984,
+        construction_mass="medium",
+        g_value_glazing_sys=0.71,
+        shading_control_setpoint=120,
+        shading_factor=0,
+        time_control_on=0,
+        time_control_off=24,
+    )
+     
+    climate_filename = 'tests/inputs/data/climate/4A_London_TMY_2001-2020.epw'
+    climate_data = get_climate_data_w_vert_irrad_from_epw(climate_filename, "SW")
+
+    df = run_vct_simulation(building, climate_data)
+    df_vent_mode = get_vent_mode_over_year(df[744:])
+    df_freq_air_change = get_requirend_frequency_air_change_rate(df[744:], building)
+    df_annual_data = get_annual_data(df[744:])
+
+    snapshot.assert_match(df_vent_mode.to_json(), "test_simulation_dummy_df_vent_mode.yml")
+    snapshot.assert_match(df_freq_air_change.to_json(), "test_simulation_dummy_df_freq_air_change.yml")
+    snapshot.assert_match(df_annual_data.to_json(), "test_simulation_dummy_df_annual_data.yml")

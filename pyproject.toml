@@ -1,9 +1,58 @@
+[project]
+name = "venticoolpy"
+dynamic = ["version"]
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Olga Somova", email = "osomova@eurac.edu" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "epw>=1.2.dev2",
+    "numpy>=2.3.3",
+    "pandas>=2.3.3",
+    "pvlib>=0.13.1",
+]
+
+[project.scripts]
+venticoolpy = "venticoolpy:main"
+
 [build-system]
-# AVOID CHANGING REQUIRES: IT WILL BE UPDATED BY PYSCAFFOLD!
-requires = ["setuptools>=46.1.0", "setuptools_scm[toml]>=5"]
 build-backend = "setuptools.build_meta"
+requires = ["setuptools-scm>=8", "setuptools>=64"]
+
+
+[tool.setuptools.package-data]
+venticoolpy = ["data/*.csv"]
+
+
+[tool.setuptools.packages.find]
+exclude = ["docs*", "test*"]
+include = ["venticoolpy*"]
+where = ["src"]
+
+
+[dependency-groups]
+dev = [
+    "setuptools-scm>=9.2.0",
+    "tox>=4.30.3",
+]
+test = [
+    "openpyxl>=3.1.5",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "pytest-snapshot>=0.9.0",
+    "setuptools>=80.9.0",
+]
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+omit = [
+    '.tox/*',
+    'tests/*',
+]
 
 [tool.setuptools_scm]
-# For smarter version schemes and other configuration options,
-# check out https://github.com/pypa/setuptools_scm
-version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
+write_to = "src/venticoolpy/_version.py"

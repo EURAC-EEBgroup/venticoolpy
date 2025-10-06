@@ -2,16 +2,9 @@
 
 import pytest
 
-try:
-    from vctlib.model import Building, ThermostaticalProperties, BuildingCreateException
-    from vctlib.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
+from venticoolpy.model import Building, ThermostaticalProperties, BuildingCreateException
+from venticoolpy.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
 
-except ModuleNotFoundError:  # TODO: remove try-except
-    import sys
-
-    sys.path.insert(1, "/home/osomova/Projects/vct/vctlib/src")
-    from vctlib.model import Building, ThermostaticalProperties, BuildingCreateException
-    from vctlib.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
 
 __author__ = "OlgaSomova"
 __copyright__ = "OlgaSomova"

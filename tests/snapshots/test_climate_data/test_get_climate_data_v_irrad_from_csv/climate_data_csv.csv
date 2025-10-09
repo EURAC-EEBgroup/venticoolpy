@@ -11080,7 +11080,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,146.0
 ,,107.5
 ,,47.0
-,,44.95478486096229
+,,44.95478486096225
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11128,7 +11128,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,49.0
 ,,59.0
 ,,21.0
-,,23.016030160086334
+,,23.016030160086324
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11152,7 +11152,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,27.0
 ,,37.0
 ,,48.0
-,,59.89113788706335
+,,59.891137887063294
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11176,7 +11176,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,139.5
 ,,95.0
 ,,42.5
-,,20.868627145338138
+,,20.868627145338134
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11344,7 +11344,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,89.0
 ,,53.0
 ,,70.5
-,,32.05728020109216
+,,32.057280201092155
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11367,7 +11367,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,153.5
 ,,147.0
 ,,115.0
-,,75.2144443993225
+,,75.21444439932246
 ,,78.25370368523406
 ,,0.0
 ,,0.0
@@ -11439,8 +11439,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,183.5
 ,,154.5
 ,,120.5
-,,80.17420072283012
-,,90.8961080066328
+,,80.17420072283008
+,,90.89610800663274
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11463,7 +11463,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,183.0
 ,,96.0
 ,,118.0
-,,68.99771112504052
+,,68.99771112504041
 ,,40.030476205036706
 ,,0.0
 ,,0.0
@@ -11487,7 +11487,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,191.0
 ,,149.5
 ,,123.0
-,,65.16145489850543
+,,65.1614548985053
 ,,132.23814581917912
 ,,0.0
 ,,0.0
@@ -11511,7 +11511,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,131.5
 ,,157.5
 ,,117.0
-,,71.42570571218162
+,,71.42570571218161
 ,,99.0772207220683
 ,,0.0
 ,,0.0
@@ -11584,7 +11584,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,90.0
 ,,102.0
 ,,80.36956768157374
-,,86.97102680385035
+,,86.9710268038503
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11703,7 +11703,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,132.5
 ,,76.0
 ,,72.5
-,,88.9436029103642
+,,88.94360291036477
 ,,137.52585601208975
 ,,0.0
 ,,0.0
@@ -11751,7 +11751,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,71.0
 ,,67.0
 ,,60.0
-,,94.7148396753754
+,,94.71483967537539
 ,,140.34558813494831
 ,,0.0
 ,,0.0
@@ -11775,8 +11775,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,67.0
 ,,64.0
 ,,63.0
-,,97.75321213204043
-,,141.84358255023082
+,,97.75321213204086
+,,141.84358255023074
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11799,8 +11799,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,67.0
 ,,80.0
 ,,88.5
-,,101.56116710641868
-,,109.97285268381259
+,,101.56116710641855
+,,109.97285268381253
 ,,0.0
 ,,0.0
 ,,0.0
@@ -11872,7 +11872,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,89.5
 ,,129.0
 ,,110.87836222146532
-,,63.9185028534577
+,,63.918502853457674
 ,,6.5
 ,,0.0
 ,,0.0
@@ -11895,7 +11895,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,188.0
 ,,149.5
 ,,103.5
-,,109.03642503749055
+,,109.03642503749039
 ,,112.77787942801523
 ,,7.5
 ,,0.0
@@ -12015,7 +12015,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,118.0
 ,,170.5
 ,,124.0
-,,121.00024994538839
+,,121.00024994538825
 ,,185.60836222998074
 ,,10.5
 ,,0.0
@@ -12124,7 +12124,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,4.5
-,,61.94330266170905
+,,61.943302661709026
 ,,93.79219880659356
 ,,101.0
 ,,71.5
@@ -12135,7 +12135,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,164.5
 ,,138.0
 ,,61.5
-,,129.4290755908634
+,,129.42907559086322
 ,,209.15751280453134
 ,,13.0
 ,,0.0
@@ -12148,7 +12148,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,14.0
-,,122.18954540835762
+,,122.18954540835752
 ,,64.81908047575462
 ,,67.0
 ,,71.5
@@ -12172,8 +12172,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,15.0
-,,89.37395802238056
-,,55.380331823707536
+,,89.37395802238052
+,,55.38033182370737
 ,,56.5
 ,,60.5
 ,,62.5
@@ -12232,7 +12232,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,61.0
 ,,59.5
 ,,137.8544993408753
-,,190.62940037032416
+,,190.62940037032405
 ,,16.0
 ,,0.0
 ,,0.0
@@ -12256,7 +12256,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,168.0
 ,,106.0
 ,,39.5
-,,103.01499496505804
+,,103.01499496505801
 ,,16.5
 ,,0.0
 ,,0.0
@@ -12352,7 +12352,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,57.5
 ,,98.5
 ,,134.1166611234121
-,,196.4962920085693
+,,196.49629200856918
 ,,18.5
 ,,0.0
 ,,0.0
@@ -12375,8 +12375,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,120.5
 ,,122.0
 ,,144.5
-,,141.02091360140057
-,,116.51380502172438
+,,141.02091360140048
+,,116.51380502172434
 ,,14.5
 ,,0.0
 ,,0.0
@@ -12484,7 +12484,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,19.0
-,,149.2335226827899
+,,149.23352268278978
 ,,83.58579365578716
 ,,59.0
 ,,66.5
@@ -12496,7 +12496,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,90.5
 ,,67.5
 ,,148.68040477043363
-,,220.34219747589512
+,,220.34219747589498
 ,,19.0
 ,,0.0
 ,,0.0
@@ -12520,7 +12520,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,166.5
 ,,141.5
 ,,92.10329020401433
-,,92.11783673519652
+,,92.1178367351965
 ,,22.0
 ,,0.0
 ,,0.0
@@ -12533,7 +12533,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,17.5
 ,,47.88488244813541
-,,107.03590584902375
+,,107.03590584902359
 ,,127.5
 ,,160.5
 ,,194.5
@@ -12615,7 +12615,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,64.0
 ,,170.5
 ,,143.5
-,,83.74367327063328
+,,83.74367327063327
 ,,47.6523363519809
 ,,5.5
 ,,0.0
@@ -12677,7 +12677,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,17.5
 ,,162.6089179898862
-,,89.17042004474055
+,,89.17042004474041
 ,,91.5
 ,,122.0
 ,,82.0
@@ -12711,7 +12711,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,159.0
 ,,153.0
 ,,113.5
-,,150.2214205295876
+,,150.22142052958748
 ,,215.12948752816862
 ,,22.5
 ,,0.0
@@ -12724,7 +12724,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,20.0
-,,143.8741271588064
+,,143.87412715880632
 ,,97.65629665431271
 ,,61.5
 ,,66.0
@@ -12772,8 +12772,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,20.5
-,,143.38080943827765
-,,97.98743189766722
+,,143.38080943827754
+,,97.98743189766708
 ,,61.5
 ,,66.5
 ,,69.0
@@ -12796,8 +12796,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,20.0
-,,156.1024590766824
-,,96.60639346884442
+,,156.1024590766823
+,,96.60639346884427
 ,,64.0
 ,,73.5
 ,,73.5
@@ -12831,8 +12831,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,73.5
 ,,78.0
 ,,78.5
-,,152.11783117160596
-,,192.2246232034763
+,,152.11783117160593
+,,192.22462320347626
 ,,26.0
 ,,0.0
 ,,0.0
@@ -12845,7 +12845,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,15.5
 ,,56.97035238293783
-,,107.34651068926297
+,,107.34651068926287
 ,,103.5
 ,,121.5
 ,,120.5
@@ -12855,8 +12855,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,149.5
 ,,33.5
 ,,32.5
-,,151.00335384722717
-,,181.73196572001183
+,,151.00335384722706
+,,181.73196572001171
 ,,25.0
 ,,0.0
 ,,0.0
@@ -12916,7 +12916,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,18.0
-,,63.0229592085265
+,,63.022959208526494
 ,,17.5
 ,,76.0
 ,,164.5
@@ -12941,7 +12941,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,19.0
 ,,115.16131226119823
-,,100.15151568341008
+,,100.15151568340995
 ,,73.5
 ,,83.0
 ,,161.5
@@ -12976,7 +12976,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,180.5
 ,,141.0
 ,,149.76707750646796
-,,141.15148004156327
+,,141.15148004156316
 ,,24.0
 ,,0.0
 ,,0.0
@@ -12989,7 +12989,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,19.0
 ,,50.01341649285037
-,,107.40921953379114
+,,107.40921953379103
 ,,76.0
 ,,150.0
 ,,197.0
@@ -13000,7 +13000,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,124.5
 ,,124.0
 ,,148.6965120808556
-,,116.56238458162947
+,,116.56238458162943
 ,,25.5
 ,,0.0
 ,,0.0
@@ -13084,7 +13084,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,12.0
-,,66.02798712742427
+,,66.02798712742425
 ,,107.76177527052646
 ,,87.5
 ,,83.0
@@ -13096,7 +13096,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,70.5
 ,,71.0
 ,,146.09281032731963
-,,194.62013720914308
+,,194.62013720914302
 ,,26.0
 ,,0.0
 ,,0.0
@@ -13109,7 +13109,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,5.5
 ,,107.65351393143322
-,,100.30000518500546
+,,100.30000518500522
 ,,79.5
 ,,85.5
 ,,92.5
@@ -13144,7 +13144,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,66.0
 ,,30.0
 ,,142.98024775143966
-,,201.36608733343974
+,,201.36608733343962
 ,,19.5
 ,,0.0
 ,,0.0
@@ -13180,7 +13180,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,16.5
-,,87.57678561394192
+,,87.5767856139419
 ,,93.18637901998501
 ,,60.0
 ,,68.5
@@ -13204,8 +13204,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,16.5
-,,162.66538031668674
-,,90.11698932515081
+,,162.66538031668662
+,,90.11698932515066
 ,,60.0
 ,,61.5
 ,,67.5
@@ -13252,7 +13252,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,16.0
-,,146.6288942738156
+,,146.6288942738155
 ,,99.0093448282214
 ,,65.0
 ,,72.0
@@ -13263,7 +13263,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,207.5
 ,,33.0
 ,,127.5
-,,122.4785177559016
+,,122.47851775590148
 ,,46.47417323625335
 ,,23.5
 ,,0.0
@@ -13276,7 +13276,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,15.5
-,,163.36284182851998
+,,163.36284182851983
 ,,102.46227207553001
 ,,133.5
 ,,162.5
@@ -13287,8 +13287,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,187.0
 ,,161.0
 ,,80.0
-,,134.82970792839245
-,,143.46416587163714
+,,134.8297079283923
+,,143.46416587163708
 ,,25.5
 ,,0.0
 ,,0.0
@@ -13300,7 +13300,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,2.5
-,,55.78882701849332
+,,55.78882701849331
 ,,95.68231404576754
 ,,125.5
 ,,161.0
@@ -13348,8 +13348,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,2.5
-,,46.208189162881105
-,,100.46050069798918
+,,46.20818916288109
+,,100.46050069798909
 ,,122.5
 ,,107.5
 ,,184.5
@@ -13383,7 +13383,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,47.5
 ,,101.5
 ,,77.5
-,,133.2516426842009
+,,133.25164268420082
 ,,115.80058207706337
 ,,24.5
 ,,0.0
@@ -13420,7 +13420,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,12.5
-,,145.4721251877224
+,,145.47212518772233
 ,,80.9967444668463
 ,,59.0
 ,,67.5
@@ -13432,7 +13432,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,146.5
 ,,84.0
 ,,132.88079390321815
-,,101.7279931057858
+,,101.72799310578577
 ,,24.5
 ,,0.0
 ,,0.0
@@ -13469,7 +13469,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,12.0
 ,,138.0291224830053
-,,79.83339942599758
+,,79.83339942599743
 ,,58.5
 ,,71.0
 ,,75.5
@@ -13647,8 +13647,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,72.5
 ,,73.0
 ,,64.0
-,,110.93653941348148
-,,164.87048785699835
+,,110.93653941348134
+,,164.87048785699824
 ,,19.5
 ,,0.0
 ,,0.0
@@ -13661,7 +13661,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,3.5
 ,,43.5
-,,82.2206124001244
+,,82.22061240012431
 ,,76.5
 ,,78.0
 ,,76.0
@@ -13696,7 +13696,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,171.0
 ,,114.5
 ,,100.53479968854386
-,,49.75594607512402
+,,49.75594607512403
 ,,13.0
 ,,0.0
 ,,0.0
@@ -13733,7 +13733,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,2.0
 ,,40.0
-,,72.81881039351012
+,,72.81881039351
 ,,65.5
 ,,74.0
 ,,118.0
@@ -13805,7 +13805,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,34.0
-,,58.20437194703351
+,,58.20437194703338
 ,,99.5
 ,,160.5
 ,,90.0
@@ -13853,7 +13853,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,0.0
 ,,0.0
 ,,27.5
-,,80.01578282516603
+,,80.01578282516579
 ,,66.0
 ,,64.0
 ,,59.5
@@ -13888,7 +13888,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,109.5
 ,,137.5
 ,,89.65490656280137
-,,51.65157485071374
+,,51.651574850713736
 ,,12.0
 ,,0.0
 ,,0.0
@@ -13911,8 +13911,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,118.0
 ,,155.0
 ,,64.5
-,,85.61853802560921
-,,171.51962772884127
+,,85.61853802560904
+,,171.5196277288418
 ,,12.5
 ,,0.0
 ,,0.0
@@ -13960,7 +13960,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,62.0
 ,,59.5
 ,,80.78040470328742
-,,153.9059817216106
+,,153.9059817216105
 ,,11.5
 ,,0.0
 ,,0.0
@@ -13984,7 +13984,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,68.5
 ,,66.5
 ,,101.17322275089637
-,,163.39511581842663
+,,163.39511581842652
 ,,11.0
 ,,0.0
 ,,0.0
@@ -14128,7 +14128,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,71.0
 ,,63.0
 ,,66.34396878882195
-,,126.3319708276597
+,,126.3319708276596
 ,,6.5
 ,,0.0
 ,,0.0
@@ -14151,7 +14151,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,125.0
 ,,55.0
 ,,49.5
-,,84.34328435146061
+,,84.3432843514606
 ,,58.62935226027158
 ,,5.5
 ,,0.0
@@ -14223,8 +14223,8 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,89.5
 ,,76.0
 ,,88.0
-,,65.64052227467411
-,,109.17287173383181
+,,65.640522274674
+,,109.17287173383173
 ,,0.0
 ,,0.0
 ,,0.0
@@ -14272,7 +14272,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,155.5
 ,,90.0
 ,,62.50260344212595
-,,89.08916209239047
+,,89.08916209239041
 ,,0.0
 ,,0.0
 ,,0.0
@@ -14320,7 +14320,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,85.0
 ,,40.5
 ,,31.0
-,,37.148885209268194
+,,37.14888520926819
 ,,0.0
 ,,0.0
 ,,0.0
@@ -14416,7 +14416,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,133.5
 ,,87.5
 ,,53.5
-,,80.183591352369
+,,80.18359135236886
 ,,0.0
 ,,0.0
 ,,0.0
@@ -14440,7 +14440,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,66.0
 ,,60.0
 ,,45.5
-,,90.50791538490057
+,,90.50791538490049
 ,,0.0
 ,,0.0
 ,,0.0
@@ -14512,7 +14512,7 @@ df_outdoor_dry_bulb_temperature,df_relative_humidity_outdoor_air,df_isol_tot
 ,,113.5
 ,,65.5
 ,,22.5
-,,23.794364507707364
+,,23.79436450770736
 ,,0.0
 ,,0.0
 ,,0.0

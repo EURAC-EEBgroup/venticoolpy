@@ -213,8 +213,8 @@ class Building(object):
         shading_factor,
         time_control_on,
         time_control_off,
-        ti_hsp_day_start=7,
-        ti_hsp_night_start=23,
+        ti_day_start=7,
+        ti_night_start=23,
         my_min_req_vent_rate=None, 
         my_vent_rates_mu=VENT_RATES_MU[0],
         my_lighting_power_density=None,
@@ -223,7 +223,9 @@ class Building(object):
         my_c_tot=None, # TODO: remove
         my_c_int=None,
         select_internal_gains=SELECT_INTERNAL_GAINS[1],
-        select_vent_rates_calc=SELECT_VENT_RATES_CALC[1]
+        select_vent_rates_calc=SELECT_VENT_RATES_CALC[1],
+        ti_hsb=15,
+        ti_csb=50
     ):
         """Collect all data needed for the simulation."""
         self.bui_type = bui_type
@@ -242,8 +244,8 @@ class Building(object):
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
 
-        self.ti_hsp_day_start = ti_hsp_day_start  # TODO: remove
-        self.ti_hsp_night_start = ti_hsp_night_start  # TODO: remove
+        self.ti_day_start = ti_day_start  
+        self.ti_night_start = ti_night_start  
         self.my_min_req_vent_rate=my_min_req_vent_rate
         self.my_vent_rates_mu = my_vent_rates_mu 
         self.my_lighting_power_density=my_lighting_power_density
@@ -253,6 +255,8 @@ class Building(object):
         self.my_c_int=my_c_int
         self.select_internal_gains = select_internal_gains
         self.select_vent_rates_calc = select_vent_rates_calc
+        self.ti_hsb = ti_hsb
+        self.ti_csb = ti_csb
 
         if (
             bui_type not in BUILDING_TYPE

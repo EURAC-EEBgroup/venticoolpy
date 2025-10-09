@@ -17,7 +17,7 @@ def test_get_climate_data_from_epw(snapshot):
     climate_data = get_climate_data_from_epw(filename)
 
     df = pd.DataFrame(climate_data.__dict__)
-    csv_str = df.to_csv(index=False)
+    csv_str = df.to_csv(index=False, lineterminator="\n")
 
     snapshot.assert_match(csv_str, "climate_data_epw.csv")
 
@@ -27,7 +27,7 @@ def test_get_climate_data_from_csv(snapshot):
     climate_data = get_climate_data_from_csv(filename)
 
     df = pd.DataFrame(climate_data.__dict__)
-    csv_str = df.to_csv(index=False)
+    csv_str = df.to_csv(index=False, lineterminator="\n")
 
     snapshot.assert_match(csv_str, "climate_data_csv.csv")
 
@@ -37,7 +37,7 @@ def test_get_climate_data_v_irrad_from_epw(snapshot):
     climate_data = get_climate_data_w_vert_irrad_from_epw(filename, "N")
 
     df = pd.DataFrame(climate_data.__dict__)
-    csv_str = df.to_csv(index=False)
+    csv_str = df.to_csv(index=False, lineterminator="\n")
 
     snapshot.assert_match(csv_str, "climate_data_epw.csv")
 
@@ -48,6 +48,6 @@ def test_get_climate_data_v_irrad_from_csv(snapshot):
     climate_data = get_climate_data_w_vert_irrad_from_csv(filename, "N")
 
     df = pd.DataFrame(climate_data.__dict__)
-    csv_str = df.to_csv(index=False)
+    csv_str = df.to_csv(index=False, lineterminator="\n")
 
     snapshot.assert_match(csv_str, "climate_data_csv.csv")

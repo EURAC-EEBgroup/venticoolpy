@@ -69,10 +69,10 @@ def test_snapshot_building_simulation(snapshot):
     df_freq_air_chg = get_requirend_frequency_air_change_rate(df[744:], building)
     df_year = get_annual_data(df[744:])
 
-    csv_df_december = df.tail(744).to_csv()
-    csv_df_vent_mode = df_vent_mode.to_csv()
-    csv_df_freq_air_chg = df_freq_air_chg.to_csv()
-    csv_df_year = df_year.to_csv()
+    csv_df_december = df.tail(744).to_csv(lineterminator="\n")
+    csv_df_vent_mode = df_vent_mode.to_csv(lineterminator="\n")
+    csv_df_freq_air_chg = df_freq_air_chg.to_csv(lineterminator="\n")
+    csv_df_year = df_year.to_csv(lineterminator="\n")
 
     # TODO: add also 1 year simulation?
     snapshot.assert_match(csv_df_december, "simulation_december.csv")
@@ -101,10 +101,10 @@ def run_test_building_example(filename, snapshot):
     df_freq_air_change = get_requirend_frequency_air_change_rate(df[744:], inputs)
     df_annual_data = get_annual_data(df[744:])
 
-    csv_df_december = df.tail(744).to_csv()
-    csv_df_vent_mode = df_vent_mode.to_csv()
-    csv_df_freq_air_chg = df_freq_air_change.to_csv()
-    csv_df_year = df_annual_data.to_csv()
+    csv_df_december = df.tail(744).to_csv(lineterminator="\n")
+    csv_df_vent_mode = df_vent_mode.to_csv(lineterminator="\n")
+    csv_df_freq_air_chg = df_freq_air_change.to_csv(lineterminator="\n")
+    csv_df_year = df_annual_data.to_csv(lineterminator="\n")
 
     snapshot.assert_match(csv_df_december, "simulation_december.csv")
     snapshot.assert_match(csv_df_vent_mode, "vent_mode_over_year.csv")

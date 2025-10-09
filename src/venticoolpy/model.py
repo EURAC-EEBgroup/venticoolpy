@@ -134,14 +134,14 @@ class Building(object):
     Time control off; toff; min 0, max 24.
 
     es: from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
-    - ti_hsp_day_start (integer; optional):  
+    - ti_day_start (integer; optional):  
         default 7:00
         TODO: add description
 
-    - ti_hsp_night_start (integer; optional):  
+    - ti_night_start (integer; optional):  
         default 23:00
         TODO: add description
-        NB! error in excel formula: ti_hsp_night_start = 24
+        NB! error in excel formula: ti_night_start = 24
 
     - TODO: add orientation (N, NE, E, SE, S, SW, W, NW)
 

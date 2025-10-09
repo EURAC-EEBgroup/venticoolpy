@@ -56,8 +56,8 @@ def test_snapshot_building_simulation(snapshot):
         shading_factor=0,
         time_control_on=0,
         time_control_off=24,
-        ti_hsp_day_start=7,
-        ti_hsp_night_start=24,
+        ti_day_start=7,
+        ti_night_start=24,
         select_internal_gains='basecase',
         select_vent_rates_calc="constant",
         my_c_int=15959951.712000001

@@ -99,8 +99,8 @@ building = Building(
     shading_factor=0,
     time_control_on=0,
     time_control_off=24,
-    ti_hsp_day_start=7,
-    ti_hsp_night_start=24,
+    ti_day_start=7,
+    ti_night_start=24,
 )
 
 df_with_calibration_month = run_vct_simulation(building, climate_data)

@@ -52,8 +52,8 @@ def get_appartment_building(thermophys_prop: ThermostaticalProperties) -> Buildi
         shading_factor=0,
         time_control_on=0,
         time_control_off=24,
-        ti_hsp_day_start=7,
-        ti_hsp_night_start=24,
+        ti_day_start=7,
+        ti_night_start=24,
         select_internal_gains='basecase',
         select_vent_rates_calc=SELECT_VENT_RATES_CALC[0]
     )
@@ -103,8 +103,8 @@ def load_data_from_VCdesign(filename):
         # vent_rates_mu=sh["D24"].value,
         time_control_on=sh["C32"].value,
         time_control_off=sh["C33"].value,
-        ti_hsp_day_start=7,
-        ti_hsp_night_start=24,
+        ti_day_start=7,
+        ti_night_start=24,
         select_vent_rates_calc=SELECT_VENT_RATES_CALC[0]
     )
 

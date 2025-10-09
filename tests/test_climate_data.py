@@ -8,7 +8,7 @@ from venticoolpy.calculation import (
     get_climate_data_from_csv,
 )
 from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_vert_irrad_from_epw, get_climate_data_w_vert_irrad_from_csv
-
+from venticoolpy.new_irradiation_SFA_Perez_newCalc import ORIENTATION_AZIMUTH
 
 
 
@@ -41,6 +41,28 @@ def test_get_climate_data_v_irrad_from_epw(snapshot):
 
     snapshot.assert_match(csv_str, "climate_data_epw.csv")
 
+
+def test_get_climate_data_Helsinki_epw(snapshot):
+    filename = "tests/inputs/data/climate/FI-Helsinki-Airport-29740TM2.epw"
+    for ori in ORIENTATION_AZIMUTH.keys():
+        climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
+
+        df = pd.DataFrame(climate_data.__dict__)
+        csv_str = df.to_csv(index=False, lineterminator="\n")
+
+        snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
+
+
+
+def test_get_climate_data_Stuttgart_epw(snapshot):
+    filename = "tests/inputs/data/climate/DEU_BW_Stuttgart.AP.107380_TMYx.2009-2023.epw"
+    for ori in ORIENTATION_AZIMUTH.keys():
+        climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
+
+        df = pd.DataFrame(climate_data.__dict__)
+        csv_str = df.to_csv(index=False, lineterminator="\n")
+
+        snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
 
 def test_get_climate_data_v_irrad_from_csv(snapshot):

@@ -14,7 +14,7 @@ from venticoolpy.calculation import (
     get_annual_data,
 )
 from venticoolpy.model import Building, ClimateData
-from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_vert_irrad_from_epw, get_climate_data_w_vert_irrad_from_csv
+from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_vert_irrad_from_epw
 
 from inputs.functions import (
     get_appartment_bld_climate_data, 

@@ -881,20 +881,16 @@ def get_requirend_frequency_air_change_rate(df_sim: pd.DataFrame, building: Buil
 
 def get_annual_data(df_sim: pd.DataFrame):
     """
-    Heating no VCP [kWh]
+    Heating [kWh]
     Cooling no VCP [kWh]
-    Heating VCP [kWh]
     Cooling VCP [kWh]
-    Top,actual temperature [°C]
     """
 
     df = pd.DataFrame(index=range(1, 13))
     cols = [
-        "Heating no VCP",
+        "Heating",
         "Cooling no VCP",
-        "Heating VCP",
         "Cooling VCP",
-        "Top,actual temperature",
     ]
     df[cols] = pd.DataFrame([[None] * len(cols)], index=df.index)
 
@@ -905,7 +901,7 @@ def get_annual_data(df_sim: pd.DataFrame):
             ]["Heating or cooling load"].sum()
             / 1000
         )
-        df.loc[i, "Heating no VCP"] = value
+        df.loc[i, "Heating"] = value
 
         value = (
             df_sim.loc[
@@ -917,24 +913,11 @@ def get_annual_data(df_sim: pd.DataFrame):
 
         value = (
             df_sim.loc[
-                (df_sim["Month"] == i) & (df_sim["Heating or cooling load.1"] > 0)
-            ]["Heating or cooling load.1"].sum()
-            / 1000
-        )
-        df.loc[i, "Heating VCP"] = value
-
-        value = (
-            df_sim.loc[
                 (df_sim["Month"] == i) & (df_sim["Heating or cooling load.1"] < 0)
             ]["Heating or cooling load.1"].sum()
             / 1000
         )
         df.loc[i, "Cooling VCP"] = abs(value)
-
-        value = df_sim.loc[df_sim["Month"] == i][
-            "Internal temperature calculated.1"
-        ].mean()
-        df.loc[i, "Top,actual temperature"] = value
 
     return df
 

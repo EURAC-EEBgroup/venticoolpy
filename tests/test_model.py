@@ -2,7 +2,7 @@
 
 import pytest
 
-from venticoolpy.model import Building, ThermostaticalProperties, BuildingCreateException
+from venticoolpy.model import Building, BuildingCreateException
 from venticoolpy.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
 
 
@@ -48,22 +48,6 @@ def test_inputs_model(snapshot):
 
     snapshot.assert_match(str(properties), "properties_inputs.yml")
 
-
-def test_thermophysical_properties(snapshot):
-    thermophys_prop = ThermostaticalProperties(
-        external_wall_area=9.6 + 16.2 + 16.2 + 21.6,
-        floor_area=6 * 8,
-        roof_area=6 * 8,
-        external_wall_r=1.797,
-        floor_r=25.246,
-        roof_r=2.992,
-    )
-
-    thermophys_dict = thermophys_prop.__dict__
-    thermophys_dict["u_value_tot"] = thermophys_prop.u_value_tot
-    thermophys_dict["c_tot"] = thermophys_prop.c_tot
-
-    snapshot.assert_match(str(thermophys_dict), "thermophys_prop.yml")
 
 
 def test_building_exception(snapshot):

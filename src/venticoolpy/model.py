@@ -398,69 +398,6 @@ class Building(object):
         return value
 
 
-class ThermostaticalProperties(object):
-    """
-    # TODO: Remove this obj
-
-    Area (m²)
-    R (m²K/W)
-    """
-
-    def __init__(
-        self,
-        external_wall_area,
-        floor_area,
-        roof_area,
-        external_wall_r,
-        floor_r,
-        roof_r,
-    ):
-        self.external_wall_area = external_wall_area
-        self.floor_area = floor_area
-        self.roof_area = roof_area
-        self.external_wall_r = external_wall_r
-        self.floor_r = floor_r
-        self.roof_r = roof_r
-
-    @property
-    def u_value_tot(self):
-        """U (W/m²K)."""
-        u_wall = 1 / (self.external_wall_r + 1 / (2.5 + 5.13))
-        u_floor = 1 / (self.floor_r + 1 / (0.7 + 5.13))
-        u_roof = 1 / (self.roof_r + 1 / (5 + 5.13))
-
-        tot_area = self.external_wall_area + self.floor_area + self.roof_area
-        tot_u_value = (
-            u_wall * self.external_wall_area
-            + u_floor * self.floor_area
-            + u_roof * self.roof_area
-        ) / tot_area
-
-        return tot_u_value
-
-    @property
-    def c_tot(self):
-        """C [J/K]."""
-        c_wall = (
-            0.1 * 1400 * 1000 * self.external_wall_area
-            + 0.0615 * 10 * 1400 * self.external_wall_area
-            + 0.009 * 530 * 900 * self.external_wall_area
-        )
-
-        c_floor = 0.08 * 1400 * 1000 * self.floor_area
-
-        c_roof = (
-            0.01 * 950 * 840 * self.roof_area
-            + 0.1118 * 12 * 840 * self.roof_area
-            + 0.019 * 530 * 900 * self.roof_area
-        )
-
-        return c_wall + c_floor + c_roof
-
-    @property
-    def c_int(self):
-        return self.c_tot + 10000 * self.floor_area
-
 
 class WindowDesign(object):
     """Class for Window design input data.

@@ -24,7 +24,7 @@ from venticoolpy.constant import (
 )
 from venticoolpy.constant import Air_properties_Cp, Air_properties_ro
 from venticoolpy.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
-from venticoolpy.model import Building, ThermostaticalProperties, ClimateData, WindowDesign
+from venticoolpy.model import Building, ClimateData, WindowDesign
 
 
 
@@ -717,7 +717,6 @@ def calc_heating_and_cooling_needs_with_vcs(
 def run_vct_simulation(
     inputs: Building, 
     climate_data: ClimateData,
-    thermophysical_props: ThermostaticalProperties | None = None
 ) -> pd.DataFrame:
     """Perform main VCT simulation.
 
@@ -757,8 +756,6 @@ def run_vct_simulation(
     internal_gains = df["Internal gains"].values
     outdoor_dry_bulb_temp = df["Outdoor dry-bulb temperature"].values
     c_int = inputs.c_int
-    if thermophysical_props is not None:
-        c_int = thermophysical_props.c_int
 
     df_temp = calc_free_float_mode(
         building=inputs,

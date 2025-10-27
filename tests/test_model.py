@@ -6,10 +6,6 @@ from venticoolpy.model import Building, BuildingCreateException
 from venticoolpy.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
 
 
-__author__ = "OlgaSomova"
-__copyright__ = "OlgaSomova"
-__license__ = "MIT"
-
 
 def test_inputs_model(snapshot):
     """Test Building model."""

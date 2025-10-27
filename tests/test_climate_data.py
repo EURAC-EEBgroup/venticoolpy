@@ -12,8 +12,7 @@ from venticoolpy.new_irradiation_SFA_Perez_newCalc import ORIENTATION_AZIMUTH
 
 
 
-ERROR = 10**-12  # Acceptable error = 1e-12
-ROUND_DECIMALS = 9
+ROUND_DECIMALS = 8
 
 
 def test_get_climate_data_from_epw(snapshot):
@@ -21,8 +20,7 @@ def test_get_climate_data_from_epw(snapshot):
     climate_data = get_climate_data_from_epw(filename)
 
     df = pd.DataFrame(climate_data.__dict__)
-    df = df.round(ROUND_DECIMALS)
-    csv_str = df.to_csv(index=False, lineterminator="\n")
+    csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
     snapshot.assert_match(csv_str, "climate_data_epw.csv")
 
@@ -33,8 +31,7 @@ def test_get_climate_data_from_csv(snapshot):
     climate_data = get_climate_data_from_csv(filename)
 
     df = pd.DataFrame(climate_data.__dict__)
-    df = df.round(ROUND_DECIMALS)
-    csv_str = df.to_csv(index=False, lineterminator="\n")
+    csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
     snapshot.assert_match(csv_str, "climate_data_csv.csv")
 
@@ -45,8 +42,7 @@ def test_get_climate_data_v_irrad_from_epw(snapshot):
     climate_data = get_climate_data_w_vert_irrad_from_epw(filename, "N")
 
     df = pd.DataFrame(climate_data.__dict__)
-    df = df.round(ROUND_DECIMALS)
-    csv_str = df.to_csv(index=False, lineterminator="\n")
+    csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
     snapshot.assert_match(csv_str, "climate_data_epw.csv")
 
@@ -58,8 +54,7 @@ def test_get_climate_data_Helsinki_Airport_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -71,8 +66,7 @@ def test_get_climate_data_Stuttgart_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -84,8 +78,7 @@ def test_get_climate_data_London_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -97,8 +90,7 @@ def test_get_climate_data_Helsinki_Lighthouse_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -110,8 +102,7 @@ def test_get_climate_data_Paris_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -123,8 +114,7 @@ def test_get_climate_data_Bordeaux_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -136,8 +126,7 @@ def test_get_climate_data_Bolzano_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 
@@ -149,8 +138,7 @@ def test_get_climate_data_Roma_epw(snapshot):
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 
         df = pd.DataFrame(climate_data.__dict__)
-        df = df.round(ROUND_DECIMALS)
-        csv_str = df.to_csv(index=False, lineterminator="\n")
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
 
         snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
 

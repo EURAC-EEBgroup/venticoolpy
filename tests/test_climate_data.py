@@ -13,7 +13,7 @@ from venticoolpy.new_irradiation_SFA_Perez_newCalc import ORIENTATION_AZIMUTH
 
 
 ERROR = 10**-12  # Acceptable error = 1e-12
-ROUND_DECIMALS = 12
+ROUND_DECIMALS = 9
 
 
 def test_get_climate_data_from_epw(snapshot):

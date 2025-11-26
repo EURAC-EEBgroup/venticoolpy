@@ -71,14 +71,13 @@ def get_climate_data_from_epw(filename) -> ClimateData:
     weather_data = Weather()
     weather_data.read(filename)
 
-    # TODO: add some validation
     if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
         raise Exception("The data is invalid")
 
     climate_data = ClimateData(
         df_outdoor_dry_bulb_temperature=weather_data.dataframe["Dry Bulb Temperature"], 
         df_relative_humidity_outdoor_air=weather_data.dataframe["Relative Humidity"],
-        df_isol_tot=weather_data.dataframe["Global Horizontal Radiation"] # TODO: elaborated with function from pvlib
+        df_isol_tot=weather_data.dataframe["Global Horizontal Radiation"]
     )
 
     return climate_data
@@ -103,7 +102,7 @@ def get_climate_data_from_csv(filename) -> ClimateData:
     climate_data = ClimateData(
         df_outdoor_dry_bulb_temperature=weather_data["T2m"], 
         df_relative_humidity_outdoor_air=weather_data["RH"],
-        df_isol_tot=weather_data["G(h)"] # TODO: elaborated with function from pvlib
+        df_isol_tot=weather_data["G(h)"]
     )
 
     return climate_data

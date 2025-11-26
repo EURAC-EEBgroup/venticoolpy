@@ -11,6 +11,9 @@ nav:
     - "Climate Data": overview/climate_data.md 
     - "Results": overview/results.md
   - Tutorials: tutorials.md
+  - API Reference:
+      - Models: reference/model.md
+      - Simulation: reference/calculation.md
 
 theme:
   name: material
@@ -43,3 +46,22 @@ theme:
 
 markdown_extensions:
   - toc
+
+plugins: 
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [.]
+          options:
+            docstring_section_style: spacy
+            docstring_style: "numpy"
+            separate_signature: true
+            show_if_no_docstring: false
+            merge_init_into_class: true
+            show_symbol_type_heading: true # waiting for general release
+            show_symbol_type_toc: true
+            modernize_annotations: true
+            summary: true
+          inventories:
+            - "https://docs.python.org/3/objects.inv"

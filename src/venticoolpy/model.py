@@ -65,134 +65,131 @@ class Building(object):
 
     Parameters
     ----------
-    - bui_type (a value equal to: 'Apartment building', 'Daycare center',
-        'Detached house', 'Hospital', 'Hotel', 'Office', 'Restaurant',
-        'School'; required):  
-    Building type.
+    bui_type : { 'Apartment building', 'Daycare center', 'Detached house', 'Hospital', 'Hotel', 'Office', 'Restaurant', 'School' }
+        Building type.
 
-    - celing_to_floor_height (number; required):  
-    Ceiling to floor height; H (m).
-    The net room height to calculate net room air volume V = H * S
+    celing_to_floor_height : float, required 
+        Ceiling to floor height; H (m).
+        The net room height to calculate net room air volume V = H * S
 
-    - envelope_area (number; required):  
-    Envelope area; Ae (m²).
-    The sum of walls, windows, ceiling and floor area with outdoor boundary conditions.
-    This area, multiplied by the average thermal trasmittance, is used to estimate the
-    transmission.
+    envelope_area : float, required  
+        Envelope area; Ae (m²).
+        The sum of walls, windows, ceiling and floor area with outdoor boundary conditions.
+        This area, multiplied by the average thermal trasmittance, is used to estimate the
+        transmission.
 
-    - floor_area (number; required):  
-    Floor area; Af (m²).
-    The net floor area of the room to calculate net room air volume V = H * S and
-    internal gains.
+    floor_area : float,  required  
+        Floor area; Af (m²).
+        The net floor area of the room to calculate net room air volume V = H * S and
+        internal gains.
 
-    - fenestration_area (number; required):  
-    Fenestration area; Ag (m²).
-    The glazing area on envelope used for the estimation of solar gains.
+    fenestration_area : float, required  
+        Fenestration area; Ag (m²).
+        The glazing area on envelope used for the estimation of solar gains.
 
-    - comfort_requirements (a value equal to: 'category I', 'category II',
-        'category III'; required):  
-    Comfort requirements.
-    Comfort requirements refer to the comfort categories defined by the
-    EN 16798:1-2019 standard.
-    Reccomended input values given for each of the different comfort categories
-    are included in the tool and automatically selected.
+    comfort_requirements : { 'category I', 'category II', 'category III' }
+        Comfort requirements.
+        Comfort requirements refer to the comfort categories defined by the
+        EN 16798:1-2019 standard.
+        Reccomended input values given for each of the different comfort categories
+        are included in the tool and automatically selected.
 
-    - max_outdoor_rel_hum_accepted (number; required):  
-    Max. outdoor relatve humidity accepted; RHmax (%).
 
-    - u_value_opaque (number; required):  
-    U-value of the opaque envelope; Uo (W/m²K).
-    Average thermal transmittance of the opaque surfaces (wall, roof, floor) with
-    outdoor boundary conditions.
+    max_outdoor_rel_hum_accepted : float, required
+        Max. outdoor relatve humidity accepted; RHmax (%).
 
-    - u_value_fen (number; required):  
-    U-value of the fenestration; Uw (W/m²K).
-    Thermal transmittance of the window (or average thermal transmittance of windows if
-    the room has more than one window), considering both glazing system and frame.
+    u_value_opaque : float, required
+        U-value of the opaque envelope; Uo (W/m²K).
+        Average thermal transmittance of the opaque surfaces (wall, roof, floor) with
+        outdoor boundary conditions.
 
-    - construction_mass (a value equal to: 'heavy', 'light', 'medium'; required):  
-    Construction mass
+    u_value_fen : float, required  
+        U-value of the fenestration; Uw (W/m²K).
+        Thermal transmittance of the window (or average thermal transmittance of windows if
+        the room has more than one window), considering both glazing system and frame.
 
-    - g_value_glazing_sys (number; required):  
-    g value of the glazing system; g.
-    Solar energy transmittance of the glazing system.
+    construction_mass : { 'heavy', 'light', 'medium' }
+        Construction mass
 
-    - shading_control_setpoint (number; required):  
-    Shading control setpoint; Shd (W/m²).
-    Shading is on if the specific beam plus diffuse solar radiation incident on the
-    window exceeds this setpoint value (generally is between 40 and 150 W/m²).
+    g_value_glazing_sys : float, required  
+        g value of the glazing system; g.
 
-    - shading_factor (number; required):  
-    Shading factor; Y:
-    Shading factor due to exterior shading element (i.e. shutter, venetian blinds,
-    roll up blinds..).
+        Solar energy transmittance of the glazing system.
 
-    - time_control_on (integer; required):  
-    Time control on; ton; min 0, max 24.
+    shading_control_setpoint : float,  required  
+        Shading control setpoint; Shd (W/m²).
+        Shading is on if the specific beam plus diffuse solar radiation incident on the
+        window exceeds this setpoint value (generally is between 40 and 150 W/m²).
 
-    - time_control_off (integer; required):  
-    Time control off; toff; min 0, max 24.
+    shading_factor : float, required 
+        Shading factor; Y:
+        Shading factor due to exterior shading element (i.e. shutter, venetian blinds,
+        roll up blinds..).
 
-    es: from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
-    - ti_day_start (integer; optional):  
-        default 7:00
+    time_control_on : int, required  
+        Time control on; ton; min 0, max 24.
+
+    time_control_off : int, required  
+        Time control off; toff; min 0, max 24.
+
+        es: from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
+
+    ti_day_start : int, optional, default 7:00
         TODO: add description
 
-    - ti_night_start (integer; optional):  
-        default 23:00
+    ti_night_start : int, optional, default 23:00
         TODO: add description
         NB! error in excel formula: ti_night_start = 24
 
     - TODO: add orientation (N, NE, E, SE, S, SW, W, NW)
 
-    - my_min_req_vent_rate (float; optional):  
-    default None
-    Custom min required ventilation rates (otherwise it is obtained from other inputs). 
-    Minimum required air change rates (l/s-m²) calculated according to IEQ standard
-    (EN 16798:1-2019) or design requirements to determine the ventilation losses
-    within the energy balance of the reference room.
+    my_min_req_vent_rate : float, optional, default None
+       
+        Custom min required ventilation rates (otherwise it is obtained from other inputs). 
+        Minimum required air change rates (l/s-m²) calculated according to IEQ standard
+        (EN 16798:1-2019) or design requirements to determine the ventilation losses
+        within the energy balance of the reference room.
 
-    - my_vent_rates_mu (a value equal to '1/h', 'kg/s-m²', 'm³/h', 'm³/s', 'l/s-m²'; optional):  
-    default "l/s-m²". 
-    Unit of measurement for my_min_req_vent_rate, according to which is defined the value of property
-    min_req_vent_rate.
+    my_vent_rates_mu : { "l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s" }
+        Unit of measurement for my_min_req_vent_rate, according to which is defined the value of property
+        min_req_vent_rate.
 
-    - my_lighting_power_density (float; optional):    
-    default None.
-    Custom lighting power density (otherwise it is calculated from other inputs).
-    The maximum lighting level per floor area. Internal gains due to lighting are
-    calculated by multiplying the lighting power by the pre-defined load profiles.
+    my_lighting_power_density : float, optional, default None    
+        Custom lighting power density (otherwise it is calculated from other inputs).
+        The maximum lighting level per floor area. Internal gains due to lighting are
+        calculated by multiplying the lighting power by the pre-defined load profiles.
         
-    - my_el_equipment_power_density(float; optional):  
-    Custom electric equipment power density (otherwise it is obtained from other inputs); Qel_equip (W/m²).
-    The maximum elecric eqipment level per floor area.
-    Internal gains due to electric equipment are calculated
-    by multiplying the lighting power by the pre-defined load profiles.
+    my_el_equipment_power_density : float, optional
+        Custom electric equipment power density (otherwise it is obtained from other inputs); Qel_equip (W/m²).
+        The maximum elecric eqipment level per floor area.
+        Internal gains due to electric equipment are calculated
+        by multiplying the lighting power by the pre-defined load profiles.
 
-    - my_occupancy_gains_density(float; optional):  
-    default None.
-    Custom occupancy density (otherwise it is obtained from other inputs); Qpeople (W/m²).
-    The maximum floor area per person.
-    Internal gains due to people are calculated by
-    multiplying the maximum number of person by the pre-defined occupancy profiles.
+    my_occupancy_gains_density : float, optional, default None
+        Custom occupancy density (otherwise it is obtained from other inputs); Qpeople (W/m²).
+        The maximum floor area per person.
+        Internal gains due to people are calculated by
+        multiplying the maximum number of person by the pre-defined occupancy profiles.
 
-    - my_c_tot (float; optional):  
-    default None.
-    C thermal cap. totale (C [J/K]).
-    If any, c_int is calculated as follows, otherwise it is obtained from construction_mass. 
-        c_int = c_tot + 10000 * floor_area
+    my_c_tot : float, optional, default None
+        C thermal cap. totale (C [J/K]).
+        If any, c_int is calculated as follows:
 
-    - my_c_int (float; optional):  
-    default None.
-    Cint. is the (lumped) internal thermal capacity (J/K).
-    Otherwise it is obtained from other inputs.
+            c_int = c_tot + 10000 * floor_area
 
-    - select_internal_gains (a value equal to: 'basecase', 'of_bui_type'; optional):  
-    default bui_type. 
-    if basecase:  
-        internal_gains = 200/ floor area.
-    if of_bui_type: 
-        internal_gains obtained from building type.
+        otherwise it is obtained from construction_mass.
+
+    my_c_int : float, optional, default None
+        Cint. is the (lumped) internal thermal capacity (J/K).
+        Otherwise it is obtained from other inputs.
+
+    select_internal_gains : { 'of_bui_type', 'basecase' }
+        default bui_type. 
+
+        if basecase:  
+        
+            internal_gains = 200/ floor area.
+        if of_bui_type: internal_gains obtained from building type.
 
     """
 
@@ -227,7 +224,6 @@ class Building(object):
         ti_hsb=15,
         ti_csb=50
     ):
-        """Collect all data needed for the simulation."""
         self.bui_type = bui_type
         self.celing_to_floor_height = celing_to_floor_height
         self.envelope_area = envelope_area
@@ -367,12 +363,6 @@ class Building(object):
         if self.my_occupancy_gains_density is not None:
             return self.my_occupancy_gains_density
         return gain_per_person[self.bui_type] / m2_per_person[self.bui_type]
-
-    @property
-    def average_tot_int_gains(self):
-        """Avg. total internal gains; Qint (W/m²)."""
-        # TODO: remove? takes the result of calculations. not used anywhere.
-        return None
 
     @property
     def nr_of_occupied_hrs(self):

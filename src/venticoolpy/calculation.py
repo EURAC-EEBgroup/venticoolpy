@@ -301,7 +301,7 @@ def get_ventilation_rate(building: Building) -> pd.DataFrame:
     """
     df = pd.DataFrame(index=range(TOT_HOURS))
 
-    if building.select_vent_rates_calc == SELECT_VENT_RATES_CALC[0] or building.my_min_req_vent_rate is not None: # basecase or custom, constant
+    if building.my_min_req_vent_rate is not None: # custom, constant
         vent_rate_m3_s = building.min_req_vent_rate * building.floor_area / 1000
         ventilation_rate = [vent_rate_m3_s] * TOT_HOURS
     else: #hourly

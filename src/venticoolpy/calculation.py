@@ -114,20 +114,17 @@ def get_climate_data_from_csv(filename) -> ClimateData:
 def get_internal_gains(building: Building):
     """Retrieve internal gains according to building type"""
     
-    if building.select_internal_gains == SELECT_INTERNAL_GAINS[0]: # basecase
-        internal_gains = [200 / building.floor_area] * TOT_HOURS
-    else: 
-        data_resource = resources.files("venticoolpy.data").joinpath("occ_lgt_apl.csv")
-        with resources.as_file(data_resource) as f:
-            df_occ_lgt_apl = pd.read_csv(f)
+    data_resource = resources.files("venticoolpy.data").joinpath("occ_lgt_apl.csv")
+    with resources.as_file(data_resource) as f:
+        df_occ_lgt_apl = pd.read_csv(f)
 
-        internal_gains = (
-            (building.occupancy_gains_density) * df_occ_lgt_apl['OCC.'+building.bui_type] +
-            building.lighting_power_density * df_occ_lgt_apl['LGT.'+building.bui_type] +
-            building.el_equipment_power_density * df_occ_lgt_apl['APL.'+building.bui_type]
-        )
+    internal_gains = (
+        (building.occupancy_gains_density) * df_occ_lgt_apl['OCC.'+building.bui_type] +
+        building.lighting_power_density * df_occ_lgt_apl['LGT.'+building.bui_type] +
+        building.el_equipment_power_density * df_occ_lgt_apl['APL.'+building.bui_type]
+    )
 
-        internal_gains = np.append(internal_gains[8016:8760].values, internal_gains[0:8760].values)
+    internal_gains = np.append(internal_gains[8016:8760].values, internal_gains[0:8760].values)
 
     return internal_gains
 

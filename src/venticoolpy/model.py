@@ -1,8 +1,9 @@
 """Models."""
 import pandas as pd
 import numpy as np
+from typing import Literal
 
-from venticoolpy.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
+from venticoolpy.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, ORIENTATION, CONSTRUCTION_MASS
 from venticoolpy.constant import (
     Air_properties_ro,
     LIGHTING_POWER_DENSITY,
@@ -65,7 +66,7 @@ class Building(object):
 
     Parameters
     ----------
-    bui_type : { 'Apartment building', 'Daycare center', 'Detached house', 'Hospital', 'Hotel', 'Office', 'Restaurant', 'School' }
+    bui_type : Literal['Apartment building', 'Daycare center', 'Detached house', 'Hospital', 'Hotel', 'Office', 'Restaurant', 'School']
         Building type.
 
     celing_to_floor_height : float, required 
@@ -86,8 +87,11 @@ class Building(object):
     fenestration_area : float, required  
         Fenestration area; Ag (m²).
         The glazing area on envelope used for the estimation of solar gains.
-
-    comfort_requirements : { 'category I', 'category II', 'category III' }
+        
+    orientation: Literal[N, NE, E, SE, S, SW, W, NW], required
+        Fenestration orientation
+    
+    comfort_requirements : Literal['category I', 'category II', 'category III']
         Comfort requirements.
         Comfort requirements refer to the comfort categories defined by the
         EN 16798:1-2019 standard.
@@ -108,7 +112,7 @@ class Building(object):
         Thermal transmittance of the window (or average thermal transmittance of windows if
         the room has more than one window), considering both glazing system and frame.
 
-    construction_mass : { 'heavy', 'light', 'medium' }
+    construction_mass : Literal['heavy', 'light', 'medium']
         Construction mass
 
     g_value_glazing_sys : float, required  
@@ -141,8 +145,6 @@ class Building(object):
         TODO: add description
         NB! error in excel formula: ti_night_start = 24
 
-    - TODO: add orientation (N, NE, E, SE, S, SW, W, NW)
-
     my_min_req_vent_rate : float, optional, default None
        
         Custom min required ventilation rates (otherwise it is obtained from other inputs). 
@@ -150,7 +152,7 @@ class Building(object):
         (EN 16798:1-2019) or design requirements to determine the ventilation losses
         within the energy balance of the reference room.
 
-    my_vent_rates_mu : { "l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s" }
+    my_vent_rates_mu : Literal["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"]
         Unit of measurement for my_min_req_vent_rate, according to which is defined the value of property
         min_req_vent_rate.
 
@@ -187,16 +189,17 @@ class Building(object):
 
     def __init__(
         self,
-        bui_type,
+        bui_type: Literal["Apartment building", "Daycare center", "Detached house", "Hospital", "Hotel", "Office", "Restaurant", "School"],
         celing_to_floor_height,
         envelope_area,
         floor_area,
         fenestration_area,
-        comfort_requirements,
+        orientation: Literal['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+        comfort_requirements: Literal["category I", "category II", "category III"],
         max_outdoor_rel_hum_accepted,
         u_value_opaque,
         u_value_fen,
-        construction_mass,
+        construction_mass: Literal["heavy", "light", "medium"],
         g_value_glazing_sys,
         shading_control_setpoint,
         shading_factor,
@@ -204,21 +207,22 @@ class Building(object):
         time_control_off,
         ti_day_start=7,
         ti_night_start=23,
+        ti_hsb=15,
+        ti_csb=50,
         my_min_req_vent_rate=None, 
-        my_vent_rates_mu=VENT_RATES_MU[0],
+        my_vent_rates_mu: Literal["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"] = VENT_RATES_MU[0],
         my_lighting_power_density=None,
         my_el_equipment_power_density=None,
         my_occupancy_gains_density=None,
         my_c_tot=None, # TODO: remove
         my_c_int=None,
-        ti_hsb=15,
-        ti_csb=50
     ):
         self.bui_type = bui_type
         self.celing_to_floor_height = celing_to_floor_height
         self.envelope_area = envelope_area
         self.floor_area = floor_area
         self.fenestration_area = fenestration_area
+        self.orientation = orientation
         self.comfort_requirements = comfort_requirements
         self.max_outdoor_rel_hum_accepted = max_outdoor_rel_hum_accepted
         self.u_value_opaque = u_value_opaque
@@ -229,6 +233,8 @@ class Building(object):
         self.shading_factor = shading_factor
         self.time_control_on = time_control_on
         self.time_control_off = time_control_off
+        self.ti_hsb = ti_hsb
+        self.ti_csb = ti_csb
 
         self.ti_day_start = ti_day_start  
         self.ti_night_start = ti_night_start  
@@ -239,12 +245,12 @@ class Building(object):
         self.my_occupancy_gains_density=my_occupancy_gains_density
         self.my_c_tot=my_c_tot
         self.my_c_int=my_c_int
-        self.ti_hsb = ti_hsb
-        self.ti_csb = ti_csb
 
         if (
             bui_type not in BUILDING_TYPE
+            or orientation not in ORIENTATION
             or comfort_requirements not in COMFORT_REQUIREMENTS
+            or construction_mass not in CONSTRUCTION_MASS
             or (my_vent_rates_mu is not None and my_vent_rates_mu not in VENT_RATES_MU)
         ):
             raise BuildingCreateException

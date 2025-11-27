@@ -9,7 +9,6 @@
     "g_value_glazing_sys": 0.7,
     "max_outdoor_rel_hum_accepted": 85,
     "my_c_int": null,
-    "my_c_tot": null,
     "my_el_equipment_power_density": null,
     "my_lighting_power_density": null,
     "my_min_req_vent_rate": null,

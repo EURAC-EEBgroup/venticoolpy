@@ -173,14 +173,6 @@ class Building(object):
         Internal gains due to people are calculated by
         multiplying the maximum number of person by the pre-defined occupancy profiles.
 
-    my_c_tot : float, optional, default None
-        C thermal cap. totale (C [J/K]).
-        If any, c_int is calculated as follows:
-
-            c_int = c_tot + 10000 * floor_area
-
-        otherwise it is obtained from construction_mass.
-
     my_c_int : float, optional, default None
         Cint. is the (lumped) internal thermal capacity (J/K).
         Otherwise it is obtained from other inputs.
@@ -214,7 +206,6 @@ class Building(object):
         my_lighting_power_density=None,
         my_el_equipment_power_density=None,
         my_occupancy_gains_density=None,
-        my_c_tot=None, # TODO: remove
         my_c_int=None,
     ):
         self.bui_type = bui_type
@@ -243,7 +234,6 @@ class Building(object):
         self.my_lighting_power_density=my_lighting_power_density
         self.my_el_equipment_power_density=my_el_equipment_power_density
         self.my_occupancy_gains_density=my_occupancy_gains_density
-        self.my_c_tot=my_c_tot
         self.my_c_int=my_c_int
 
         if (
@@ -355,9 +345,6 @@ class Building(object):
         """Cint. is the (lumped) internal thermal capacity (J/K)."""
         if self.my_c_int is not None:
             return self.my_c_int
-        
-        if self.my_c_tot is not None: 
-            return self.my_c_tot + 10000 * self.floor_area
         
         value = (
             1.2 * self.room_volume

@@ -15,7 +15,6 @@
     "my_min_req_vent_rate": null,
     "my_occupancy_gains_density": null,
     "my_vent_rates_mu": "l/s-m\u00b2",
-    "select_vent_rates_calc": "constant",
     "shading_control_setpoint": 120,
     "shading_factor": 0,
     "ti_csb": 50,

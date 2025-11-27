@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from venticoolpy.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, SELECT_VENT_RATES_CALC
+from venticoolpy.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU
 from venticoolpy.constant import (
     Air_properties_ro,
     LIGHTING_POWER_DENSITY,
@@ -211,7 +211,6 @@ class Building(object):
         my_occupancy_gains_density=None,
         my_c_tot=None, # TODO: remove
         my_c_int=None,
-        select_vent_rates_calc=SELECT_VENT_RATES_CALC[1],
         ti_hsb=15,
         ti_csb=50
     ):
@@ -240,14 +239,12 @@ class Building(object):
         self.my_occupancy_gains_density=my_occupancy_gains_density
         self.my_c_tot=my_c_tot
         self.my_c_int=my_c_int
-        self.select_vent_rates_calc = select_vent_rates_calc
         self.ti_hsb = ti_hsb
         self.ti_csb = ti_csb
 
         if (
             bui_type not in BUILDING_TYPE
             or comfort_requirements not in COMFORT_REQUIREMENTS
-            or select_vent_rates_calc not in SELECT_VENT_RATES_CALC
             or (my_vent_rates_mu is not None and my_vent_rates_mu not in VENT_RATES_MU)
         ):
             raise BuildingCreateException
@@ -286,17 +283,6 @@ class Building(object):
         ) / self.floor_area
 
         if self.my_min_req_vent_rate is not None:
-        
-            # if self.my_vent_rates_mu == VENT_RATES_MU[1]:  # 1/h:
-            #     vent_rate_2 = vent_rate_1 * 3.6 / self.celing_to_floor_height
-            # elif self.my_vent_rates_mu == VENT_RATES_MU[2]: # kg/s-m²
-            #     vent_rate_2 = vent_rate_1 * 0.001 * Air_properties_ro
-            # elif self.my_vent_rates_mu == VENT_RATES_MU[3]: # m³/h
-            #     vent_rate_2 = vent_rate_1 * 3.6 * self.floor_area
-            # elif self.my_vent_rates_mu == VENT_RATES_MU[4]: # m³/s
-            #     vent_rate_2 = vent_rate_1 * self.floor_area / 1000
-            # else: #l/s-m²
-            #     vent_rate_2 = self.my_min_req_vent_rate
 
             if self.my_vent_rates_mu == VENT_RATES_MU[0]: #l/s-m²
                 vent_rate = self.my_min_req_vent_rate

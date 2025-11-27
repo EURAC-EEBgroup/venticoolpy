@@ -7,7 +7,7 @@ import re
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_interval
 
-from venticoolpy.model import Building, ClimateData, SELECT_VENT_RATES_CALC
+from venticoolpy.model import Building, ClimateData
 
 
 def get_appartment_bld_climate_data() -> ClimateData:

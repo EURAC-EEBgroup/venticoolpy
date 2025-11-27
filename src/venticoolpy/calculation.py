@@ -16,7 +16,6 @@ from venticoolpy.constant import (
     COMFORT_REQUIREMENTS, 
     comfort_categories_AK,
     comfort_categories_AL,
-    SELECT_VENT_RATES_CALC,
     Qa_comfort_category, 
     Qp_comfort_category, 
     m2_per_person

@@ -3,7 +3,7 @@
 import pytest
 
 from venticoolpy.model import Building, BuildingCreateException
-from venticoolpy.constant import VENT_RATES_MU, SELECT_VENT_RATES_CALC
+from venticoolpy.constant import VENT_RATES_MU
 
 
 
@@ -25,7 +25,6 @@ def test_inputs_model(snapshot):
         shading_factor=0,
         time_control_on=0,
         time_control_off=24,
-        select_vent_rates_calc=SELECT_VENT_RATES_CALC[0]
     )
 
     snapshot.assert_match(str(inputs.__dict__), "inputs.yml")

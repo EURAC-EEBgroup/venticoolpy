@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 
-from venticoolpy.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, SELECT_INTERNAL_GAINS, SELECT_VENT_RATES_CALC
+from venticoolpy.constant import BUILDING_TYPE, COMFORT_REQUIREMENTS, VENT_RATES_MU, SELECT_VENT_RATES_CALC
 from venticoolpy.constant import (
     Air_properties_ro,
     LIGHTING_POWER_DENSITY,
@@ -183,14 +183,6 @@ class Building(object):
         Cint. is the (lumped) internal thermal capacity (J/K).
         Otherwise it is obtained from other inputs.
 
-    select_internal_gains : { 'of_bui_type', 'basecase' }
-        default bui_type. 
-
-        if basecase:  
-        
-            internal_gains = 200/ floor area.
-        if of_bui_type: internal_gains obtained from building type.
-
     """
 
     def __init__(
@@ -219,7 +211,6 @@ class Building(object):
         my_occupancy_gains_density=None,
         my_c_tot=None, # TODO: remove
         my_c_int=None,
-        select_internal_gains=SELECT_INTERNAL_GAINS[1],
         select_vent_rates_calc=SELECT_VENT_RATES_CALC[1],
         ti_hsb=15,
         ti_csb=50
@@ -249,7 +240,6 @@ class Building(object):
         self.my_occupancy_gains_density=my_occupancy_gains_density
         self.my_c_tot=my_c_tot
         self.my_c_int=my_c_int
-        self.select_internal_gains = select_internal_gains
         self.select_vent_rates_calc = select_vent_rates_calc
         self.ti_hsb = ti_hsb
         self.ti_csb = ti_csb
@@ -257,7 +247,6 @@ class Building(object):
         if (
             bui_type not in BUILDING_TYPE
             or comfort_requirements not in COMFORT_REQUIREMENTS
-            or select_internal_gains not in SELECT_INTERNAL_GAINS
             or select_vent_rates_calc not in SELECT_VENT_RATES_CALC
             or (my_vent_rates_mu is not None and my_vent_rates_mu not in VENT_RATES_MU)
         ):

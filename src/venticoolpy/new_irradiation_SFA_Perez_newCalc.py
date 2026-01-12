@@ -1,6 +1,6 @@
 from epw.weather import Weather
+import os
 import pandas as pd
-import csv
 import pvlib
 from venticoolpy.model import ClimateData
 from datetime import timezone
@@ -19,14 +19,40 @@ ORIENTATION_AZIMUTH = {
 }
 
 
-def get_climate_data_w_vert_irrad_from_epw(filename, orientation='S'):
-    # read weather data
+
+def read_epw_file(filename) -> Weather:
     weather_data = Weather()
-    weather_data.read(filename)
+
+    try:
+        weather_data.read(filename)
+    except UnicodeDecodeError:
+        # on unicode error try to convert to utf-8 and read again
+        utf8_filename = filename.removesuffix('.epw') + "-utf8.epw"
+        for enc in ["cp1252", "latin-1"]:
+            try:
+                with open(filename, "r", encoding=enc) as f:
+                    content = f.read()
+
+                with open(utf8_filename, "w", encoding="utf-8") as f:
+                    f.write(content)
+                    weather_data.read(utf8_filename)
+                    break
+            except:
+                continue
+            finally:
+                if os.path.exists(utf8_filename):
+                    os.remove(utf8_filename)
 
     # TODO: add some validation
     if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
-        raise Exception("The data is invalid")
+        raise Exception("The climate data file is invalid.")
+
+    return weather_data
+
+
+
+def get_climate_data_w_vert_irrad_from_epw(filename, orientation='S'):
+    weather_data = read_epw_file(filename)
     
     location_name = weather_data.headers["LOCATION"][0]
     time_zone = float(weather_data.headers["LOCATION"][7])

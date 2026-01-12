@@ -3,37 +3,12 @@
 import numpy as np
 import pandas as pd
 
-from venticoolpy.calculation import (
-    get_climate_data_from_epw,
-    get_climate_data_from_csv,
-)
 from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_vert_irrad_from_epw
 from venticoolpy.new_irradiation_SFA_Perez_newCalc import ORIENTATION_AZIMUTH
 
 
 
 ROUND_DECIMALS = 8
-
-
-def test_get_climate_data_from_epw(snapshot):
-    filename = "tests/inputs/data/ITA_Bolzano.160200_IGDG.epw"
-    climate_data = get_climate_data_from_epw(filename)
-
-    df = pd.DataFrame(climate_data.__dict__)
-    csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
-
-    snapshot.assert_match(csv_str, "climate_data_epw.csv")
-
-
-
-def test_get_climate_data_from_csv(snapshot):
-    filename = "tests/inputs/data/tmy_46.501_11.362_2005_2020.csv"
-    climate_data = get_climate_data_from_csv(filename)
-
-    df = pd.DataFrame(climate_data.__dict__)
-    csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
-
-    snapshot.assert_match(csv_str, "climate_data_csv.csv")
 
 
 
@@ -134,6 +109,18 @@ def test_get_climate_data_Bolzano_epw(snapshot):
 
 def test_get_climate_data_Roma_epw(snapshot):
     filename = "tests/inputs/data/climate/ITA_LZ_Roma-Ciampino.AP.162390_TMYx.2009-2023.epw"
+    for ori in ORIENTATION_AZIMUTH.keys():
+        climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
+
+        df = pd.DataFrame(climate_data.__dict__)
+        csv_str = df.to_csv(index=False, lineterminator="\n", float_format=f"%.{ROUND_DECIMALS}f")
+
+        snapshot.assert_match(csv_str, f"{ori}_climate_data.csv")
+
+
+
+def test_get_climate_data_EM_Eastern_and_Midland_epw(snapshot):
+    filename = "tests/inputs/data/climate/IRL_EM_Birr.039650_2021_rcp85_mid-sensitivity_DSY1_MetEireann.epw"
     for ori in ORIENTATION_AZIMUTH.keys():
         climate_data = get_climate_data_w_vert_irrad_from_epw(filename, ori)
 

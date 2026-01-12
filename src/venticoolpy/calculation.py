@@ -68,46 +68,6 @@ def get_simulation_year() -> pd.DataFrame:
     return df
 
 
-def get_climate_data_from_epw(filename) -> ClimateData:
-    weather_data = Weather()
-    weather_data.read(filename)
-
-    if weather_data.dataframe.shape[0] != HOURS_IN_YEAR:
-        raise Exception("The data is invalid")
-
-    climate_data = ClimateData(
-        df_outdoor_dry_bulb_temperature=weather_data.dataframe["Dry Bulb Temperature"], 
-        df_relative_humidity_outdoor_air=weather_data.dataframe["Relative Humidity"],
-        df_isol_tot=weather_data.dataframe["Global Horizontal Radiation"]
-    )
-
-    return climate_data
-
-
-def get_climate_data_from_csv(filename) -> ClimateData:
-    skiprows = None
-    with open(filename, "r") as file:
-        csvreader = csv.reader(file)
-        index = 0
-        for row in csvreader:
-            if row[0] == "time(UTC)":
-                skiprows = index
-                break
-            index += 1
-
-    weather_data = pd.read_csv(filename, skiprows=skiprows, nrows=HOURS_IN_YEAR)
-
-    if weather_data.shape[0] != HOURS_IN_YEAR:
-        raise Exception("The data is invalid")
-
-    climate_data = ClimateData(
-        df_outdoor_dry_bulb_temperature=weather_data["T2m"], 
-        df_relative_humidity_outdoor_air=weather_data["RH"],
-        df_isol_tot=weather_data["G(h)"]
-    )
-
-    return climate_data
-
 
 def get_internal_gains(building: Building):
     """Retrieve internal gains according to building type"""

@@ -291,7 +291,7 @@ def calc_free_float_mode(
     internal_gains,
     outdoor_dry_bulb_temp,
 ) -> pd.DataFrame:
-    """Perform the first set of calculations (Free Float Mode).
+    """Perform the calculation of time series in free float temperature mode.
 
     Parameters
     ----------

@@ -27,7 +27,7 @@ class WindowDesignCreateException(Exception):
 
 
 class ClimateData():
-    """ TODO: Add desctription """
+    """ Hourly climate datasets """
     # TODO: add ClimateData create exception
 
     def __init__(
@@ -60,7 +60,7 @@ class ClimateData():
 
 class Building(object):
     """
-    Building info, inputs for the main vct simulation.
+    Information about the reference zone, inputs for the main thermal balance calculation.
 
     Objects of this class should be managed immutably throughout the simulation.
 
@@ -89,7 +89,7 @@ class Building(object):
         The glazing area on envelope used for the estimation of solar gains.
         
     orientation: Literal[N, NE, E, SE, S, SW, W, NW], required
-        Fenestration orientation
+        Fenestration orientation is the direction the window faces, expressed relative to the cardinal directions.
     
     comfort_requirements : Literal['category I', 'category II', 'category III']
         Comfort requirements.
@@ -100,7 +100,7 @@ class Building(object):
 
 
     max_outdoor_rel_hum_accepted : float, required
-        Max. outdoor relatve humidity accepted; RHmax (%).
+        Max. outdoor relative humidity accepted; RHmax (%).
 
     u_value_opaque : float, required
         U-value of the opaque envelope; Uo (W/m²K).
@@ -113,7 +113,7 @@ class Building(object):
         the room has more than one window), considering both glazing system and frame.
 
     construction_mass : Literal['heavy', 'light', 'medium']
-        Construction mass
+        Predefined thermal mass of the construction. Heavy = 1.4 MJ/m³K, light = 0.9 MJ/m³K and medium = 1.15 MJ/m³K
 
     g_value_glazing_sys : float, required  
         g value of the glazing system; g.
@@ -139,10 +139,10 @@ class Building(object):
         es: from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
 
     ti_day_start : int, optional, default 7:00
-        TODO: add description
+        The hour of the day at which the heating or cooling setpoint temperature becomes active.
 
     ti_night_start : int, optional, default 23:00
-        TODO: add description
+        The hour of the day at which the heating or cooling setback temperature becomes active overwriting the setpoint temperature. It marks the start of the period during which the indoor temperature is allowed to deviate from the heating or cooling setpoint to a reduced (setback) level.
         NB! error in excel formula: ti_night_start = 24
 
     my_min_req_vent_rate : float, optional, default None
@@ -150,7 +150,7 @@ class Building(object):
         Custom min required ventilation rates (otherwise it is obtained from other inputs). 
         Minimum required air change rates (l/s-m²) calculated according to IEQ standard
         (EN 16798:1-2019) or design requirements to determine the ventilation losses
-        within the energy balance of the reference room.
+        within the energy balance of the reference room. It can include infiltration rates.
 
     my_vent_rates_mu : Literal["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"]
         Unit of measurement for my_min_req_vent_rate, according to which is defined the value of property
@@ -252,7 +252,7 @@ class Building(object):
 
     @property
     def average_u_value(self):
-        """Average U Value; Uavg (W/m²K)."""
+        """Average U Value of opaque and glazed envelope; Uavg (W/m²K)."""
         value = (
             self.u_value_opaque * (self.envelope_area - self.fenestration_area)
             + self.u_value_fen * self.fenestration_area
@@ -263,10 +263,6 @@ class Building(object):
     def min_req_vent_rate(self):
         """
         Min. required ventilation rates.
-
-        - qm;min (l/s-m²)
-        - qm;min (1/h)
-
         Minimum required air change rates (l/s-m²) calculated according to IEQ standard
         (EN 16798:1-2019) or design requirements to determine the ventilation losses
         within the energy balance of the reference room.
@@ -337,7 +333,7 @@ class Building(object):
 
     @property
     def nr_of_occupied_hrs(self):
-        """Nr of occupied hours."""
+        """Nr of occupied hours over the day."""
         return self.time_control_off - self.time_control_on
 
     @property
@@ -358,20 +354,20 @@ class Building(object):
 
 
 class WindowDesign(object):
-    """Class for Window design input data.
+    """Window design input data.
 
-    Room depth
-    Ventilation strategy
-    Select window opening type
-    Window maximum opening angle
-    Window opening discharge coefficient
-    Indoor temperature
-    Indoor-outdoor temperature difference
-    Wind speed
-    Insect screen?
-    Stack height - vertical distance between 2 openings
-    Wind pressure coefficient - window 1
-    Wind pressure coefficient - window 2
+    Room depth: distance between the window and the opposite wall; D (m).
+    Ventilation strategy: ventilation strategy to be applied for the estimation of the ventilation rate and ventilation losses. It can be natural, mechanical or mixed ventilation.
+    Select window opening type: the type of window opening to be applied for the estimation of the ventilation rate and ventilation losses. It can be top hung, side hung, awning, pivot, roof window, sliding or fixed.
+    Window maximum opening angle: the maximum opening angle of the window, which is used for the estimation of the ventilation rate and ventilation losses. It can be between 0° and 90°.
+    Window opening discharge coefficient: the discharge coefficient of the window opening, which is used for the estimation of the ventilation rate and ventilation losses. It can be between 0 and 1.
+    Indoor temperature: the indoor temperature, which is used for the estimation of the ventilation rate and ventilation losses. It can be between 15°C and 30°C.
+    Indoor-outdoor temperature difference: the difference between the indoor and outdoor temperature, which is used for the estimation of the ventilation rate and ventilation losses. It can be between 0°C and 20°C.
+    Wind speed: the wind speed, which is used for the estimation of the ventilation rate and ventilation losses. It can be between 0 m/s and 20 m/s.
+    Insect screen: whether the window has an insect screen or not, which is used for the estimation of the ventilation rate and ventilation losses. It can be either yes or no.
+    Stack height - vertical distance between 2 openings: the window and the opposite wall; Hs (m).
+    Wind pressure coefficient - window 1: the wind pressure coefficient of the window, which is used for the estimation of the ventilation rate and ventilation losses. It can be between -1 and 1.
+    Wind pressure coefficient - window 2: the wind pressure coefficient of the opposite wall, which is used for the estimation of the ventilation rate and ventilation losses. It can be between -1 and 1.
     """
 
     def __init__(

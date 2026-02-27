@@ -38,7 +38,6 @@ If some snapshot test fail, you can inspect the differences with
 tox -- -vv
 ```
 
-
 ## Package
 
 You can build the progect package running

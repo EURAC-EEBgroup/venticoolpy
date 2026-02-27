@@ -3,12 +3,24 @@
 
 
 **VentiCoolPy** is a Python library developed by Eurac Research to support the development of sustainable cooling strategies for buildings.
+This Python library provides the reference implementation of the ventilative cooling potential method developed by the Eurac Research within IEA/EBC Annex 62 and subsequently integrated into the prCEN/TS “Ventilative cooling systems – Design”.
+It operationalises the standardised methodology into an open and extensible computational tool for research and professional applications.
 
+The ventilative cooling potential method aims at assessing the cooling potential of ventilative cooling (fx. using natural forces) in a reference thermal and ventilation zone representing the building in its context. 
+
+The ventilative cooling potential method provides a practical approach for application during the early stages of building design, such as the feasibility stage. It enables preliminary evaluation in the absence of detailed system specifications and leverages the adaptive comfort model to account for occupants' ability to adapt to varying indoor conditions, offering a realistic assessment of comfort levels.
 
 ## Key Features
 
-- 
+- early-stage design applicability
+- climate and building-dependent assessment
+- single-zone hourly simulation of thermal balance
+- explicit consideration of building thermal inertia
+- frequency analysis of required ventilation rates to maintain thermal comfort over the full year
+- use of adaptive thermal comfort model
 
+
+ 
 
 ## Installation
 

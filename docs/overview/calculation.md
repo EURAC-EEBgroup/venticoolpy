@@ -32,8 +32,17 @@ The following parameters have been added to calculate the ventilative cooling po
 NOTE EN ISO 52016-1 uses absolute humidity as input variable.
 𝛷𝐻𝑈;𝑚𝑎𝑥 maximum relative humidity of outdoor air for ventilative cooling (%, i.e. 85%);
 𝜃𝑖𝑛𝑡;𝑐𝑜𝑚𝑓𝑜𝑟𝑡;𝑡 indoor comfort temperature according to adaptive comfort model of EN 16798-1:2019 (°C).
-The energy balance for the single zone at timestep t can be written as (Formula (H.6)):
-[𝐶𝑖𝑛𝑡∆𝑡 + 𝐻𝑣𝑒;𝑡 + 𝐻𝑡𝑟] 𝜃𝑖𝑛𝑡;𝑡 = 𝐶𝑖𝑛𝑡∆𝑡 𝜃𝑖𝑛𝑡;𝑡−1 + [𝐻𝑣𝑒;𝑡 + 𝐻𝑡𝑟] 𝜃𝑒;𝑎;𝑡 + 𝛷𝑖𝑛𝑡;𝑡 + 𝛷𝑠𝑜𝑙;𝑡 + 𝛷𝐻𝐶;𝑡 (H.6)
+The energy balance for the single zone at timestep t can be written as:
+$ \bigl(C_{int}/\Delta t + H_{ve,t} + H_{tr}\bigr)\,\theta_{int,t} = C_{int}/\Delta t\, \theta_{int,t-1} + (H_{ve,t} + H_{tr})\,\theta_{e,a,t} + \Phi_{int,t} + \Phi_{sol,t} + \Phi_{HC,t} $ 
+
+Where: 
+
+    $\theta_{int,t}$: indoor air temperature 
+
+    $\theta_{e,a,t}$: outdoor air temperature 
+
+    $\Phi_{HC,t}$: heating/cooling load 
+
 with the overall heat exchange coefficient by ventilation, expressed in W/K, defined as follow:
 𝐻𝑣𝑒;𝑡 = 𝜌𝑎 𝑐𝑎 𝑞𝑉;𝑡 (H.7)
 and the airflow rate, expressed in m3/s, equal to:

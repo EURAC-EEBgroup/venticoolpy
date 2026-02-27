@@ -7,6 +7,8 @@ The ventilative cooling potential method aims at assessing the cooling potential
 
 The ventilative cooling potential method provides a practical approach for application during the early stages of building design, such as the feasibility stage. It enables preliminary evaluation in the absence of detailed system specifications and leverages the adaptive comfort model to account for occupants' ability to adapt to varying indoor conditions, offering a realistic assessment of comfort levels.
 
+![image](../media/Picture2.png)
+
 ## Ventilative cooling potential method
 The calculation method to evaluate the ventilative cooling potential is based on a single-zone thermal model applied to user-input climatic data on an hourly basis. The thermal balance calculation method from EN ISO 52016-1:2018 is applied to calculate free-floating temperature and heating and cooling loads (with and without ventilative cooling contribution) of a reference thermal zone of the building. EN ISO 52016-1:2018 has been developed to assess the energy performance of a detailed building design or building in use. For the use in early design phase applications, the detailed hourly thermal balance equations have been reduced to the essential (lumped) parameters, including also lumped thermal capacity.  
 The calculation method is fully described in Annex H of prCEN/TS “Ventilative cooling systems – Design”.

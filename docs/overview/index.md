@@ -17,21 +17,21 @@ The calculation method is fully described in Annex H of prCEN/TS “Ventilative 
 ## Limitations and intended use
 Users of the Ventilative cooling potential method shall be aware of its limitations. Users shall apply the ventilative cooling potential method with consideration for its appropriate scope of application, recognizing that its primary utility lies in early-stage design assessments and that more detailed modelling shall be employed as the design matures and more specific building information become available. 
 
-The ventilative cooling potential method should be considered only as a preliminary analysis on the assumption that the reference room has the characteristics to be represented by such a model where:  
+The ventilative cooling potential method should be considered only as a preliminary analysis on the assumption that the reference room has the characteristics to be represented by such a model where: 
 
-    the air temperature of thermal zone is considered uniform;  
+- the air temperature of thermal zone is considered uniform;  
 
-    the heat conduction through the room or zone elements is assumed to be one-dimensional;  
+- the heat conduction through the room or zone elements is assumed to be one-dimensional;  
 
-    the solar radiation distribution in the space considered is assumed uniform and time-independent;  
+- the solar radiation distribution in the space considered is assumed uniform and time-independent; 
 
-    thermal bridges are calculated in stationary conditions without considering the heat storage contribution; 
+- thermal bridges are calculated in stationary conditions without considering the heat storage contribution; 
 
-    the heat storage effects of glazed surfaces are neglected;  
+- the heat storage effects of glazed surfaces are neglected;  
 
-    solar properties of windows are not solar angle dependent; 
+- solar properties of windows are not solar angle dependent; 
 
-    the total solar energy transmittance is assumed to be direct transmittance into the zone. 
+- the total solar energy transmittance is assumed to be direct transmittance into the zone. 
 
 Indoor air temperature and indoor operative temperature are not distinguished. This limitation is acceptable in cases where air velocity is small (<0.2 m/s) or where the difference between mean radiant temperature and air temperature is small (<4 °C). These conditions typically occur in highly insulated buildings with mechanical ventilation systems. Since ventilative cooling implies the use of high airflow rates to cool the environment, the assumption of air velocity smaller than 0.2 m/s might not be true. Therefore, it is important to underline that the evaluation needs to be repeated at later design stages with more detailed calculation methods, i.e. dynamic simulations.  
 

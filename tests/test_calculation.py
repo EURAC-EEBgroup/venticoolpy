@@ -56,12 +56,10 @@ def test_snapshot_building_simulation(snapshot):
     csv_df_freq_air_chg = df_freq_air_chg.to_csv(lineterminator="\n")
     csv_df_year = df_year.to_csv(lineterminator="\n")
 
-    # TODO: add also 1 year simulation?
     snapshot.assert_match(csv_df_december, "simulation_december.csv")
     snapshot.assert_match(csv_df_vent_mode, "vent_mode_over_year.csv")
     snapshot.assert_match(csv_df_freq_air_chg, "req_freq_air_change_rate.csv")
     snapshot.assert_match(csv_df_year, "annual_data.csv")
-
 
 
 ####################################################################################

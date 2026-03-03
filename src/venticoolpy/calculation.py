@@ -297,6 +297,7 @@ def calc_free_float_mode(
     ----------
     building : A class:`Building` instance
     c_int : float
+        total heat capacity of the reference room [J/K]
     vent_rate_m3_s : array-like of float, re
         A list with hourly values of ventilation rate [m³/s]
     solar_gains : array-like of float 
@@ -379,7 +380,7 @@ def calc_heating_and_cooling_needs_no_vcs(
     ----------
     building : A class:`Building` instance
     c_int : float
-        TODO: add description
+        total heat capacity of the reference room [J/K]
     vent_rate_m3_s : array-like of float
         A list with hourly values of ventilation rate [m³/s]
     solar_gains : array-like of float

@@ -1,8 +1,8 @@
-### Climate data files 
+### Climate input data files 
 
 To perform the calculation, you have to provide the path to a file containing hourly meteorological data for a full year.
 
-Accepted file formats: .csv or .epw 
+Accepted file formats: .epw 
 
 Possible data sources:  
 

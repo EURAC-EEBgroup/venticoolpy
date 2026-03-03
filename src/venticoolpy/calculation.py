@@ -14,8 +14,8 @@ import json
 from venticoolpy.constant import get_t_min_k, get_t_max_k
 from venticoolpy.constant import (
     COMFORT_REQUIREMENTS, 
-    comfort_categories_AK,
-    comfort_categories_AL,
+    comfort_categories_UP,
+    comfort_categories_LW,
     Qa_comfort_category, 
     Qp_comfort_category, 
     m2_per_person
@@ -170,7 +170,7 @@ def calc_thermal_comfort_data(
             temp_t_min_k.append(t_min_k[building.bui_type])
         else:
             temp_t_min_k.append(building.ti_hsb)
-    # new flag?
+    
     Ti_hsp = temp_t_min_k
 
     t_max_k = get_t_max_k(building.comfort_requirements)
@@ -183,8 +183,8 @@ def calc_thermal_comfort_data(
             temp_t_max_k.append(building.ti_csb)
     Ti_csp = temp_t_max_k
 
-    AL10 = comfort_categories_AL[building.comfort_requirements]
-    AK10 = comfort_categories_AK[building.comfort_requirements]
+    k_lw = comfort_categories_LW[building.comfort_requirements]
+    k_up = comfort_categories_UP[building.comfort_requirements]
     lower_comfort_zone_limit = [None] * TOT_HOURS
     upper_comfort_zone_limit = [None] * TOT_HOURS
     comfort_temperature = [None] * TOT_HOURS
@@ -192,8 +192,8 @@ def calc_thermal_comfort_data(
     i = 0
     for i in range(TOT_HOURS):
         if full_year[i] > 10:
-            lower_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + AL10
-            upper_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + AK10
+            lower_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + k_lw
+            upper_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + k_up
             comfort_temperature[i] = 0.33 * full_year[i] + 18.8
         else:
             lower_comfort_zone_limit[i] = Ti_hsp[i]
@@ -325,8 +325,6 @@ def calc_free_float_mode(
         + (Air_properties_Cp * Air_properties_ro * vent_rate_m3_s)
         + building.average_u_value * building.envelope_area
     )
-    # 0.5024087248366400000 # Excel
-    # 0.5024087248366397    # Python
 
     internal_temperature_free_float = [None] * TOT_HOURS
     b_t = [None] * TOT_HOURS
@@ -591,7 +589,7 @@ def calc_heating_and_cooling_needs_with_vcs(
     df['Internal temperature calculated "Step2"'] = internal_temperature_calc_with_vcs
 
     vc_mode = [None] * TOT_HOURS
-    delta_theta_crit = 3  # AF28
+    delta_theta_crit = 3  # °C, critical temperature difference for ventilative cooling to be effective
     for i in range(TOT_HOURS):
         if (time[i] >= building.time_control_on) and (
             time[i] <= building.time_control_off

@@ -81,10 +81,10 @@ WINDOW_DESIGN_CV = [
     [0.69, 0.69, 0.68, 0.68, 0.67, 0.67, 0.64],
 ]
 
-comfort_categories_AK = dict(zip(COMFORT_REQUIREMENTS, [2, 3, 4]))  # TODO: change name
-comfort_categories_AL = dict(
+comfort_categories_UP = dict(zip(COMFORT_REQUIREMENTS, [2, 3, 4]))  
+comfort_categories_LW = dict(
     zip(COMFORT_REQUIREMENTS, [-3, -4, -5])
-)  # TODO: change name
+)  
 
 Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
 Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))

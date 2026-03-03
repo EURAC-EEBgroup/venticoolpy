@@ -1,5 +1,5 @@
 
-### Building data 
+### Building input data 
 
 The VC tool performs calculations on a reference thermal and ventilation zone within the building. The selected zone should be carefully chosen to be representative of the buildings characteristics, exposure and typical use. 
 

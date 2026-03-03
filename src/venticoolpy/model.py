@@ -136,10 +136,9 @@ class Building(object):
     time_control_off : int, required  
         Time control off; toff; min 0, max 24.
 
-        es: from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
-
     ti_day_start : int, optional, default 7:00
         The hour of the day at which the heating or cooling setpoint temperature becomes active.
+        es: from 23:00 to 7:00 -> Ti_hsp_night, from 7:00 to 23:00 -> Ti_hsp_day
 
     ti_night_start : int, optional, default 23:00
         The hour of the day at which the heating or cooling setback temperature becomes active overwriting the setpoint temperature. It marks the start of the period during which the indoor temperature is allowed to deviate from the heating or cooling setpoint to a reduced (setback) level.

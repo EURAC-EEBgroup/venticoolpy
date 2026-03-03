@@ -7,10 +7,10 @@ nav:
   - Home: index.md
   - Overview: 
     - overview/index.md
-    - "Building data": overview/building.md
-    - "Climate Data": overview/climate_data.md 
+    - "Building input data": overview/building.md
+    - "Climate input Data": overview/climate_data.md 
     - "Ventilative cooling calculation method": overview/calculation.md
-    - "Results": overview/results.md
+    - "Outputs": overview/results.md
   - Tutorials: tutorials.md
   - API Reference:
       - Models: reference/model.md

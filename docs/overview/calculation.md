@@ -1,10 +1,10 @@
-# Pre-calculation procedure
+## 1. Pre-calculation procedure
 
-## Outdoor running mean temperature and adaptive comfort limits
+### 1.1 Outdoor running mean temperature and adaptive comfort limits
 The outdoor running mean temperature and adaptive comfort limits at each timestep is calculated in accordance with EN 16798-1:2019. Adaptive comfort limits are calculated according to the comfort category defined by the user.
 In case of data absence refer to Table B.5 of EN 16798-1:2019.
 
-## Solar radiation calculation
+### 1.2 Solar radiation calculation
 Beam irradiance and total irradiance over eight façade orientations (E, N, NE, NW, S, SE, SW, W) for each
 hour of the time series is calculated.
 
@@ -26,7 +26,7 @@ NOTE In EN ISO 52016-1:2018 solar gains are split into direct (into the zone, th
 indirect (absorbed in external constructions). In the underlying methodology it is just the total. The effect of
 movable solar shading provisions is considered on an hourly basis.
 
-## Internal gains calculation
+### 1.3 Internal gains calculation
 Hourly solar heat gains, expressed in W/m2, are calculated using the equation:
 
 $\phi_{𝑠𝑜𝑙} = 𝐼_{𝑡𝑜𝑡,𝑖} \cdot 𝑔 \cdot 𝑌 \cdot \frac{𝐴_w} {𝐴_𝑓}$
@@ -69,7 +69,7 @@ $𝑎𝑝𝑙_{𝑠𝑐ℎ}$ hourly electric equipment schedule (-)
 
 The ventilative cooling potential method uses the hourly schedules as reference reported in EN 16798-1:2019 (Annex C). Default schedules are indicated for each building typology.
 
-## Overall heat transfer coefficient by transmission
+### 1.4 Overall heat transfer coefficient by transmission
 The overall heat transfer coefficient by transmission through the opaque and transparent envelope, expressed in W/K, is computed as follows:
 
 $𝐻_{𝑡𝑟} = ∑ 𝑈_{𝑎𝑣𝑔} \cdot 𝐴_𝑒 = ∑ \frac {𝑈_{𝑜𝑝}(𝐴_𝑒 − 𝐴_𝑤) + 𝑈_𝑤 \cdot 𝐴_𝑤}{A_e} \cdot 𝐴_e$
@@ -86,15 +86,15 @@ $𝑈_𝑜$ thermal transmittance of the opaque envelope (W/m²K)
 
 $𝑈_𝑤$ thermal transmittance of the transparent envelope (W/m²K)
 
-## Internal thermal capacity calculation
+### 1.5 Internal thermal capacity calculation
 According to EN ISO 52016-1, for the application of the hourly calculation, each construction of the building envelope has its own heating capacity. For the early feasibility stage, using the overall heat transfer coefficient, a simplified approach is needed, more similar to the monthly calculation method of EN ISO 52016-1.
 The internal thermal capacity of the entire thermal zone corresponds to the weighted sum of the thermal masses due to building envelope, air and furniture. The specific heat capacity of air and furniture is considered: 
 $𝑘_{𝑚;𝑖𝑛𝑡}$ = 10 000 J/(m²K)
 
 
-# Thermal balance calculations
+## 2. Thermal balance calculations
 
-## Definitions of keys in formulas
+### 2.1 Definitions of keys in formulas
 From EN ISO 52016-1, but stripped from the subscripts for different (transmission or ventilation) elements and stripped from the indication of the source of input data:
 
 $𝐻_{𝑡𝑟}$ overall heat transfer coefficient by transmission (W/K);
@@ -187,7 +187,7 @@ with A and B known at each time interval t.
 
 In the next sections are shown the steps to assess the potential of ventilative cooling.
 
-## Calculation of time series in free float temperature mode
+### 2.2 Calculation of time series in free float temperature mode
 The first case serves for validation purposes. At each time interval, $𝐴_𝑡$ and $𝐵_𝑡$ without ventilative cooling are calculated.
 
 NOTE $𝐵_𝑡$ is a function of the indoor temperature calculated during the previous time interval $\theta_{𝑖𝑛𝑡;t−Δt}$.
@@ -206,11 +206,11 @@ $\theta_{𝑖𝑛𝑡;𝑡} = \theta_{𝑖𝑛𝑡;0,𝑡}$
 
 The calculation is repeated for the successive time intervals until the end of the year. An initialization period of a month is used to avoid the influence of assumed indoor temperature at the beginning of the calculation that can have an impact on the results over a high number of time intervals.
 
-## Calculation of time series with heating and cooling needs without ventilative cooling
+### 2.3 Calculation of time series with heating and cooling needs without ventilative cooling
 This case serves as the reference case for the comparison against the case with ventilative cooling. Regardless of the way, in early feasibility stage the goal is to estimate the amount of heating and cooling load that needs to be satisfied at each hour. Therefore, there is no upper limit to the heating or cooling capacity.
 This implies that the indoor temperature will never drop below the heating setpoint nor exceed the higher cooling setpoint for a given time interval. This allows for a straightforward calculation in just a few steps:
 
-— Step 1: Calculation of the indoor temperature without heating or cooling and without ventilative cooling (same formulae as in [Calculation of time series in free float temperature mode](#calculation-of-time-series-in-free-float-temperature-mode))
+— Step 1: Calculation of the indoor temperature without heating or cooling and without ventilative cooling (same formulae as in [section 2.2](#22-calculation-of-time-series-in-free-float-temperature-mode))
 
 — Step 2: Calculation of heating or cooling load and actual indoor temperature, without ventilative
 cooling.
@@ -250,20 +250,20 @@ In case of cooling load: $\theta_{int;t} = \theta_{𝑖𝑛𝑡;𝑠𝑒𝑡;C;�
 
 Step 1 and Step 2 are repeated for the successive time intervals until the end of the year. Even in this case, an initialization period to avoid influence of assumed indoor temperature at the start of the calculation is used.
 
-## Calculation of time series with heating and cooling needs and ventilative cooling
+### 2.4 Calculation of time series with heating and cooling needs and ventilative cooling
 This case considers the ventilative cooling potential capacity and is compared against the previous case without ventilative cooling.
 
 For the same reasons indicated previously, even in this case there is no upper limit to the heating or cooling capacity. For similar reasons there is also no limit to the required air flow rate to satisfy the cooling needs by ventilative cooling. 
 
-— Step 1: Calculation of the indoor temperature without heating or cooling (same formulae as in [Calculation of time series in free float temperature mode](#calculation-of-time-series-in-free-float-temperature-mode)).
+— Step 1: Calculation of the indoor temperature without heating or cooling (same formulae as in [section 2.2](#22-calculation-of-time-series-in-free-float-temperature-mode)).
 
 — Step 2: Calculation of heating or cooling load and actual indoor temperature, without ventilative
-cooling (same formulae as in [Calculation of time series with heating and cooling needs without ventilative cooling](#calculation-of-time-series-with-heating-and-cooling-needs-without-ventilative-cooling)).
+cooling (same formulae as in [section 2.3](#23-calculation-of-time-series-with-heating-and-cooling-needs-without-ventilative-cooling)).
 
 — Step 3: Calculation of the heating or cooling load and actual indoor temperature, with ventilative
 cooling.
 
-Ventilative cooling mode (VC-mode) is determined according to the evaluation criteria described in [Evaluation criteria for ventilative cooling potential](#evaluation-criteria-for-ventilative-cooling-potential)..
+Ventilative cooling mode (VC-mode) is determined according to the evaluation criteria described in [section 3](#3-evaluation-criteria-for-ventilative-cooling-potential).
 
 If [VC-mode ≠ #2]:
 If there is a cooling load, it is not covered by ventilative cooling but by whatever other provision (active cooling).
@@ -336,7 +336,7 @@ $\theta_{𝑖𝑛𝑡;𝑡} = 𝐵_{𝑉𝐶𝑆;𝑡} + \Phi_{𝐻𝐶;𝑉𝐶
 
 Step 1, Step 2, Step 3 and Step 4 should be repeated for the successive time intervals until the end of the year. An initialization period of a month is used to avoid influence of assumed indoor temperature at the start of the calculation.
 
-# Evaluation criteria for ventilative cooling potential
+## 3. Evaluation criteria for ventilative cooling potential
 
 For each hour of the annual climatic record of the given location, the energy balance is calculated according to the model above and an algorithm splits the total number of hours when the building is occupied into four groups:
 
@@ -350,7 +350,8 @@ For each hour of the annual climatic record of the given location, the energy ba
 
 NOTE The calculation focuses mainly on direct ventilative cooling. By direct ventilative cooling is meant the use of natural ventilative cooling to ensure indoor air quality as well as thermal comfort.
 
-## Ventilative cooling mode #0 – ventilative cooling not required
+**Ventilative cooling mode #0 – ventilative cooling not required**
+
 Ventilative cooling is not required during occupied hours in which indoor temperature is below the lower comfort zone limit (heating is needed).
 
 If $\theta_{𝑖𝑛𝑡;0;𝑡} < \theta_{𝑖𝑛𝑡;𝑠𝑒𝑡;𝐻;𝑡}$
@@ -359,7 +360,8 @@ then $𝑞_{𝑉;𝑡} = 𝑞_{𝑉;𝑚𝑖𝑛}$ (with heat recovery)
 
 in VC-mode #0 $𝑞_{𝑉;𝑡}$ is not counted as part of the ventilative cooling potential.
 
-## Ventilative cooling mode #1 – direct ventilative cooling with minimum airflow rates
+**Ventilative cooling mode #1 – direct ventilative cooling with minimum airflow rates**
+
 This mode considers that direct ventilation with airflow rate maintained at the minimum required for indoor air quality can potentially ensure comfort when the outdoor temperature is within the comfort ranges.
 
 If $\theta_{𝑖𝑛𝑡;𝑠𝑒𝑡;𝐻;𝑡} ≤ \theta_{𝑖𝑛𝑡;0;𝑡} ≤ \theta_{𝑖𝑛𝑡;𝑠𝑒𝑡;𝐶;𝑡}$
@@ -368,7 +370,8 @@ then $𝑞_{𝑉;𝑡} = 𝑞_{𝑉;𝑚𝑖𝑛}$ (no heat recovery needed)
 
 Unlike the previous case, $𝑞_{𝑉,𝑡}$ is counted as part of the ventilative cooling potential.
 
-## Ventilative cooling mode #2 – direct ventilative cooling with increased airflow rates
+**Ventilative cooling mode #2 – direct ventilative cooling with increased airflow rates**
+
 Direct ventilative cooling with increased airflow rate can potentially ensure thermal comfort and indoor air quality in the air node.
 
 If $\theta_{𝑖𝑛𝑡;0;𝑡} > \theta_{𝑖𝑛𝑡;𝑠𝑒𝑡;𝐶;𝑡}$,
@@ -384,8 +387,8 @@ Obviously, in VC-mode #2 𝑞𝑉,𝑡 is counted as part of the ventilative coo
 NOTE In a less conservative approach the potential for ventilative cooling could also apply to hours in which the outdoor air temperature is higher than the cooling setpoint, if the indoor temperature without cooling is a few degrees higher than this air outdoor temperature.
 Once the actual ventilation rate has been calculated according to VC-mode, heating or cooling loads and the internal temperature are calculated again, before proceeding with the next time step.
 
-## Ventilative cooling mode #3 – direct ventilative cooling cannot provide benefits
+**Ventilative cooling mode #3 – direct ventilative cooling cannot provide benefits**
+
 The last mode refers to all other situations: the case in which direct ventilative cooling cannot provide benefits because the outdoor temperature exceeds to the upper limits of the comfort zone, or the outdoor air is too humid.
 
 $𝑞_{𝑉;𝑡} = 𝑞_{𝑉;𝑚𝑖𝑛}$
-

@@ -1,0 +1,354 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 300
+    }
+  },
+  "data": {
+    "name": "data-9f18f8b3f465461d34d1da2f41808e49"
+  },
+  "datasets": {
+    "data-9f18f8b3f465461d34d1da2f41808e49": [
+      {
+        "mode": "0",
+        "month": "January",
+        "value": 312.0
+      },
+      {
+        "mode": "1",
+        "month": "January",
+        "value": 378.0
+      },
+      {
+        "mode": "2",
+        "month": "January",
+        "value": 54.0
+      },
+      {
+        "mode": "3",
+        "month": "January",
+        "value": 0.0
+      },
+      {
+        "mode": "0",
+        "month": "February",
+        "value": 285.0
+      },
+      {
+        "mode": "1",
+        "month": "February",
+        "value": 342.0
+      },
+      {
+        "mode": "2",
+        "month": "February",
+        "value": 45.0
+      },
+      {
+        "mode": "3",
+        "month": "February",
+        "value": 0.0
+      },
+      {
+        "mode": "0",
+        "month": "March",
+        "value": 214.0
+      },
+      {
+        "mode": "1",
+        "month": "March",
+        "value": 477.0
+      },
+      {
+        "mode": "2",
+        "month": "March",
+        "value": 44.0
+      },
+      {
+        "mode": "3",
+        "month": "March",
+        "value": 9.0
+      },
+      {
+        "mode": "0",
+        "month": "April",
+        "value": 132.0
+      },
+      {
+        "mode": "1",
+        "month": "April",
+        "value": 541.0
+      },
+      {
+        "mode": "2",
+        "month": "April",
+        "value": 28.0
+      },
+      {
+        "mode": "3",
+        "month": "April",
+        "value": 19.0
+      },
+      {
+        "mode": "0",
+        "month": "May",
+        "value": 40.0
+      },
+      {
+        "mode": "1",
+        "month": "May",
+        "value": 637.0
+      },
+      {
+        "mode": "2",
+        "month": "May",
+        "value": 21.0
+      },
+      {
+        "mode": "3",
+        "month": "May",
+        "value": 46.0
+      },
+      {
+        "mode": "0",
+        "month": "June",
+        "value": 26.0
+      },
+      {
+        "mode": "1",
+        "month": "June",
+        "value": 576.0
+      },
+      {
+        "mode": "2",
+        "month": "June",
+        "value": 21.0
+      },
+      {
+        "mode": "3",
+        "month": "June",
+        "value": 97.0
+      },
+      {
+        "mode": "0",
+        "month": "July",
+        "value": 0.0
+      },
+      {
+        "mode": "1",
+        "month": "July",
+        "value": 545.0
+      },
+      {
+        "mode": "2",
+        "month": "July",
+        "value": 21.0
+      },
+      {
+        "mode": "3",
+        "month": "July",
+        "value": 178.0
+      },
+      {
+        "mode": "0",
+        "month": "August",
+        "value": 0.0
+      },
+      {
+        "mode": "1",
+        "month": "August",
+        "value": 563.0
+      },
+      {
+        "mode": "2",
+        "month": "August",
+        "value": 41.0
+      },
+      {
+        "mode": "3",
+        "month": "August",
+        "value": 140.0
+      },
+      {
+        "mode": "0",
+        "month": "September",
+        "value": 14.0
+      },
+      {
+        "mode": "1",
+        "month": "September",
+        "value": 538.0
+      },
+      {
+        "mode": "2",
+        "month": "September",
+        "value": 53.0
+      },
+      {
+        "mode": "3",
+        "month": "September",
+        "value": 115.0
+      },
+      {
+        "mode": "0",
+        "month": "October",
+        "value": 76.0
+      },
+      {
+        "mode": "1",
+        "month": "October",
+        "value": 547.0
+      },
+      {
+        "mode": "2",
+        "month": "October",
+        "value": 76.0
+      },
+      {
+        "mode": "3",
+        "month": "October",
+        "value": 45.0
+      },
+      {
+        "mode": "0",
+        "month": "November",
+        "value": 236.0
+      },
+      {
+        "mode": "1",
+        "month": "November",
+        "value": 430.0
+      },
+      {
+        "mode": "2",
+        "month": "November",
+        "value": 54.0
+      },
+      {
+        "mode": "3",
+        "month": "November",
+        "value": 0.0
+      },
+      {
+        "mode": "0",
+        "month": "December",
+        "value": 291.0
+      },
+      {
+        "mode": "1",
+        "month": "December",
+        "value": 411.0
+      },
+      {
+        "mode": "2",
+        "month": "December",
+        "value": 42.0
+      },
+      {
+        "mode": "3",
+        "month": "December",
+        "value": 0.0
+      }
+    ]
+  },
+  "layer": [
+    {
+      "encoding": {
+        "color": {
+          "field": "mode",
+          "legend": {
+            "labelExpr": "{'0':'VC mode [0]: ventilative cooling not required','1':'VC mode [1]: potential comfort hrs by direct ventilative cooling with minimum airflow rates','2':'VC mode [2]: potential comfort hrs by direct ventilative cooling with increased airflow rates','3':'VC mode [3]: residual discomfort hrs'}[datum.label]",
+            "labelLimit": 550,
+            "title": "Ventilative Cooling (VC) mode"
+          },
+          "type": "nominal"
+        },
+        "tooltip": [
+          {
+            "field": "mode",
+            "title": "VC mode",
+            "type": "quantitative"
+          },
+          {
+            "field": "value",
+            "type": "quantitative"
+          }
+        ],
+        "x": {
+          "aggregate": "sum",
+          "field": "value",
+          "stack": "normalize",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "month",
+          "sort": null,
+          "type": "nominal"
+        }
+      },
+      "mark": {
+        "type": "bar"
+      },
+      "name": "view_dd241f504aa99985_0"
+    },
+    {
+      "encoding": {
+        "detail": {
+          "field": "mode",
+          "type": "nominal"
+        },
+        "order": {
+          "field": "mode",
+          "type": "nominal"
+        },
+        "text": {
+          "condition": {
+            "field": "value",
+            "format": ".0f",
+            "test": "(datum.value > 50)",
+            "type": "quantitative"
+          },
+          "value": ""
+        },
+        "x": {
+          "aggregate": "sum",
+          "field": "value",
+          "stack": "normalize",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "month",
+          "sort": null,
+          "type": "nominal"
+        }
+      },
+      "mark": {
+        "color": "white",
+        "dx": -15,
+        "dy": 3,
+        "type": "text"
+      }
+    }
+  ],
+  "padding": 50,
+  "params": [
+    {
+      "bind": "scales",
+      "name": "param_1e9efca18e7a2868",
+      "select": {
+        "encodings": [
+          "x",
+          "y"
+        ],
+        "type": "interval"
+      },
+      "views": [
+        "view_dd241f504aa99985_0"
+      ]
+    }
+  ],
+  "title": "Distribution of ventilation mode over the year",
+  "width": 400
+}

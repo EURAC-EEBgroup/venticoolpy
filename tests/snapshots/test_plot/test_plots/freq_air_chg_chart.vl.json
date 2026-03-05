@@ -1,0 +1,157 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 300
+    }
+  },
+  "data": {
+    "name": "data-d7baa6bc9742ed36267949c7a4ecd1fb"
+  },
+  "datasets": {
+    "data-d7baa6bc9742ed36267949c7a4ecd1fb": [
+      {
+        "ach": "2",
+        "cumulative_percentage": 0.308,
+        "frequency": 154,
+        "frequency_percentage": 0.308
+      },
+      {
+        "ach": "4",
+        "cumulative_percentage": 0.492,
+        "frequency": 92,
+        "frequency_percentage": 0.184
+      },
+      {
+        "ach": "6",
+        "cumulative_percentage": 0.61,
+        "frequency": 59,
+        "frequency_percentage": 0.118
+      },
+      {
+        "ach": "8",
+        "cumulative_percentage": 0.74,
+        "frequency": 65,
+        "frequency_percentage": 0.13
+      },
+      {
+        "ach": "10",
+        "cumulative_percentage": 0.808,
+        "frequency": 34,
+        "frequency_percentage": 0.068
+      },
+      {
+        "ach": "12",
+        "cumulative_percentage": 0.852,
+        "frequency": 22,
+        "frequency_percentage": 0.044
+      },
+      {
+        "ach": "14",
+        "cumulative_percentage": 0.89,
+        "frequency": 19,
+        "frequency_percentage": 0.038
+      },
+      {
+        "ach": "16",
+        "cumulative_percentage": 0.91,
+        "frequency": 10,
+        "frequency_percentage": 0.02
+      },
+      {
+        "ach": "18",
+        "cumulative_percentage": 0.94,
+        "frequency": 15,
+        "frequency_percentage": 0.03
+      },
+      {
+        "ach": ">18",
+        "cumulative_percentage": 1.0,
+        "frequency": 30,
+        "frequency_percentage": 0.06
+      }
+    ]
+  },
+  "layer": [
+    {
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "frequency",
+            "title": "Frequency",
+            "type": "quantitative"
+          }
+        ],
+        "x": {
+          "field": "ach",
+          "sort": null,
+          "type": "nominal"
+        },
+        "y": {
+          "field": "frequency",
+          "sort": null,
+          "type": "quantitative"
+        }
+      },
+      "mark": {
+        "type": "bar"
+      },
+      "name": "view_806cb8b34f4ff9ab_0"
+    },
+    {
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "cumulative_percentage",
+            "format": ".3f",
+            "title": "cumulative percentage",
+            "type": "quantitative"
+          }
+        ],
+        "x": {
+          "field": "ach",
+          "sort": null,
+          "type": "nominal"
+        },
+        "y": {
+          "field": "cumulative_percentage",
+          "sort": null,
+          "title": "cumulative percentage",
+          "type": "quantitative"
+        }
+      },
+      "mark": {
+        "color": "#57A44C",
+        "point": {
+          "color": "#57A44C"
+        },
+        "type": "line"
+      }
+    }
+  ],
+  "padding": 50,
+  "params": [
+    {
+      "bind": "scales",
+      "name": "param_1e9efca18e7a2868",
+      "select": {
+        "encodings": [
+          "x",
+          "y"
+        ],
+        "type": "interval"
+      },
+      "views": [
+        "view_806cb8b34f4ff9ab_0"
+      ]
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    }
+  },
+  "title": "Frequency of air change rate required to provide potential comfort",
+  "width": 400
+}

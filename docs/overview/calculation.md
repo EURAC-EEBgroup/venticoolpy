@@ -5,18 +5,18 @@ The outdoor running mean temperature and adaptive comfort limits at each timeste
 In case of data absence refer to Table B.5 of EN 16798-1:2019.
 
 ### 1.2 Solar radiation calculation
-Beam irradiance and total irradiance over eight façade orientations (E, N, NE, NW, S, SE, SW, W) for each
-hour of the time series is calculated.
+Beam irradiance and total irradiance over each fenestration orientations (E, N, NE, NW, S, SE, SW, W) for each
+hour of the time series is calculated using weather file metadata from the .epw file header (latitude, longitude, altitude, and time zone) and Perez sky model within the pvlib python library.
 
-The total irradiance over eight façade orientations is given by the sum of beam and diffuse radiation according to this equation:
+The total irradiance over the glazed surface is given by the sum of beam and diffuse radiation for each window of the room according to this equation:
 
 $𝐼_{𝑡𝑜𝑡,𝑖} = 𝐼_{𝑏,𝑖} + 𝐼_𝑑$
 
 where
 
-𝑖 refers to the façade orientations (E, N, NE, NW, S, SE, SW, W)
+𝑖 refers to the window orientations (E, N, NE, NW, S, SE, SW, W)
 
-$𝐼_{𝑡𝑜𝑡}$ total solar irradiance for each façade orientation (W/m²)
+$𝐼_{𝑡𝑜𝑡}$ total solar irradiance for each window (W/m²)
 
 $𝐼_{𝑏,𝑖}$ beam irradiance(W/m²)
 

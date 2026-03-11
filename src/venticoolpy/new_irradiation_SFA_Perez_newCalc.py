@@ -113,12 +113,11 @@ def get_climate_data_w_vert_irrad_from_epw(filename, orientation='S'):
         model='perez'
     )
 
-    # total_irradiance = total_irradiance.fillna(0)
+    total_irradiance = total_irradiance.fillna(0)
     vertical_irradiance = (
         total_irradiance['poa_direct'] + 
         total_irradiance['poa_diffuse']  
     )
-    vertical_irradiance = vertical_irradiance.fillna(0)
 
     climate_data = ClimateData(
         df_outdoor_dry_bulb_temperature=weather_data.dataframe["Dry Bulb Temperature"], 

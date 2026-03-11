@@ -42,7 +42,7 @@ Once the library is imported, the next step is to provide input values related t
     ti_hsb=15,                       # [°C] heating setback (during night) temperature 
     ti_csb=50,                       # [°C] cooling setback (during night) temperature 
     my_min_req_vent_rate=None,       # OPTIONAL - minimum required ventilation rate
-    my_vent_rates_mu: Literal["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"] = VENT_RATES_MU[0], # required if my_min_req_vent_rate is not None - unit of measure for the required ventilation rates input in my_min_req_vent_rate
+    my_vent_rates_mu= None,          # Literal["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"] = VENT_RATES_MU[0], # required if my_min_req_vent_rate is not None - unit of measure for the required ventilation rates input in my_min_req_vent_rate
     my_lighting_power_density=None,  # OPTIONAL - [W/m²] lighting power density
     my_el_equipment_power_density=None, # OPTIONAL - [W/m²] electric equipment power density
     my_occupancy_gains_density=None,    # OPTIONAL - [people/m²] Occupancy density
@@ -55,26 +55,36 @@ Load climate data by editing the .epw file path in the code
     
 ```python
 
-    climate_data = get_climate_data_w_vert_irrad_from_epw(
-        filename = "<path_to_climate_file>.epw", orientation=building.orientation
-    )
+climate_data = get_climate_data_w_vert_irrad_from_epw(
+filename = "<path_to_climate_file>.epw", orientation=building.orientation
+)
 
 ```
 Run the calculation:
 
 ```python
 
-    df = run_vct_simulation(building, climate_data)
-    df_vent_mode = get_vent_mode_over_year(df[744:])
-    df_freq_air_chg = get_requirend_frequency_air_change_rate(df[744:], building)
-    df_year = get_annual_data(df[744:])
+df = run_vct_simulation(building, climate_data)
+df_vent_mode = get_vent_mode_over_year(df[744:])
+df_freq_air_chg = get_requirend_frequency_air_change_rate(df[744:], building)
+df_year = get_annual_data(df[744:])
 
 ```
+Print the results:
 
+```python
+
+print(df_vent_mode)
+print(df_freq_air_chg)
+print(df_year)
+
+```
 Plot the results:
 
 ```python
 
-
+from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate
+plot_vent_mode_over_year(df_vent_mode)
+plot_requirend_frequency_air_change_rate(df_freq_air_chg)
 
 ```

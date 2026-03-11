@@ -69,7 +69,7 @@ class Building(object):
     bui_type : Literal['Apartment building', 'Daycare center', 'Detached house', 'Hospital', 'Hotel', 'Office', 'Restaurant', 'School']
         Building type.
 
-    celing_to_floor_height : float, required 
+    ceiling_to_floor_height : float, required 
         Ceiling to floor height; H (m).
         The net room height to calculate net room air volume V = H * S
 
@@ -181,7 +181,7 @@ class Building(object):
     def __init__(
         self,
         bui_type: Literal["Apartment building", "Daycare center", "Detached house", "Hospital", "Hotel", "Office", "Restaurant", "School"],
-        celing_to_floor_height,
+        ceiling_to_floor_height,
         envelope_area,
         floor_area,
         fenestration_area,
@@ -208,7 +208,7 @@ class Building(object):
         my_c_int=None,
     ):
         self.bui_type = bui_type
-        self.celing_to_floor_height = celing_to_floor_height
+        self.ceiling_to_floor_height = ceiling_to_floor_height
         self.envelope_area = envelope_area
         self.floor_area = floor_area
         self.fenestration_area = fenestration_area
@@ -247,7 +247,7 @@ class Building(object):
     @property
     def room_volume(self):
         """Room volume; V (m³)."""
-        return self.celing_to_floor_height * self.floor_area
+        return self.ceiling_to_floor_height * self.floor_area
 
     @property
     def average_u_value(self):
@@ -279,7 +279,7 @@ class Building(object):
                 vent_rate = self.my_min_req_vent_rate
 
             elif self.my_vent_rates_mu == VENT_RATES_MU[1]:  # 1/h:
-                vent_rate = self.my_min_req_vent_rate * self.celing_to_floor_height / 3.6
+                vent_rate = self.my_min_req_vent_rate * self.ceiling_to_floor_height / 3.6
 
             elif self.my_vent_rates_mu == VENT_RATES_MU[2]: # kg/s-m²
                 vent_rate = self.my_min_req_vent_rate / (0.001 * Air_properties_ro)

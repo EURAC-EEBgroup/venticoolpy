@@ -1,6 +1,6 @@
 {
     "bui_type": "School",
-    "celing_to_floor_height": 3,
+    "ceiling_to_floor_height": 3,
     "comfort_requirements": "category II",
     "construction_mass": "light",
     "envelope_area": 30,

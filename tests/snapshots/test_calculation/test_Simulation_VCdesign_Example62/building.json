@@ -1,6 +1,6 @@
 {
     "bui_type": "Office",
-    "celing_to_floor_height": 3,
+    "ceiling_to_floor_height": 3,
     "comfort_requirements": "category I",
     "construction_mass": "medium",
     "envelope_area": 50,

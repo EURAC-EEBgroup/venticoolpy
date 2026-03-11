@@ -63,7 +63,7 @@ from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_ver
 
 building = Building(
     bui_type="Apartment building",
-    celing_to_floor_height=2.7,
+    ceiling_to_floor_height=2.7,
     envelope_area=171.60,
     floor_area=48.00,
     fenestration_area=12.00,

@@ -25,7 +25,7 @@ def test_snapshot_building_simulation(snapshot):
     """Test Appartment building."""
     building = Building(
         bui_type="Apartment building",
-        celing_to_floor_height=2.7,
+        ceiling_to_floor_height=2.7,
         envelope_area=171.60,
         floor_area=48.00,
         fenestration_area=12.00,
@@ -69,7 +69,7 @@ def test_Simulation_VCdesign_Example21(snapshot):
 
     inputs = Building(**{
         "bui_type": "Apartment building",
-        "celing_to_floor_height": 2.6,
+        "ceiling_to_floor_height": 2.6,
         "comfort_requirements": "category II",
         "construction_mass": "medium",
         "envelope_area": 7.8,
@@ -117,7 +117,7 @@ def test_Simulation_VCdesign_Example21(snapshot):
 def test_Simulation_VCdesign_Example31(snapshot):
     inputs = Building(**{
         "bui_type": "School",
-        "celing_to_floor_height": 3,
+        "ceiling_to_floor_height": 3,
         "comfort_requirements": "category II",
         "construction_mass": "light",
         "envelope_area": 30,
@@ -165,7 +165,7 @@ def test_Simulation_VCdesign_Example31(snapshot):
 def test_Simulation_VCdesign_Example41(snapshot):
     inputs = Building(**{
         "bui_type": "Apartment building",
-        "celing_to_floor_height": 2.6,
+        "ceiling_to_floor_height": 2.6,
         "comfort_requirements": "category II",
         "construction_mass": "medium",
         "envelope_area": 7.8,
@@ -213,7 +213,7 @@ def test_Simulation_VCdesign_Example41(snapshot):
 def test_Simulation_VCdesign_Example51(snapshot):
     inputs = Building(**{
         "bui_type": "Apartment building",
-        "celing_to_floor_height": 2.6,
+        "ceiling_to_floor_height": 2.6,
         "comfort_requirements": "category II",
         "construction_mass": "medium",
         "envelope_area": 7.8,
@@ -261,7 +261,7 @@ def test_Simulation_VCdesign_Example51(snapshot):
 def test_Simulation_VCdesign_Example61(snapshot):
     inputs = Building(**{
         "bui_type": "Hotel",
-        "celing_to_floor_height": 2.6,
+        "ceiling_to_floor_height": 2.6,
         "comfort_requirements": "category I",
         "construction_mass": "light",
         "envelope_area": 7.8,
@@ -309,7 +309,7 @@ def test_Simulation_VCdesign_Example61(snapshot):
 def test_Simulation_VCdesign_Example62(snapshot):
     inputs = Building(**{
         "bui_type": "Office",
-        "celing_to_floor_height": 3,
+        "ceiling_to_floor_height": 3,
         "comfort_requirements": "category I",
         "construction_mass": "medium",
         "envelope_area": 50,

@@ -11,7 +11,7 @@ def test_inputs_model(snapshot):
     """Test Building model."""
     inputs = Building(
         bui_type="Apartment building",
-        celing_to_floor_height=2.7,
+        ceiling_to_floor_height=2.7,
         envelope_area=171.60,
         floor_area=48.00,
         fenestration_area=12.00,
@@ -50,7 +50,7 @@ def test_building_exception(snapshot):
     with pytest.raises(BuildingCreateException) as exc:
         _ = Building(
             bui_type="type does not exist",
-            celing_to_floor_height=2.7,
+            ceiling_to_floor_height=2.7,
             envelope_area=171.60,
             floor_area=48.00,
             fenestration_area=12.00,
@@ -74,7 +74,7 @@ def test_custom_min_req_vent_rate(snapshot):
 
     inputs = Building(
         bui_type="Apartment building",
-        celing_to_floor_height=2.7,
+        ceiling_to_floor_height=2.7,
         envelope_area=171.60,
         floor_area=48.00,
         fenestration_area=12.00,

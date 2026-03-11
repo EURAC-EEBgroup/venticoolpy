@@ -1,6 +1,6 @@
 {
     "bui_type": "Hotel",
-    "celing_to_floor_height": 2.6,
+    "ceiling_to_floor_height": 2.6,
     "comfort_requirements": "category I",
     "construction_mass": "light",
     "envelope_area": 7.8,

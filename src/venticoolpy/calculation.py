@@ -939,7 +939,7 @@ def run_window_design_simulation(
     required_airflow_rate_for_iaq = (
         building.min_req_vent_rate * building.room_volume
     )
-    room_height = building.celing_to_floor_height
+    room_height = building.ceiling_to_floor_height
 
     index_df = [
         0.25,

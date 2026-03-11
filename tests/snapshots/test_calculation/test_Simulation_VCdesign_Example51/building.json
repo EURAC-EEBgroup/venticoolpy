@@ -1,6 +1,6 @@
 {
     "bui_type": "Apartment building",
-    "celing_to_floor_height": 2.6,
+    "ceiling_to_floor_height": 2.6,
     "comfort_requirements": "category II",
     "construction_mass": "medium",
     "envelope_area": 7.8,

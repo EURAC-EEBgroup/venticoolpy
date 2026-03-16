@@ -1,5 +1,6 @@
-<!-- markdownlint-disable MD041 -->
 # Welcome to VentiCoolPy
+
+<img src="media/venticoolpy_logo.png" style="max-width: 300px"/> <!-- markdownlint-disable-line MD041 -->
 
 
 **VentiCoolPy** is a Python library developed by Eurac Research to support the development of sustainable cooling strategies for buildings.

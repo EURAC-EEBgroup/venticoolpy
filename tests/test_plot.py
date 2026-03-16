@@ -1,8 +1,8 @@
 import json
 
 from venticoolpy.model import Building
-from venticoolpy.calculation import run_vct_simulation, get_vent_mode_over_year, get_requirend_frequency_air_change_rate
-from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate
+from venticoolpy.calculation import run_vct_simulation, get_vent_mode_over_year, get_requirend_frequency_air_change_rate, get_annual_data
+from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate, plot_annual_data
 
 
 from inputs.functions import (
@@ -37,6 +37,7 @@ def test_plots(snapshot):
     df = run_vct_simulation(building, climate_data)
     df_vent_mode = get_vent_mode_over_year(df[744:])
     df_freq_air_chg = get_requirend_frequency_air_change_rate(df[744:], building)
+    df_annual_data = get_annual_data(df[744:])
 
     vent_mode_chart = plot_vent_mode_over_year(df_vent_mode, display="none")
     spec = vent_mode_chart.to_dict()  # Vega-Lite spec as a dict
@@ -45,3 +46,7 @@ def test_plots(snapshot):
     freq_air_chg_chart = plot_requirend_frequency_air_change_rate(df_freq_air_chg, display="none")
     spec = freq_air_chg_chart.to_dict()  # Vega-Lite spec as a dict
     snapshot.assert_match(json.dumps(spec, sort_keys=True, indent=2), "freq_air_chg_chart.vl.json")
+
+    annual_data_chart = plot_annual_data(df_annual_data, display="none")
+    spec = annual_data_chart.to_dict()  # Vega-Lite spec as a dict
+    snapshot.assert_match(json.dumps(spec, sort_keys=True, indent=2), "annual_data_chart.vl.json")

@@ -83,8 +83,10 @@ Plot the results:
 
 ```python
 
-from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate
+from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate, plot_annual_data
+
 plot_vent_mode_over_year(df_vent_mode)
 plot_requirend_frequency_air_change_rate(df_freq_air_chg)
+plot_annual_data(df_year)
 
 ```

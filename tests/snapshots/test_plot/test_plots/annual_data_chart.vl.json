@@ -1,0 +1,261 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 300
+    }
+  },
+  "data": {
+    "name": "data-9da275352242b04db3ae3756c9f80851"
+  },
+  "datasets": {
+    "data-9da275352242b04db3ae3756c9f80851": [
+      {
+        "Month": "Jan",
+        "Type": "Heating",
+        "Value": 978.2395626583533
+      },
+      {
+        "Month": "Feb",
+        "Type": "Heating",
+        "Value": 855.5088146543151
+      },
+      {
+        "Month": "Mar",
+        "Type": "Heating",
+        "Value": 540.7230118991813
+      },
+      {
+        "Month": "Apr",
+        "Type": "Heating",
+        "Value": 253.8796584028715
+      },
+      {
+        "Month": "May",
+        "Type": "Heating",
+        "Value": 44.46052859176702
+      },
+      {
+        "Month": "Jun",
+        "Type": "Heating",
+        "Value": 32.309621514815284
+      },
+      {
+        "Month": "Jul",
+        "Type": "Heating",
+        "Value": 0.0
+      },
+      {
+        "Month": "Aug",
+        "Type": "Heating",
+        "Value": 0.0
+      },
+      {
+        "Month": "Sep",
+        "Type": "Heating",
+        "Value": 22.75918713889568
+      },
+      {
+        "Month": "Oct",
+        "Type": "Heating",
+        "Value": 149.99681505336002
+      },
+      {
+        "Month": "Nov",
+        "Type": "Heating",
+        "Value": 516.8547260861005
+      },
+      {
+        "Month": "Dec",
+        "Type": "Heating",
+        "Value": 854.3589420434273
+      },
+      {
+        "Month": "Jan",
+        "Type": "Cooling no VCP",
+        "Value": 152.9265997737418
+      },
+      {
+        "Month": "Feb",
+        "Type": "Cooling no VCP",
+        "Value": 91.02176676997128
+      },
+      {
+        "Month": "Mar",
+        "Type": "Cooling no VCP",
+        "Value": 131.29498748423876
+      },
+      {
+        "Month": "Apr",
+        "Type": "Cooling no VCP",
+        "Value": 88.82142463185731
+      },
+      {
+        "Month": "May",
+        "Type": "Cooling no VCP",
+        "Value": 104.64219805494034
+      },
+      {
+        "Month": "Jun",
+        "Type": "Cooling no VCP",
+        "Value": 186.66092348353592
+      },
+      {
+        "Month": "Jul",
+        "Type": "Cooling no VCP",
+        "Value": 414.2733044268249
+      },
+      {
+        "Month": "Aug",
+        "Type": "Cooling no VCP",
+        "Value": 465.9494900312095
+      },
+      {
+        "Month": "Sep",
+        "Type": "Cooling no VCP",
+        "Value": 511.0898086787425
+      },
+      {
+        "Month": "Oct",
+        "Type": "Cooling no VCP",
+        "Value": 406.7566487401612
+      },
+      {
+        "Month": "Nov",
+        "Type": "Cooling no VCP",
+        "Value": 126.3995217168465
+      },
+      {
+        "Month": "Dec",
+        "Type": "Cooling no VCP",
+        "Value": 102.40149360735728
+      },
+      {
+        "Month": "Jan",
+        "Type": "Cooling VCP",
+        "Value": 3.4924596548080445e-13
+      },
+      {
+        "Month": "Feb",
+        "Type": "Cooling VCP",
+        "Value": 3.201421350240707e-13
+      },
+      {
+        "Month": "Mar",
+        "Type": "Cooling VCP",
+        "Value": 30.09985233688385
+      },
+      {
+        "Month": "Apr",
+        "Type": "Cooling VCP",
+        "Value": 50.71556771029865
+      },
+      {
+        "Month": "May",
+        "Type": "Cooling VCP",
+        "Value": 85.4596275293207
+      },
+      {
+        "Month": "Jun",
+        "Type": "Cooling VCP",
+        "Value": 169.80774348672105
+      },
+      {
+        "Month": "Jul",
+        "Type": "Cooling VCP",
+        "Value": 403.54717967784075
+      },
+      {
+        "Month": "Aug",
+        "Type": "Cooling VCP",
+        "Value": 416.23901118249677
+      },
+      {
+        "Month": "Sep",
+        "Type": "Cooling VCP",
+        "Value": 383.02204118102946
+      },
+      {
+        "Month": "Oct",
+        "Type": "Cooling VCP",
+        "Value": 199.43079765009412
+      },
+      {
+        "Month": "Nov",
+        "Type": "Cooling VCP",
+        "Value": 5.529727786779404e-13
+      },
+      {
+        "Month": "Dec",
+        "Type": "Cooling VCP",
+        "Value": 4.0745362639427186e-13
+      }
+    ]
+  },
+  "encoding": {
+    "color": {
+      "field": "Type",
+      "type": "nominal"
+    },
+    "column": {
+      "field": "Month",
+      "sort": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "type": "nominal"
+    },
+    "tooltip": [
+      {
+        "field": "Month",
+        "type": "nominal"
+      },
+      {
+        "field": "Type",
+        "type": "nominal"
+      },
+      {
+        "field": "Value",
+        "type": "quantitative"
+      }
+    ],
+    "x": {
+      "field": "Type",
+      "title": "",
+      "type": "ordinal"
+    },
+    "y": {
+      "field": "Value",
+      "type": "quantitative"
+    }
+  },
+  "mark": {
+    "type": "bar"
+  },
+  "padding": 50,
+  "params": [
+    {
+      "bind": "scales",
+      "name": "param_1e9efca18e7a2868",
+      "select": {
+        "encodings": [
+          "x",
+          "y"
+        ],
+        "type": "interval"
+      }
+    }
+  ],
+  "title": "Sensible energy needs [kWh]"
+}

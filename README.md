@@ -90,17 +90,19 @@ df = df_with_calibration_month[744:]  # remove calibration month
 
 df_vent_mode = get_vent_mode_over_year(df)
 df_freq_air_change = get_requirend_frequency_air_change_rate(df, building)
-df_annual_data = get_annual_data(df)
+df_year = get_annual_data(df)
 
 # Print results:
 print(df_vent_mode)
 print(df_freq_air_change)
-print(df_annual_data)
+print(df_year)
 
 # Plot results:
-from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate
+from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate, plot_annual_data
+
 plot_vent_mode_over_year(df_vent_mode)
 plot_requirend_frequency_air_change_rate(df_freq_air_change)
+plot_annual_data(df_year)
 
 ```
 

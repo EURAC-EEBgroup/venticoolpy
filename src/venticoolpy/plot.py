@@ -1,3 +1,4 @@
+import calendar
 try:
     import altair as alt
     from IPython.display import display as _display
@@ -203,3 +204,68 @@ def plot_requirend_frequency_air_change_rate(df_freq_air_change, display="auto",
     return chart
 
 
+
+
+def plot_annual_data(df_annual_data, display="auto", save=False, fp=None):
+    """
+    Create and (optionally) display/save a monthly Altair chart of annual energy data.
+
+    Expected input schema (columns):
+    - Month
+    - Heating
+    - Cooling without ventilative cooling
+    - Cooling with ventilative cooling
+
+    A final aggregate row with month='Year' is ignored for plotting.
+    """
+    # Work on a copy to avoid modifying caller's DataFrame.
+    df = df_annual_data.copy()
+
+    df['Month'] = df.index.map(lambda x: calendar.month_abbr[x])
+    df_long = df.melt(
+        id_vars="Month",
+        value_vars=["Heating", "Cooling no VCP", "Cooling VCP"],
+        var_name="Type",
+        value_name="Value"
+    )
+    
+    chart = alt.Chart(df_long).mark_bar().encode(
+        x=alt.X("Type:O", title=""),
+        y=alt.Y("Value:Q"),
+        color='Type:N',
+        column=alt.Column("Month:N", sort=[calendar.month_abbr[i] for i in range(1, 13)]),
+        tooltip=["Month", "Type", "Value"]
+    ).interactive()
+
+    chart = chart.properties(
+        title='Sensible energy needs [kWh]',
+        padding=50
+    )
+
+    # save chart
+    if save:
+        if fp is None:
+            fp = "annual_data.png"
+        try:
+            chart.save(fp)
+        except Exception as e:
+            raise e
+
+
+    # display chart
+    if display == "auto":
+        display = "inline" if _in_notebook() else "browser"
+
+    try:
+        if display == "inline":
+            with alt.renderers.enable("default"):
+                _display(chart)
+
+        elif display == "browser":
+            with alt.renderers.enable("browser"):
+                chart.show()
+    except Exception as e:
+        raise e
+    
+    return chart
+    

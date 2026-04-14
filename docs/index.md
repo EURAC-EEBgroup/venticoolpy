@@ -54,12 +54,15 @@ For any questions or support, please contact:
 **Concept and Methodology**
 
 - Annamaria Belleri <annamaria.belleri@eurac.edu>
-- Ali Sana Fatima <sanafatima.ali@eurac.edu>
 
 **Python Code and Web Tool**
 
 - Olga Somova <olga.somova@eurac.edu>
 
+**other contributors**
+- Ali Sana Fatima <sanafatima.ali@eurac.edu> (vertical irradiance code)
+- Valentina Radice Fossati (validation of the calculation methdology)
+- Dick Van Djik  <dick.vandijk@epb.center> (thermal balance calculation method)
 
 ## Contributing
 

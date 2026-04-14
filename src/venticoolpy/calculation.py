@@ -587,7 +587,7 @@ def calc_heating_and_cooling_needs_with_vcs(
     df['Internal temperature calculated "Step2"'] = internal_temperature_calc_with_vcs
 
     vc_mode = [None] * TOT_HOURS
-    delta_theta_crit = 2  # °C, critical temperature difference for ventilative cooling to be effective
+    delta_theta_crit = 3  # °C, critical temperature difference for ventilative cooling to be effective
     for i in range(TOT_HOURS):
         if (time[i] >= building.time_control_on) and (
             time[i] <= building.time_control_off

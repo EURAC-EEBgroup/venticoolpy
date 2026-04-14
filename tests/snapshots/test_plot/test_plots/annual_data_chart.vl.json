@@ -7,39 +7,39 @@
     }
   },
   "data": {
-    "name": "data-9da275352242b04db3ae3756c9f80851"
+    "name": "data-e2ba9da610553a2d23b9fb17379dc415"
   },
   "datasets": {
-    "data-9da275352242b04db3ae3756c9f80851": [
+    "data-e2ba9da610553a2d23b9fb17379dc415": [
       {
         "Month": "Jan",
         "Type": "Heating",
-        "Value": 978.2395626583533
+        "Value": 447.2382082804664
       },
       {
         "Month": "Feb",
         "Type": "Heating",
-        "Value": 855.5088146543151
+        "Value": 411.6915123110671
       },
       {
         "Month": "Mar",
         "Type": "Heating",
-        "Value": 540.7230118991813
+        "Value": 183.6493999386689
       },
       {
         "Month": "Apr",
         "Type": "Heating",
-        "Value": 253.8796584028715
+        "Value": 93.7837903151982
       },
       {
         "Month": "May",
         "Type": "Heating",
-        "Value": 44.46052859176702
+        "Value": 0.0
       },
       {
         "Month": "Jun",
         "Type": "Heating",
-        "Value": 32.309621514815284
+        "Value": 5.08805403244459
       },
       {
         "Month": "Jul",
@@ -54,142 +54,142 @@
       {
         "Month": "Sep",
         "Type": "Heating",
-        "Value": 22.75918713889568
+        "Value": 0.0
       },
       {
         "Month": "Oct",
         "Type": "Heating",
-        "Value": 149.99681505336002
+        "Value": 48.055806677439655
       },
       {
         "Month": "Nov",
         "Type": "Heating",
-        "Value": 516.8547260861005
+        "Value": 169.92761257920554
       },
       {
         "Month": "Dec",
         "Type": "Heating",
-        "Value": 854.3589420434273
+        "Value": 368.14645434441604
       },
       {
         "Month": "Jan",
         "Type": "Cooling no VCP",
-        "Value": 152.9265997737418
+        "Value": 244.76597278601264
       },
       {
         "Month": "Feb",
         "Type": "Cooling no VCP",
-        "Value": 91.02176676997128
+        "Value": 183.72610350835626
       },
       {
         "Month": "Mar",
         "Type": "Cooling no VCP",
-        "Value": 131.29498748423876
+        "Value": 247.45668832939154
       },
       {
         "Month": "Apr",
         "Type": "Cooling no VCP",
-        "Value": 88.82142463185731
+        "Value": 235.98082632684844
       },
       {
         "Month": "May",
         "Type": "Cooling no VCP",
-        "Value": 104.64219805494034
+        "Value": 224.75051239497697
       },
       {
         "Month": "Jun",
         "Type": "Cooling no VCP",
-        "Value": 186.66092348353592
+        "Value": 303.0028182734124
       },
       {
         "Month": "Jul",
         "Type": "Cooling no VCP",
-        "Value": 414.2733044268249
+        "Value": 531.1490019887729
       },
       {
         "Month": "Aug",
         "Type": "Cooling no VCP",
-        "Value": 465.9494900312095
+        "Value": 607.0779640247448
       },
       {
         "Month": "Sep",
         "Type": "Cooling no VCP",
-        "Value": 511.0898086787425
+        "Value": 691.3524483002852
       },
       {
         "Month": "Oct",
         "Type": "Cooling no VCP",
-        "Value": 406.7566487401612
+        "Value": 619.5080613788106
       },
       {
         "Month": "Nov",
         "Type": "Cooling no VCP",
-        "Value": 126.3995217168465
+        "Value": 233.25495309356089
       },
       {
         "Month": "Dec",
         "Type": "Cooling no VCP",
-        "Value": 102.40149360735728
+        "Value": 207.11393646070832
       },
       {
         "Month": "Jan",
         "Type": "Cooling VCP",
-        "Value": 3.4924596548080445e-13
+        "Value": 2.764863893389702e-13
       },
       {
         "Month": "Feb",
         "Type": "Cooling VCP",
-        "Value": 3.201421350240707e-13
+        "Value": 3.7834979593753813e-13
       },
       {
         "Month": "Mar",
         "Type": "Cooling VCP",
-        "Value": 30.09985233688385
+        "Value": 16.519456817131925
       },
       {
         "Month": "Apr",
         "Type": "Cooling VCP",
-        "Value": 50.71556771029865
+        "Value": 35.421841876850316
       },
       {
         "Month": "May",
         "Type": "Cooling VCP",
-        "Value": 85.4596275293207
+        "Value": 112.01075307647801
       },
       {
         "Month": "Jun",
         "Type": "Cooling VCP",
-        "Value": 169.80774348672105
+        "Value": 214.86982240548497
       },
       {
         "Month": "Jul",
         "Type": "Cooling VCP",
-        "Value": 403.54717967784075
+        "Value": 467.2705468146207
       },
       {
         "Month": "Aug",
         "Type": "Cooling VCP",
-        "Value": 416.23901118249677
+        "Value": 422.8490025096708
       },
       {
         "Month": "Sep",
         "Type": "Cooling VCP",
-        "Value": 383.02204118102946
+        "Value": 397.5807153731762
       },
       {
         "Month": "Oct",
         "Type": "Cooling VCP",
-        "Value": 199.43079765009412
+        "Value": 144.1788827709455
       },
       {
         "Month": "Nov",
         "Type": "Cooling VCP",
-        "Value": 5.529727786779404e-13
+        "Value": 3.92901711165905e-13
       },
       {
         "Month": "Dec",
         "Type": "Cooling VCP",
-        "Value": 4.0745362639427186e-13
+        "Value": 1.8917489796876906e-13
       }
     ]
   },

@@ -3,13 +3,10 @@
 import pandas as pd
 from statistics import mean
 import datetime
-from epw.weather import Weather
-import csv
 import sys
 import bisect
 import numpy as np
 from importlib import resources
-import json
 
 from venticoolpy.constant import get_t_min_k, get_t_max_k
 from venticoolpy.constant import (

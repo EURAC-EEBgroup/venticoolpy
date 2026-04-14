@@ -86,8 +86,8 @@ comfort_categories_LW = dict(
     zip(COMFORT_REQUIREMENTS, [-3, -4, -5])
 )  
 
-Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
-Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))
+Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [3.5, 2.5, 1.5]))
+Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [0.25, 0.15, 0.1]))
 
 # MJ/m3K
 heat_cap_construction_type = dict(zip(CONSTRUCTION_MASS, [1.4, 0.9, 1.15]))

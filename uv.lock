@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -1471,6 +1471,7 @@ wheels = [
 name = "venticoolpy"
 source = { editable = "." }
 dependencies = [
+    { name = "altair" },
     { name = "epw" },
     { name = "numpy" },
     { name = "pandas" },
@@ -1509,6 +1510,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "altair", specifier = ">=6.0.0" },
     { name = "altair", marker = "extra == 'plot'", specifier = ">=6.0.0" },
     { name = "epw", specifier = ">=1.2.dev2" },
     { name = "ipython", marker = "extra == 'plot'", specifier = ">=9.10.0" },

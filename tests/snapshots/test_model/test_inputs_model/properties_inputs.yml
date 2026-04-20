@@ -1,1 +1,1 @@
-{'room_volume': 129.60000000000002, 'average_u_value': 0.5024087248366397, 'min_req_vent_rate': 0.23928571428571424, 'lighting_power_density': 8, 'el_equipment_power_density': 3, 'occupancy_gains_density': 4.5, 'nr_of_occupied_hrs': 24, 'c_int': 92477520.0}
+{'room_volume': 129.60000000000002, 'average_u_value': 0.5024087248366397, 'min_req_vent_rate': 0.9499999999999998, 'lighting_power_density': 8, 'el_equipment_power_density': 3, 'occupancy_gains_density': 4.5, 'nr_of_occupied_hrs': 24, 'c_int': 16440000.0}

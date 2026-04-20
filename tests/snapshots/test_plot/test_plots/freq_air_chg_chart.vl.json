@@ -7,69 +7,69 @@
     }
   },
   "data": {
-    "name": "data-8ec5d14d257dbe8393cc61c62f475e2a"
+    "name": "data-e9b8dade4c1eca96b7c44fe05610d995"
   },
   "datasets": {
-    "data-8ec5d14d257dbe8393cc61c62f475e2a": [
+    "data-e9b8dade4c1eca96b7c44fe05610d995": [
       {
         "ach": "2",
-        "cumulative_percentage": 0.2491767288693743,
-        "frequency": 227,
-        "frequency_percentage": 0.2491767288693743
+        "cumulative_percentage": 0.29411764705882354,
+        "frequency": 125,
+        "frequency_percentage": 0.29411764705882354
       },
       {
         "ach": "4",
-        "cumulative_percentage": 0.45334796926454446,
-        "frequency": 186,
-        "frequency_percentage": 0.20417124039517015
+        "cumulative_percentage": 0.4894117647058824,
+        "frequency": 83,
+        "frequency_percentage": 0.1952941176470588
       },
       {
         "ach": "6",
-        "cumulative_percentage": 0.5916575192096597,
-        "frequency": 126,
-        "frequency_percentage": 0.13830954994511527
+        "cumulative_percentage": 0.6282352941176471,
+        "frequency": 59,
+        "frequency_percentage": 0.1388235294117647
       },
       {
         "ach": "8",
-        "cumulative_percentage": 0.6871569703622393,
-        "frequency": 87,
-        "frequency_percentage": 0.09549945115257959
+        "cumulative_percentage": 0.7694117647058824,
+        "frequency": 60,
+        "frequency_percentage": 0.1411764705882353
       },
       {
         "ach": "10",
-        "cumulative_percentage": 0.7596048298572997,
-        "frequency": 66,
-        "frequency_percentage": 0.07244785949506037
+        "cumulative_percentage": 0.8282352941176471,
+        "frequency": 25,
+        "frequency_percentage": 0.058823529411764705
       },
       {
         "ach": "12",
-        "cumulative_percentage": 0.814489571899012,
-        "frequency": 50,
-        "frequency_percentage": 0.054884742041712405
+        "cumulative_percentage": 0.8635294117647059,
+        "frequency": 15,
+        "frequency_percentage": 0.03529411764705882
       },
       {
         "ach": "14",
-        "cumulative_percentage": 0.8605927552140505,
-        "frequency": 42,
-        "frequency_percentage": 0.04610318331503842
+        "cumulative_percentage": 0.9011764705882352,
+        "frequency": 16,
+        "frequency_percentage": 0.03764705882352941
       },
       {
         "ach": "16",
-        "cumulative_percentage": 0.8913282107574094,
-        "frequency": 28,
-        "frequency_percentage": 0.030735455543358946
+        "cumulative_percentage": 0.9270588235294117,
+        "frequency": 11,
+        "frequency_percentage": 0.02588235294117647
       },
       {
         "ach": "18",
-        "cumulative_percentage": 0.9099890230515917,
-        "frequency": 17,
-        "frequency_percentage": 0.018660812294182216
+        "cumulative_percentage": 0.9458823529411765,
+        "frequency": 8,
+        "frequency_percentage": 0.018823529411764704
       },
       {
         "ach": ">18",
         "cumulative_percentage": 1.0,
-        "frequency": 82,
-        "frequency_percentage": 0.09001097694840834
+        "frequency": 23,
+        "frequency_percentage": 0.05411764705882353
       }
     ]
   },

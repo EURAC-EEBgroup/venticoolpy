@@ -15,8 +15,8 @@ from venticoolpy.constant import (
     Qp_comfort_category,
     Qa_comfort_category,
     heat_cap_construction_type,
+    heat_cap_air_furniture,
 )
-
 
 class BuildingCreateException(Exception):
     pass
@@ -279,7 +279,7 @@ class Building(object):
                 vent_rate = self.my_min_req_vent_rate
 
             elif self.my_vent_rates_mu == VENT_RATES_MU[1]:  # 1/h:
-                vent_rate = self.my_min_req_vent_rate * self.ceiling_to_floor_height / 3.6
+                vent_rate = self.my_min_req_vent_rate * self.celing_to_floor_height / 3.6
 
             elif self.my_vent_rates_mu == VENT_RATES_MU[2]: # kg/s-m²
                 vent_rate = self.my_min_req_vent_rate / (0.001 * Air_properties_ro)
@@ -342,11 +342,10 @@ class Building(object):
             return self.my_c_int
         
         value = (
-            1.2 * self.room_volume
+            heat_cap_air_furniture * self.floor_area
             + heat_cap_construction_type[self.construction_mass]
-            * 1000
-            * (self.envelope_area + self.floor_area * 2)
-            * 0.3
+            / 1000
+            * (self.envelope_area - self.fenestration_area)
         ) * 1000
         return value
 

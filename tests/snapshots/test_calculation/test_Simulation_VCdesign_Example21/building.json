@@ -20,9 +20,9 @@
     "ti_csb": 50,
     "ti_day_start": 7,
     "ti_hsb": 15,
-    "ti_night_start": 24,
-    "time_control_off": 24,
-    "time_control_on": 0,
+    "ti_night_start": 23,
+    "time_control_off": 8,
+    "time_control_on": 20,
     "u_value_fen": 1.2,
     "u_value_opaque": 0.21
 }

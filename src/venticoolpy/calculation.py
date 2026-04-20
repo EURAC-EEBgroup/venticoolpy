@@ -15,7 +15,10 @@ from venticoolpy.constant import (
     comfort_categories_LW,
     Qa_comfort_category, 
     Qp_comfort_category, 
-    m2_per_person
+    m2_per_person,
+    f_conv_occ,
+    f_conv_lgt,
+    f_conv_app,
 )
 from venticoolpy.constant import Air_properties_Cp, Air_properties_ro
 from venticoolpy.constant import VENTILATION_STRATEGY, WINDOW_DESIGN_CV
@@ -74,9 +77,9 @@ def get_internal_gains(building: Building):
         df_occ_lgt_apl = pd.read_csv(f)
 
     internal_gains = (
-        (building.occupancy_gains_density) * df_occ_lgt_apl['OCC.'+building.bui_type] +
-        building.lighting_power_density * df_occ_lgt_apl['LGT.'+building.bui_type] +
-        building.el_equipment_power_density * df_occ_lgt_apl['APL.'+building.bui_type]
+        f_conv_occ * (building.occupancy_gains_density) * df_occ_lgt_apl['OCC.'+building.bui_type] +
+        f_conv_lgt * building.lighting_power_density * df_occ_lgt_apl['LGT.'+building.bui_type] +
+        f_conv_app * building.el_equipment_power_density * df_occ_lgt_apl['APL.'+building.bui_type]
     )
 
     internal_gains = np.append(internal_gains[8016:8760].values, internal_gains[0:8760].values)
@@ -173,11 +176,7 @@ def calc_thermal_comfort_data(
     t_max_k = get_t_max_k(building.comfort_requirements)
     temp_t_max_k= []
     for i in range(TOT_HOURS):
-        time = i % 24
-        if time > building.ti_day_start or time < building.ti_night_start:
-            temp_t_max_k.append(t_max_k[building.bui_type])
-        else:
-            temp_t_max_k.append(building.ti_csb)
+        temp_t_max_k.append(t_max_k[building.bui_type])
     Ti_csp = temp_t_max_k
 
     k_lw = comfort_categories_LW[building.comfort_requirements]
@@ -708,7 +707,6 @@ def calc_heating_and_cooling_needs_with_vcs(
     df["Target indoor temperature for VCS"] = upper_comfort_zone_limit
 
     return df
-
 
 def run_vct_simulation(
     inputs: Building, 

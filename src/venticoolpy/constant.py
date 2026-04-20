@@ -13,7 +13,7 @@ BUILDING_TYPE = [
 
 COMFORT_REQUIREMENTS = ["category I", "category II", "category III"]
 
-CONSTRUCTION_MASS = ["heavy", "light", "medium"]
+CONSTRUCTION_MASS = ["very light", "light", "medium", "heavy", "very heavy"]
 
 VENT_RATES_MU = ["l/s-m²", "1/h", "kg/s-m²", "m³/h", "m³/s"]
 
@@ -31,7 +31,9 @@ m2_per_person = dict(zip(BUILDING_TYPE, [28, 4, 42, 11, 28, 17, 6, 5.5]))
 gain_per_person = dict(zip(BUILDING_TYPE, [126, 81, 126, 108, 126, 108, 170, 108]))
 LIGHTING_POWER_DENSITY = dict(zip(BUILDING_TYPE, [8, 15, 8, 9, 8, 12, 20, 15]))
 ELECTRIC_EQUIPMENT_POWER_DENSITY = dict(zip(BUILDING_TYPE, [3, 4, 2.4, 4, 3, 12, 4, 8]))
-
+f_conv_occ = 0.4   # EN ISO 52016-1 default for people
+f_conv_app = 0.5   # for equipment
+f_conv_lgt = 0.5   # for lighting (mix of types)
 
 def get_t_min_k(comf_req):
     """Return TminK value given the building comfort requirements category."""
@@ -86,8 +88,8 @@ comfort_categories_LW = dict(
     zip(COMFORT_REQUIREMENTS, [-3, -4, -5])
 )  
 
-Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [3.5, 2.5, 1.5]))
-Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [0.25, 0.15, 0.1]))
+Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
+Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))
 
-# MJ/m3K
-heat_cap_construction_type = dict(zip(CONSTRUCTION_MASS, [1.4, 0.9, 1.15]))
+heat_cap_construction_type = dict(zip(CONSTRUCTION_MASS, [50000, 75000, 100000, 175000, 250000])) #J/m2K, EN ISO 52016-1 default for internal thermal capacity of the building construction per unit area of the envelope and floor (C_construction) - table B.14
+heat_cap_air_furniture = 10 #kJ/m2K, EN ISO 52016-1 default for internal thermal capacity of air and furniture (C_int)) per unit floor area

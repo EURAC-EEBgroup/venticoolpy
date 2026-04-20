@@ -83,14 +83,14 @@ def test_Simulation_VCdesign_Example21(snapshot):
         "ti_csb": 50,
         "ti_day_start": 7,
         "ti_hsb": 15,
-        "ti_night_start": 24,
-        "time_control_off": 24,
-        "time_control_on": 0,
+        "ti_night_start": 23,
+        "time_control_off": 8,
+        "time_control_on": 20,
         "u_value_fen": 1.2,
         "u_value_opaque": 0.21
     })
 
-    filename = "tests/inputs/data/VCdesign_Example21.xlsm"
+    filename = "tests/inputs/data/VCdesign_v7_Example21.xlsm"
     climate_data = load_climate_data_from_VCdesign(filename)
 
     building_str = json.dumps(inputs.__dict__, indent=4, sort_keys=True)
@@ -112,8 +112,6 @@ def test_Simulation_VCdesign_Example21(snapshot):
     snapshot.assert_match(csv_df_freq_air_chg, "req_freq_air_change_rate.csv")
     snapshot.assert_match(csv_df_year, "annual_data.csv")
 
-
-
 def test_Simulation_VCdesign_Example31(snapshot):
     inputs = Building(**{
         "bui_type": "School",
@@ -131,14 +129,14 @@ def test_Simulation_VCdesign_Example31(snapshot):
         "ti_csb": 50,
         "ti_day_start": 7,
         "ti_hsb": 15,
-        "ti_night_start": 24,
+        "ti_night_start": 23,
         "time_control_off": 16,
         "time_control_on": 8,
         "u_value_fen": 3.5,
         "u_value_opaque": 3
     })
 
-    filename = "tests/inputs/data/VCdesign_Example31.xlsm"
+    filename = "tests/inputs/data/VCdesign_v7_Example31.xlsm"
     climate_data= load_climate_data_from_VCdesign(filename)
 
     building_str = json.dumps(inputs.__dict__, indent=4, sort_keys=True)
@@ -179,14 +177,14 @@ def test_Simulation_VCdesign_Example41(snapshot):
         "ti_csb": 50,
         "ti_day_start": 7,
         "ti_hsb": 15,
-        "ti_night_start": 24,
+        "ti_night_start": 23,
         "time_control_off": 16,
         "time_control_on": 8,
         "u_value_fen": 1.2,
         "u_value_opaque": 0.24
     })
 
-    filename = "tests/inputs/data/VCdesign_Example41.xlsm"
+    filename = "tests/inputs/data/VCdesign_v7_Example41.xlsm"
     climate_data = load_climate_data_from_VCdesign(filename)
 
     building_str = json.dumps(inputs.__dict__, indent=4, sort_keys=True)
@@ -227,14 +225,14 @@ def test_Simulation_VCdesign_Example51(snapshot):
         "ti_csb": 50,
         "ti_day_start": 7,
         "ti_hsb": 15,
-        "ti_night_start": 24,
+        "ti_night_start": 23,
         "time_control_off": 16,
         "time_control_on": 8,
         "u_value_fen": 1.2,
         "u_value_opaque": 0.24
     })
 
-    filename = "tests/inputs/data/VCdesign_Example51.xlsm"
+    filename = "tests/inputs/data/VCdesign_v7_Example51.xlsm"
     climate_data = load_climate_data_from_VCdesign(filename)
 
     building_str = json.dumps(inputs.__dict__, indent=4, sort_keys=True)
@@ -275,14 +273,14 @@ def test_Simulation_VCdesign_Example61(snapshot):
         "ti_csb": 50,
         "ti_day_start": 7,
         "ti_hsb": 15,
-        "ti_night_start": 24,
+        "ti_night_start": 23,
         "time_control_off": 16,
         "time_control_on": 8,
         "u_value_fen": 1.7,
         "u_value_opaque": 2.5
     })
 
-    filename = "tests/inputs/data/VCdesign_Example61.xlsm"
+    filename = "tests/inputs/data/VCdesign_v7_Example61.xlsm"
     climate_data = load_climate_data_from_VCdesign(filename)
 
     building_str = json.dumps(inputs.__dict__, indent=4, sort_keys=True)
@@ -323,14 +321,14 @@ def test_Simulation_VCdesign_Example62(snapshot):
         "ti_csb": 50,
         "ti_day_start": 7,
         "ti_hsb": 15,
-        "ti_night_start": 24,
+        "ti_night_start": 23,
         "time_control_off": 16,
         "time_control_on": 8,
         "u_value_fen": 1.7,
         "u_value_opaque": 2.5
     })
 
-    filename = "tests/inputs/data/VCdesign_Example62.xlsm"
+    filename = "tests/inputs/data/VCdesign_v7_Example62.xlsm"
     climate_data = load_climate_data_from_VCdesign(filename)
 
     building_str = json.dumps(inputs.__dict__, indent=4, sort_keys=True)

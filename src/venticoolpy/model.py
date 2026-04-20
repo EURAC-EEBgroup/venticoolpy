@@ -279,7 +279,7 @@ class Building(object):
                 vent_rate = self.my_min_req_vent_rate
 
             elif self.my_vent_rates_mu == VENT_RATES_MU[1]:  # 1/h:
-                vent_rate = self.my_min_req_vent_rate * self.celing_to_floor_height / 3.6
+                vent_rate = self.my_min_req_vent_rate * self.ceiling_to_floor_height / 3.6
 
             elif self.my_vent_rates_mu == VENT_RATES_MU[2]: # kg/s-m²
                 vent_rate = self.my_min_req_vent_rate / (0.001 * Air_properties_ro)

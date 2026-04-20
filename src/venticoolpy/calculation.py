@@ -162,11 +162,10 @@ def calc_thermal_comfort_data(
 
     t_min_k = get_t_min_k(building.comfort_requirements)
 
-    # add here:
     temp_t_min_k= []
     for i in range(TOT_HOURS):
-        time = i % 24
-        if time > building.ti_day_start or time < building.ti_night_start:
+        time = (i + 1) % 24 # hours [1, 2, 3, ..., 23, 0]
+        if time >= building.ti_day_start and time < building.ti_night_start:
             temp_t_min_k.append(t_min_k[building.bui_type])
         else:
             temp_t_min_k.append(building.ti_hsb)
@@ -188,13 +187,19 @@ def calc_thermal_comfort_data(
     i = 0
     for i in range(TOT_HOURS):
         if full_year[i] > 10:
-            lower_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + k_lw
             upper_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + k_up
             comfort_temperature[i] = 0.33 * full_year[i] + 18.8
         else:
-            lower_comfort_zone_limit[i] = Ti_hsp[i]
             upper_comfort_zone_limit[i] = Ti_csp[i]
             comfort_temperature[i] = (Ti_hsp[i] + Ti_csp[i]) / 2
+
+    for i in range(TOT_HOURS):
+        time = (i + 1) % 24
+        if (time >= building.ti_day_start and time < building.ti_night_start) and full_year[i] > 10:
+            lower_comfort_zone_limit[i] = 0.33 * full_year[i] + 18.8 + k_lw
+        else:
+            lower_comfort_zone_limit[i] = Ti_hsp[i]
+       
 
     df["Comfort temperature"] = comfort_temperature
     df["Lower comfort zone limit"] = lower_comfort_zone_limit

@@ -7,19 +7,19 @@
     }
   },
   "data": {
-    "name": "data-cac10a98487120d4ec7c3a8f4cd96593"
+    "name": "data-a72b5b8bb735921cd0f611f4c5adced9"
   },
   "datasets": {
-    "data-cac10a98487120d4ec7c3a8f4cd96593": [
+    "data-a72b5b8bb735921cd0f611f4c5adced9": [
       {
         "mode": "0",
         "month": "January",
-        "value": 328.0
+        "value": 175.0
       },
       {
         "mode": "1",
         "month": "January",
-        "value": 364.0
+        "value": 517.0
       },
       {
         "mode": "2",
@@ -34,12 +34,12 @@
       {
         "mode": "0",
         "month": "February",
-        "value": 302.0
+        "value": 164.0
       },
       {
         "mode": "1",
         "month": "February",
-        "value": 329.0
+        "value": 467.0
       },
       {
         "mode": "2",
@@ -54,12 +54,12 @@
       {
         "mode": "0",
         "month": "March",
-        "value": 233.0
+        "value": 101.0
       },
       {
         "mode": "1",
         "month": "March",
-        "value": 461.0
+        "value": 593.0
       },
       {
         "mode": "2",
@@ -74,12 +74,12 @@
       {
         "mode": "0",
         "month": "April",
-        "value": 153.0
+        "value": 86.0
       },
       {
         "mode": "1",
         "month": "April",
-        "value": 528.0
+        "value": 595.0
       },
       {
         "mode": "2",
@@ -94,12 +94,12 @@
       {
         "mode": "0",
         "month": "May",
-        "value": 64.0
+        "value": 25.0
       },
       {
         "mode": "1",
         "month": "May",
-        "value": 627.0
+        "value": 666.0
       },
       {
         "mode": "2",
@@ -114,12 +114,12 @@
       {
         "mode": "0",
         "month": "June",
-        "value": 33.0
+        "value": 21.0
       },
       {
         "mode": "1",
         "month": "June",
-        "value": 595.0
+        "value": 607.0
       },
       {
         "mode": "2",
@@ -174,12 +174,12 @@
       {
         "mode": "0",
         "month": "September",
-        "value": 18.0
+        "value": 6.0
       },
       {
         "mode": "1",
         "month": "September",
-        "value": 548.0
+        "value": 560.0
       },
       {
         "mode": "2",
@@ -194,12 +194,12 @@
       {
         "mode": "0",
         "month": "October",
-        "value": 91.0
+        "value": 51.0
       },
       {
         "mode": "1",
         "month": "October",
-        "value": 541.0
+        "value": 581.0
       },
       {
         "mode": "2",
@@ -214,12 +214,12 @@
       {
         "mode": "0",
         "month": "November",
-        "value": 254.0
+        "value": 120.0
       },
       {
         "mode": "1",
         "month": "November",
-        "value": 420.0
+        "value": 554.0
       },
       {
         "mode": "2",
@@ -234,12 +234,12 @@
       {
         "mode": "0",
         "month": "December",
-        "value": 308.0
+        "value": 133.0
       },
       {
         "mode": "1",
         "month": "December",
-        "value": 396.0
+        "value": 571.0
       },
       {
         "mode": "2",

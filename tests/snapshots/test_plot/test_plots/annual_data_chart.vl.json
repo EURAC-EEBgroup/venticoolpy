@@ -7,39 +7,39 @@
     }
   },
   "data": {
-    "name": "data-f2a0ae45905f8dc010add02b48d131e1"
+    "name": "data-d18ffa52c820c842ae326792803a7d68"
   },
   "datasets": {
-    "data-f2a0ae45905f8dc010add02b48d131e1": [
+    "data-d18ffa52c820c842ae326792803a7d68": [
       {
         "Month": "Jan",
         "Type": "Heating",
-        "Value": 1066.243823303212
+        "Value": 1006.6613380688066
       },
       {
         "Month": "Feb",
         "Type": "Heating",
-        "Value": 932.1145983400677
+        "Value": 884.231674586736
       },
       {
         "Month": "Mar",
         "Type": "Heating",
-        "Value": 617.1347650812143
+        "Value": 576.0312449002166
       },
       {
         "Month": "Apr",
         "Type": "Heating",
-        "Value": 303.1475019335439
+        "Value": 284.44338518183963
       },
       {
         "Month": "May",
         "Type": "Heating",
-        "Value": 74.70301668664989
+        "Value": 69.07643251469436
       },
       {
         "Month": "Jun",
         "Type": "Heating",
-        "Value": 41.3957653926934
+        "Value": 39.37809005845034
       },
       {
         "Month": "Jul",
@@ -54,22 +54,22 @@
       {
         "Month": "Sep",
         "Type": "Heating",
-        "Value": 31.05124733298544
+        "Value": 28.820200740471453
       },
       {
         "Month": "Oct",
         "Type": "Heating",
-        "Value": 187.57876515807095
+        "Value": 179.69691311263136
       },
       {
         "Month": "Nov",
         "Type": "Heating",
-        "Value": 594.7061574696365
+        "Value": 559.0088113774483
       },
       {
         "Month": "Dec",
         "Type": "Heating",
-        "Value": 941.5227071997016
+        "Value": 881.8779925996517
       },
       {
         "Month": "Jan",

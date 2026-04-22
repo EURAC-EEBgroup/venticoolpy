@@ -91,5 +91,5 @@ comfort_categories_LW = dict(
 Qp_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [10, 7, 4]))
 Qa_comfort_category = dict(zip(COMFORT_REQUIREMENTS, [1, 0.7, 0.4]))
 
-heat_cap_construction_type = dict(zip(CONSTRUCTION_MASS, [50000, 75000, 100000, 175000, 250000])) #J/m2K, EN ISO 52016-1 default for internal thermal capacity of the building construction per unit area of the envelope and floor (C_construction) - table B.14
+heat_cap_construction_type = dict(zip(CONSTRUCTION_MASS, [50000, 75000, 110000, 175000, 250000])) #J/m2K, EN ISO 52016-1 default for internal thermal capacity of the building construction per unit area of the envelope and floor (C_construction) - table B.14
 heat_cap_air_furniture = 10 #kJ/m2K, EN ISO 52016-1 default for internal thermal capacity of air and furniture (C_int)) per unit floor area

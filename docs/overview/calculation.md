@@ -49,7 +49,7 @@ Data related to the room geometry and technical specifications of the transparen
 Although in EN ISO 52016-1 the solar gains are split into direct and indirect, respectively into the zone, through the windows, and absorbed in external constructions, the methodology considers just the total.
 Internal heat gains are expressed in W/m² and are calculated for each hour of a time series by means of the equation:
 
-$\phi_{𝑖𝑛𝑡} = {𝑝𝑒𝑜𝑝𝑙𝑒} \cdot 𝑜𝑐c_{sch} \cdot \frac {𝑞_{𝑜𝑐c}} {A_f} + 𝑞_𝐿 \cdot 𝑙𝑔𝑡_{𝑠𝑐ℎ} + 𝑞_𝐴 \cdot 𝑎𝑝𝑙_{𝑠𝑐ℎ}$ 
+$\phi_{𝑖𝑛𝑡} = f_conv_{𝑜𝑐c} \cdot {𝑝𝑒𝑜𝑝𝑙𝑒} \cdot 𝑜𝑐c_{sch} \cdot \frac {𝑞_{𝑜𝑐c}} {A_f} + f_conv_{lgt} \cdot 𝑞_𝐿 \cdot 𝑙𝑔𝑡_{𝑠𝑐ℎ} + f_conv_{apl} \cdot 𝑞_𝐴 \cdot 𝑎𝑝𝑙_{𝑠𝑐ℎ}$ 
 
 where
 
@@ -59,13 +59,19 @@ $𝑜𝑐c_{sch}$ hourly occupancy schedule (-)
 
 $𝑞_{𝑜𝑐c}$ internal heat gains per person depending on their degree of activity (W)
 
+$f_conv_{𝑜𝑐c}$ convective fraction of occupancy heat gains (-)
+
 $𝑞_𝐿$ lighting power density (W/m²)
 
 $𝑙𝑔𝑡_{𝑠𝑐ℎ}$ hourly lighting schedule (-)
 
+$f_conv_{lgt}$ convective fraction of lighting heat gains (-)
+
 $𝑞_𝐴$ electric equipment power density (W/m²)
 
 $𝑎𝑝𝑙_{𝑠𝑐ℎ}$ hourly electric equipment schedule (-)
+
+$f_conv_{apl}$ convective fraction of lighting heat gains (-)
 
 The ventilative cooling potential method uses the hourly schedules as reference reported in EN 16798-1:2019 (Annex C). Default schedules are indicated for each building typology.
 

@@ -31,7 +31,7 @@ Comfort requirements refer to the comfort categories defined by the EN 16798-1: 
 
 - U-value of the fenestration; $U_w$ (W/m²K): Thermal transmittance of the window (or average thermal transmittance of windows if the room has more than one window), considering both glazing system and frame.  
 
-- Construction mass; $C_{int}$ (MJ/m³K): select predefined thermal mass of the construction. Heavy = 1.4 MJ/m³K, light = 0.9 MJ/m³K and medium = 1.15 MJ/m³K. NOTE: different values can be input in the optional input session. In case a value different than .1 for the (lumped) internal thermal capacity Cint (J/K) is entered for the construction mass in the optional input session, this input is ignored. 
+- Construction mass; $C_{int}$ (J/m²K): select predefined specific heat capacity of the construction. very light= 50000 J/m²K, light= 75000 J/m²K, medium = 110000 J/m²K, heavy = 175000 J/m²K,  and very heavy = 250000 J/m²K. NOTE: different values can be input in the optional input session. In case a value different than .1 for the (lumped) internal thermal capacity Cint (J/K) is entered for the construction mass in the optional input session, this input is ignored. 
 
 - g value of the glazing system; g (-): Solar heat gain coefficient of the window glazing system.  
 

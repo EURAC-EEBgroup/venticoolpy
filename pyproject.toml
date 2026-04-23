@@ -8,7 +8,6 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "altair>=6.0.0",
     "epw>=1.2.dev2",
     "numpy>=2.3.3",
     "pandas>=2.3.3",

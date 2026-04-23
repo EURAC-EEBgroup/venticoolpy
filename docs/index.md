@@ -1,7 +1,12 @@
 <!-- markdownlint-disable MD041 -->
 # Welcome to VentiCoolPy
 
-<img src="media/venticoolpy_logo.png" style="max-width: 300px"/>
+![VentiCoolPy Logo](https://raw.githubusercontent.com/EURAC-EEBgroup/venticoolpy/main/docs/media/venticoolpy_logo.png) <!-- markdownlint-disable-line MD041 -->
+
+
+[![PyPI version](https://badge.fury.io/py/venticoolpy.svg)](https://badge.fury.io/py/venticoolpy)
+[![Documentation status](https://github.com/EURAC-EEBgroup/venticoolpy/actions/workflows/docs.yml/badge.svg)](https://github.com/EURAC-EEBgroup/venticoolpy/actions/workflows/docs.yml)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 
 **VentiCoolPy** is a Python library developed by Eurac Research to support the development of sustainable cooling strategies for buildings.

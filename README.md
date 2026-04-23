@@ -1,110 +1,82 @@
-# venticoolpy
+<!-- markdownlint-disable MD041 -->
+# Welcome to VentiCoolPy
 
-venticoolpy is ...
-NB: this library is currently under development
+<img src="media/venticoolpy_logo.png" style="max-width: 300px"/>
+![VentiCoolPy Logo](https://raw.githubusercontent.com/EURAC-EEBgroup/venticoolpy/main/docs/media/venticoolpy_logo.png) <!-- markdownlint-disable-line MD041 -->
 
 
-## Getting started
-First, generate and syncronize the virtual environment using *uv* package as follows:
+[![PyPI version](https://badge.fury.io/py/venticoolpy.svg)](https://badge.fury.io/py/venticoolpy)
+[![Documentation status](https://github.com/EURAC-EEBgroup/venticoolpy/actions/workflows/docs.yml/badge.svg)](https://github.com/EURAC-EEBgroup/venticoolpy/actions/workflows/docs.yml)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
+
+**VentiCoolPy** is a Python library developed by Eurac Research to support the development of sustainable cooling strategies for buildings.
+This Python library provides the reference implementation of the ventilative cooling potential method developed by the Eurac Research within IEA/EBC Annex 62 and subsequently integrated into the prCEN/TS “Ventilative cooling systems – Design”.
+It operationalises the standardised methodology into an open and extensible computational tool for research and professional applications.
+
+The ventilative cooling potential method aims at assessing the cooling potential of ventilative cooling (fx. using natural forces) in a reference thermal and ventilation zone representing the building in its context. 
+
+The ventilative cooling potential method provides a practical approach for application during the early stages of building design, such as the feasibility stage. It enables preliminary evaluation in the absence of detailed system specifications and leverages the adaptive comfort model to account for occupants' ability to adapt to varying indoor conditions, offering a realistic assessment of comfort levels.
+
+## Key Features
+
+- early-stage design applicability
+- climate and building-dependent assessment
+- single-zone hourly simulation of thermal balance
+- explicit consideration of building thermal inertia
+- frequency analysis of required ventilation rates to maintain thermal comfort over the full year
+- use of adaptive thermal comfort model
+
+
+ 
+
+## Installation
+
+To get started with _VentiCoolPy_, you'll need to install it first. You can do this by running the following command:
 
 ```bash
-cd <path_to_project>
-    uv sync --all-groups --all-extras
+pip install venticoolpy
 ```
 
-## Test
+## Documentation
+This [documentation](overview/index.md) is designed to help you understand and use VentiCoolPy effectively.
 
-You can execute the whole test suite by running
-
-```bash
-tox
-```
-
-If some snapshot test fail, you can inspect the differences with
-
-```bash
-tox -- -vv
-```
-
-## Package
-
-You can build the progect package running
-
-```bash
-uv build
-```
+### Tutorials
+Practical examples showing how to use our project in real-world scenarios. For more information, please see the [Tutorials](tutorials.md) section.
 
 
-## Use
+## Web Application
 
-* Generate virtual environment 
-* Install all dependencies
-* Run tests
-* Build the project package
-* cd /dist folder. Copy generated .tar.gz file to another folder
-* cd another folder and install venticoolpy library:
-    ```bash
-        pip install "venticoolpy[all] @ venticoolpy-<temp-version>.tar.gz"
-    ```
+A web app is available to use the library directly through an interface at the following [link](https://tools.eeb.eurac.edu/vctlib/).
 
-* once venticoolpy library is installed, example of usage: 
-```python
+## License
 
-import pandas as pd
-from venticoolpy.calculation import (
-    Building,
-    run_vct_simulation,
-    get_annual_data,
-    get_requirend_frequency_air_change_rate,
-    get_vent_mode_over_year,
-)
-from venticoolpy.new_irradiation_SFA_Perez_newCalc import get_climate_data_w_vert_irrad_from_epw
+VentiCoolPy is licensed under the BSD 3-Clause License. For more information, please see the [LICENSE](LICENSE.txt) file.
 
+## Contact
 
-building = Building(
-    bui_type="Apartment building",
-    ceiling_to_floor_height=2.7,
-    envelope_area=171.60,
-    floor_area=48.00,
-    fenestration_area=12.00,
-    orientation="S",
-    comfort_requirements="category II",
-    max_outdoor_rel_hum_accepted=85,
-    u_value_opaque=0.3158,
-    u_value_fen=2.984,
-    construction_mass="medium",
-    g_value_glazing_sys=0.71,
-    shading_control_setpoint=120,
-    shading_factor=0,
-    time_control_on=0,
-    time_control_off=24,
-    ti_day_start=7,
-    ti_night_start=24,
-)
+For any questions or support, please contact:
 
-climate_file_path = "/path-to-file/file.epw"
-climate_data = get_climate_data_w_vert_irrad_from_epw(climate_file_path, building.orientation)
+**Concept and Methodology**
 
-df_with_calibration_month = run_vct_simulation(building, climate_data)
-df = df_with_calibration_month[744:]  # remove calibration month
+- Annamaria Belleri <annamaria.belleri@eurac.edu>
 
-df_vent_mode = get_vent_mode_over_year(df)
-df_freq_air_change = get_requirend_frequency_air_change_rate(df, building)
-df_year = get_annual_data(df)
+**Python Code and Web Tool**
 
-# Print results:
-print(df_vent_mode)
-print(df_freq_air_change)
-print(df_year)
+- Olga Somova <olga.somova@eurac.edu>
 
-# Plot results:
-from venticoolpy.plot import plot_vent_mode_over_year, plot_requirend_frequency_air_change_rate, plot_annual_data
+**other contributors**
+- Ali Sana Fatima <sanafatima.ali@eurac.edu> (vertical irradiance code)
+- Valentina Radice Fossati (validation of the calculation methdology)
+- Dick Van Djik  <dick.vandijk@epb.center> (thermal balance calculation method)
 
-plot_vent_mode_over_year(df_vent_mode)
-plot_requirend_frequency_air_change_rate(df_freq_air_change)
-plot_annual_data(df_year)
+## Contributing
 
-```
+Please feel free to contact us with any potential suggestions, avenues for collaboration, etc.
 
 
+## Citation 
 
+Please cite us if you use the _VentiCoolPy_ library:
+
+    Fossati V., Belleri A., Van Djik D., A methodology for evaluating the ventilative cooling potential in early-stage building design, AIVC 2023 conference proceedings, Copenhagen, October 2023

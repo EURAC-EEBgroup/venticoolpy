@@ -38,10 +38,10 @@ pip install venticoolpy
 ```
 
 ## Documentation
-This [documentation](overview/index.md) is designed to help you understand and use VentiCoolPy effectively.
+This [documentation](https://eurac-eebgroup.github.io/venticoolpy/overview/) is designed to help you understand and use VentiCoolPy effectively.
 
 ### Tutorials
-Practical examples showing how to use our project in real-world scenarios. For more information, please see the [Tutorials](tutorials.md) section.
+Practical examples showing how to use our project in real-world scenarios. For more information, please see the [Tutorials](https://eurac-eebgroup.github.io/venticoolpy/tutorials/) section.
 
 
 ## Web Application
@@ -50,7 +50,7 @@ A web app is available to use the library directly through an interface at the f
 
 ## License
 
-VentiCoolPy is licensed under the BSD 3-Clause License. For more information, please see the [LICENSE](LICENSE.txt) file.
+VentiCoolPy is licensed under the BSD 3-Clause License. For more information, please see the [LICENSE](LICENSE) file.
 
 ## Contact
 

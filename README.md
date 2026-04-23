@@ -1,7 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 # Welcome to VentiCoolPy
 
-<img src="media/venticoolpy_logo.png" style="max-width: 300px"/>
 ![VentiCoolPy Logo](https://raw.githubusercontent.com/EURAC-EEBgroup/venticoolpy/main/docs/media/venticoolpy_logo.png) <!-- markdownlint-disable-line MD041 -->
 
 

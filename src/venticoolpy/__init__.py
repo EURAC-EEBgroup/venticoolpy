@@ -1,5 +1,9 @@
+from importlib.metadata import version, PackageNotFoundError
 
-from venticoolpy._version import __version__  # noqa: F401
+try:
+    __version__ = version("venticoolpy")
+except PackageNotFoundError:
+    __version__ = None
 
 
 from venticoolpy import data

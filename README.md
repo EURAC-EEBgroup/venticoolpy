@@ -79,3 +79,4 @@ Please feel free to contact us with any potential suggestions, avenues for colla
 Please cite us if you use the _VentiCoolPy_ library:
 
     Fossati V., Belleri A., Van Djik D., A methodology for evaluating the ventilative cooling potential in early-stage building design, AIVC 2023 conference proceedings, Copenhagen, October 2023
+ 

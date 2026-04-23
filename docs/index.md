@@ -50,7 +50,7 @@ A web app is available to use the library directly through an interface at the f
 
 ## License
 
-VentiCoolPy is licensed under the BSD 3-Clause License. For more information, please see the [LICENSE](../LICENSE) file.
+VentiCoolPy is licensed under the BSD 3-Clause License. For more information, please see the [LICENSE](https://github.com/EURAC-EEBgroup/venticoolpy/blob/main/LICENSE) file.
 
 ## Contact
 

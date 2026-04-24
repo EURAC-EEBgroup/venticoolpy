@@ -80,3 +80,7 @@ Please cite us if you use the _VentiCoolPy_ library:
 
     Fossati V., Belleri A., Van Djik D., A methodology for evaluating the ventilative cooling potential in early-stage building design, AIVC 2023 conference proceedings, Copenhagen, October 2023
  
+
+## Acknowledgements
+This work has received funding from the European Union's Horizon Europe research and innovation programme under grant agreement No 101138672 (HeriTACE).
+The calculation methodology implemented in this library has been adopted by CEN/TC 156/WG21 and included in their technical specification on ventilative cooling systems. We gratefully acknowledge the WG21 experts for their feedback.
